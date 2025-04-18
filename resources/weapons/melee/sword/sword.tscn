@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0jm03xnkmh5w"]
+
+[ext_resource type="PackedScene" uid="uid://d2nnsihkm1di7" path="res://resources/weapons/melee/sword/Sworrd test model.glb" id="1_oumrg"]
+
+[node name="Sword" instance=ExtResource("1_oumrg")]
+transform = Transform3D(0.999635, 0, 0.0270317, 0, 1, 0, -0.0270317, 0, 0.999635, -0.0153025, 0, 0)
+
+[node name="sword" parent="." index="0"]
+transform = Transform3D(-0.000729855, -0.1369, -0.00172939, 1.1483e-09, 0.00370333, -0.0639766, 0.0269901, -0.00370198, -4.67627e-05, -0.033656, 0.238035, 2.91038e-11)

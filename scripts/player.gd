@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+@onready var animator = get_node("model/AnimationTree")
+
 ## Player constant velocity (in meters per second).
 var PLAYER_SPEED = 10
 
@@ -9,8 +11,41 @@ var origin_rotation = rotation
 ## Whether the camera acts as free-look or crosshair.
 var STATIONARY_CONTINUOUS_TURN = false 
 
+## The players attack instance
+var combat: Combat;
+
+## A reference to the players currently equipped weapon resource. 
+var equipped_weapon
+
+## A reference to the players currently equipped weapon mesh. Weapons use the BoneAttachment3D node in order to attach to their hand
+var equipped_weapon_mesh: BoneAttachment3D
+
+func _init():
+	combat = Combat.new(self, 0.5)
+	
+
+func _ready() -> void:
+	setWeapon("Sword", "MELEE")
+	
+	
+
 func _physics_process(delta: float) -> void:
-	new_player_move(delta)
+	combat._process(delta)
+	move(delta)
+	attack(delta)
+	animate()
+
+## Run animation relevant routines
+func animate():
+	var vel = Vector2(velocity.x, velocity.z)
+
+	if vel.length() > 0:
+		animator.set("parameters/RunIdle/transition_request", "Run")	
+	else:
+		animator.set("parameters/RunIdle/transition_request", "Idle")
+		
+	if Input.is_action_pressed("attack") && combat.MELEE_TIMER == combat.ATTACK_SPEED:
+		animator.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)			
 
 func apply_velocity(delta):
 	velocity.z = -cos(rotation.y) * PLAYER_SPEED
@@ -45,7 +80,7 @@ func move_right(delta, _cam_rotation):
 	apply_velocity(delta)
 
 ## Handles basic player movement (even better tho)
-func new_player_move(delta):
+func move(delta):
 	var fall_acceleration = -9.8 * 10
 	var target_velocity = Vector3.ZERO
 	var cam_rotation: Vector3 = $CameraPivot.rotation
@@ -68,7 +103,7 @@ func new_player_move(delta):
 					velocity.z = 0
 					
 					var rotation_diff = cam_rotation - origin_rotation		
-					if(cos(rotation_diff.y) < 0 || STATIONARY_CONTINUOUS_TURN):
+					if(cos(rotation_diff.y) < 0 || STATIONARY_CONTINUOUS_TURN || !is_on_floor()):
 						STATIONARY_CONTINUOUS_TURN = true
 						rotation.y = cam_rotation.y
 					
@@ -80,8 +115,32 @@ func new_player_move(delta):
 		
 	move_and_slide()
 
+func attack(delta: float):
+	if Input.is_action_pressed("attack"):
+		combat.attack(get_node("hitbox"))
+		
+	if Input.is_action_pressed("shoulder_view"):
+		removeWeapon()
+		
+
+func setWeapon(name: String, type: String):
+	removeWeapon()
+	
+	var weplist = $"..".weapon_list as WeaponList
+	var weapon: Weapon = weplist.getWeapon("Sword", "MELEE")
+	
+	equipped_weapon_mesh = weapon.mesh.instantiate()
+	$model/Armature/Skeleton3D.add_child(equipped_weapon_mesh)
+	var idx = $model/Armature/Skeleton3D.find_bone("forearm.R")
+	equipped_weapon_mesh.bone_idx = idx
+	combat.setWeapon(weapon)
+
+func removeWeapon():
+	$model/Armature/Skeleton3D.remove_child(equipped_weapon_mesh)
+	combat.EQUIPPED_WEAPON = Weapon.new()
+
 ## Handles basic player movement. 
-func player_move(delta):
+func old_move(delta):
 	
 	var fall_acceleration = -9.8 * 10
 	var target_velocity = Vector3.ZERO

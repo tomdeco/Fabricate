@@ -10,8 +10,8 @@ func _input(event):
 		if(rot_y > 1):
 			rot_y = 1
 			
-		if(rot_y < -0.65):
-			rot_y = -0.65
+		if(rot_y < -0.45):
+			rot_y = -0.45
 		
 		transform.basis = Basis() # reset rotation
 		rotate_object_local(Vector3(0, -1, 0), rot_x)

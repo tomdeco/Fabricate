@@ -1,15 +1,14 @@
-[gd_scene load_steps=91 format=4 uid="uid://cqa5cc11r62rq"]
+[gd_scene load_steps=89 format=4 uid="uid://cqa5cc11r62rq"]
 
-[ext_resource type="Script" uid="uid://cibpie6yjcnbn" path="res://scripts/node_3d.gd" id="1_cdqbm"]
+[ext_resource type="Script" uid="uid://cibpie6yjcnbn" path="res://scripts/root.gd" id="1_cdqbm"]
 [ext_resource type="Texture2D" uid="uid://cuky7sbskonjo" path="res://textures/tpovreuh.png" id="2_noarx"]
 [ext_resource type="Script" uid="uid://c1q5wt3aq7x77" path="res://addons/func_godot/src/map/func_godot_map.gd" id="3_jka67"]
 [ext_resource type="Resource" uid="uid://deq545ducvscs" path="res://map_config.tres" id="4_i5arm"]
-[ext_resource type="ArrayMesh" uid="uid://tnqydrwh1125" path="res://cloud/cloud.obj" id="4_jka67"]
 [ext_resource type="Texture2D" uid="uid://cyg2snr1w5xw5" path="res://addons/func_godot/textures/default_texture.png" id="5_wc5p8"]
-[ext_resource type="Script" uid="uid://d3elpsq28bbi2" path="res://scripts/player_process.gd" id="6_jsk3o"]
 [ext_resource type="Material" uid="uid://4oln30bvfbfj" path="res://textures/factory_alt.tres" id="6_tereu"]
 [ext_resource type="Material" uid="uid://0ql7smvgy24e" path="res://textures/factory.tres" id="6_wc5p8"]
-[ext_resource type="Script" uid="uid://1c21antyypfy" path="res://scripts/camera_pivot.gd" id="9_tereu"]
+[ext_resource type="PackedScene" uid="uid://cogqj4s1jyp3m" path="res://scenes/player.tscn" id="8_jsk3o"]
+[ext_resource type="PackedScene" uid="uid://cjvdnbm4ftogc" path="res://scenes/donut.tscn" id="9_4arys"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_noarx"]
 panorama = ExtResource("2_noarx")
@@ -26,7 +25,7 @@ sky = SubResource("Sky_a0tk4")
 sky_custom_fov = 96.3
 sky_rotation = Vector3(0, -6.28319, 0)
 ambient_light_sky_contribution = 0.55
-ambient_light_energy = 3.57
+ambient_light_energy = 0.0
 ssr_fade_in = 0.356762
 ssr_depth_tolerance = 72.21
 glow_normalized = true
@@ -42,9 +41,6 @@ volumetric_fog_length = 41.62
 volumetric_fog_detail_spread = 6.0
 volumetric_fog_ambient_inject = 1.4
 adjustment_saturation = 1.48
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_a0tk4"]
-size = Vector3(1, 1.60599, 0.470703)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cdqbm"]
 albedo_texture = ExtResource("5_wc5p8")
@@ -318,36 +314,6 @@ script = ExtResource("1_cdqbm")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_r3fl7")
-
-[node name="Player" type="Node3D" parent="."]
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68, -1.60439)
-script = ExtResource("6_jsk3o")
-
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Player/CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 0.976672, -0.214735, 0, 0.214735, 0.976672, -8.07657e-08, 0, 0.534887)
-remote_path = NodePath("../CameraPivot")
-update_rotation = false
-
-[node name="Collision" type="CollisionShape3D" parent="Player/CharacterBody3D"]
-transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 2.50677e-09, 0.816476, -0.0166016)
-shape = SubResource("BoxShape3D_a0tk4")
-
-[node name="Model" type="MeshInstance3D" parent="Player/CharacterBody3D"]
-transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0, 0)
-mesh = ExtResource("4_jka67")
-skeleton = NodePath("../../..")
-
-[node name="CameraPivot" type="Node3D" parent="Player/CharacterBody3D"]
-transform = Transform3D(-1, -3.24241e-08, -1.47473e-07, 0, 0.976672, -0.214735, 1.50996e-07, -0.214735, -0.976672, -8.07657e-08, 0.68, -1.0695)
-top_level = true
-script = ExtResource("9_tereu")
-
-[node name="MainCam" type="Camera3D" parent="Player/CharacterBody3D/CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 0.953717, 0.300706, 0, -0.300706, 0.953717, 0, 2.425, 2.259)
-current = true
-fov = 94.8
 
 [node name="ProtoZone" type="Node3D" parent="."]
 
@@ -624,3 +590,22 @@ light_specular = 0.329
 light_bake_mode = 1
 spot_range = 11.135
 spot_attenuation = 1.54
+
+[node name="SpotLight3D5" type="SpotLight3D" parent="ProtoZone"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.022624, 16.232)
+light_color = Color(1, 0.788235, 0.427451, 1)
+light_energy = 11.695
+light_specular = 2.725
+light_bake_mode = 1
+spot_range = 29.91
+spot_attenuation = 0.68
+spot_angle = 64.25
+
+[node name="Player" parent="." instance=ExtResource("8_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68, 17.5457)
+
+[node name="Donut" parent="." instance=ExtResource("9_4arys")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0992727, -7.05917, 16.4051)
+
+[node name="Donut2" parent="." instance=ExtResource("9_4arys")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.038, -22.884, 5.29255)
