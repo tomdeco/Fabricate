@@ -1,8 +1,20 @@
 extends Node3D
 var rot_x = 0
 var rot_y = 0
+var MOUSE_OVERRIDE = false
+
+func _process(delta: float) -> void:
+	if !MOUSE_OVERRIDE:
+		if Input.is_action_pressed("move_right"):
+			rotation.y -= (PI/2 * delta)
+			
+		if Input.is_action_pressed("move_left"):
+			rotation.y += (PI/2 * delta)
+
 func _input(event):
+	MOUSE_OVERRIDE = false
 	if event is InputEventMouseMotion:
+		MOUSE_OVERRIDE = true
 		# modify accumulated mouse rotation
 		rot_x += event.relative.x * 0.01
 		rot_y += event.relative.y * 0.01
@@ -19,5 +31,5 @@ func _input(event):
 	
 		if(abs(rot_x) > 2*PI):
 			rot_x = 0
-			
 		
+			

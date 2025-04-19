@@ -1,9 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0jm03xnkmh5w"]
+[gd_scene load_steps=3 format=3 uid="uid://jeowjhgchb0a"]
 
-[ext_resource type="PackedScene" uid="uid://d2nnsihkm1di7" path="res://resources/weapons/melee/sword/Sworrd test model.glb" id="1_oumrg"]
+[ext_resource type="PackedScene" uid="uid://o0v2j8rgvmde" path="res://resources/weapons/melee/sword/sword.glb" id="1_v8k0m"]
 
-[node name="Sword" instance=ExtResource("1_oumrg")]
-transform = Transform3D(0.999635, 0, 0.0270317, 0, 1, 0, -0.0270317, 0, 0.999635, -0.0153025, 0, 0)
+[sub_resource type="BoxShape3D" id="BoxShape3D_v8k0m"]
+size = Vector3(2.03764, 0.385254, 0.179626)
+
+[node name="Sword" instance=ExtResource("1_v8k0m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.58839, 0)
 
 [node name="sword" parent="." index="0"]
-transform = Transform3D(-0.000729855, -0.1369, -0.00172939, 1.1483e-09, 0.00370333, -0.0639766, 0.0269901, -0.00370198, -4.67627e-05, -0.033656, 0.238035, 2.91038e-11)
+transform = Transform3D(2.79342e-09, -0.187, 3.80289e-09, 0, -8.17403e-09, -0.087, 0.037, 1.41181e-08, -2.8711e-16, 0.0665014, 0.204291, 0)
+
+[node name="HITBOX" type="Area3D" parent="." index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HITBOX" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4334, 0.198864, -0.00765991)
+shape = SubResource("BoxShape3D_v8k0m")
+debug_color = Color(0, 0.809186, 0.94537, 1)

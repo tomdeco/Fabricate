@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=4 uid="uid://cogqj4s1jyp3m"]
+[gd_scene load_steps=74 format=4 uid="uid://cogqj4s1jyp3m"]
 
 [ext_resource type="Script" uid="uid://d3elpsq28bbi2" path="res://scripts/player.gd" id="1_urp6f"]
 [ext_resource type="Script" uid="uid://1c21antyypfy" path="res://scripts/camera_pivot.gd" id="2_bwjto"]
@@ -13,7 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://bf66v1su2a0w2" path="res://anim/rig_practice_suit.png" id="11_7lmhl"]
 [ext_resource type="Texture2D" uid="uid://dpor8jyvqhoyq" path="res://anim/rig_practice_shoes.png" id="12_dx0e4"]
 [ext_resource type="Texture2D" uid="uid://bg7884brbnjco" path="res://anim/rig_practice_mouth.png" id="13_jm5j8"]
-[ext_resource type="PackedScene" uid="uid://dgavcfuntkqag" path="res://scenes/hitbox.tscn" id="14_f1ej7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a0tk4"]
 size = Vector3(1, 1.60599, 0.470703)
@@ -1322,6 +1321,3 @@ parameters/Attack/request = 0
 parameters/RunIdle/current_state = "Idle"
 parameters/RunIdle/transition_request = ""
 parameters/RunIdle/current_index = 1
-
-[node name="hitbox" parent="." instance=ExtResource("14_f1ej7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.927864, -0.262965)

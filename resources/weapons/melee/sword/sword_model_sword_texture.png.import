@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhwhm1hlj8adn"
-path.s3tc="res://.godot/imported/Sworrd test model_sword_texture.png-5c0114d8c7c8ecfb1797ec898985b233.s3tc.ctex"
+uid="uid://bvwtwyoyv0q3c"
+path.s3tc="res://.godot/imported/sword_model_sword_texture.png-816863bccbcd84d0d1ac917501672d67.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "090d289dacf7a2f637b760c5f25f7314"
+"md5": "cb9c10d364977f01a5ff2afdcda1b57a"
 }
 
 [deps]
 
-source_file="res://resources/weapons/melee/sword/Sworrd test model_sword_texture.png"
-dest_files=["res://.godot/imported/Sworrd test model_sword_texture.png-5c0114d8c7c8ecfb1797ec898985b233.s3tc.ctex"]
+source_file="res://resources/weapons/melee/sword/sword_model_sword_texture.png"
+dest_files=["res://.godot/imported/sword_model_sword_texture.png-816863bccbcd84d0d1ac917501672d67.s3tc.ctex"]
 
 [params]
 

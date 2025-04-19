@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://dwam6gres5ahe"]
 
-[ext_resource type="PackedScene" uid="uid://c0jm03xnkmh5w" path="res://resources/weapons/melee/sword/sword.tscn" id="1_3a8ck"]
+[ext_resource type="PackedScene" uid="uid://jeowjhgchb0a" path="res://resources/weapons/melee/sword/sword.tscn" id="1_3a8ck"]
 [ext_resource type="Script" uid="uid://copad00j7c8hh" path="res://resources/weapon.gd" id="2_pf1v0"]
 
 [resource]

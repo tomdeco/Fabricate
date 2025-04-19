@@ -22,6 +22,8 @@ var IS_ATTACKING = false
 ## The weapon currently in use
 var EQUIPPED_WEAPON
 
+var EQUIPPED_WEAPON_MESH : BoneAttachment3D
+
 ## Initialize combat values specific to the entity
 func _init(parent, _ATTACK_SPEED: float):
 	PARENT = parent
@@ -40,9 +42,9 @@ func set_attack_speed(SPEED: float):
 
 func setWeapon(weapon: Weapon):
 	EQUIPPED_WEAPON = weapon
-	var mesh = EQUIPPED_WEAPON.mesh.instantiate()
+	EQUIPPED_WEAPON_MESH = EQUIPPED_WEAPON.mesh.instantiate()
 
-func attack(hitbox: Area3D):
+func melee_attack(hitbox: Area3D):
 	if MELEE_TIMER <= 0:
 		var bodies = hitbox.get_overlapping_bodies()
 		for el in bodies:

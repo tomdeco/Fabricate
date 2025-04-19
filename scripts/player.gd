@@ -85,6 +85,8 @@ func move(delta):
 	var target_velocity = Vector3.ZERO
 	var cam_rotation: Vector3 = $CameraPivot.rotation
 	
+	
+	
 	if Input.is_action_pressed("move_forward"):
 		STATIONARY_CONTINUOUS_TURN = false
 		origin_rotation = rotation
@@ -117,7 +119,9 @@ func move(delta):
 
 func attack(delta: float):
 	if Input.is_action_pressed("attack"):
-		combat.attack(get_node("hitbox"))
+		if combat.EQUIPPED_WEAPON.type == "MELEE":
+			var hitbox: Area3D = equipped_weapon_mesh.get_child(1)
+			combat.melee_attack(hitbox)
 		
 	if Input.is_action_pressed("shoulder_view"):
 		removeWeapon()
