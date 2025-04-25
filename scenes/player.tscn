@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=4 uid="uid://cogqj4s1jyp3m"]
+[gd_scene load_steps=77 format=4 uid="uid://cogqj4s1jyp3m"]
 
 [ext_resource type="Script" uid="uid://d3elpsq28bbi2" path="res://scripts/player.gd" id="1_urp6f"]
 [ext_resource type="Script" uid="uid://1c21antyypfy" path="res://scripts/camera_pivot.gd" id="2_bwjto"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://bf66v1su2a0w2" path="res://anim/rig_practice_suit.png" id="11_7lmhl"]
 [ext_resource type="Texture2D" uid="uid://dpor8jyvqhoyq" path="res://anim/rig_practice_shoes.png" id="12_dx0e4"]
 [ext_resource type="Texture2D" uid="uid://bg7884brbnjco" path="res://anim/rig_practice_mouth.png" id="13_jm5j8"]
+[ext_resource type="Animation" uid="uid://dejq8k6ibci4e" path="res://anim/aim_still.res" id="14_f1ej7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a0tk4"]
 size = Vector3(1, 1.60599, 0.470703)
@@ -1024,9 +1025,13 @@ tracks/14/keys = PackedFloat32Array(0, 1, -0.408637, -0.225638, 0.595359, 0.6539
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4r5pv"]
 _data = {
 &"RESET": SubResource("Animation_a8ls1"),
+&"aim_still": ExtResource("14_f1ej7"),
 &"punch": SubResource("Animation_oprun"),
 &"run": SubResource("Animation_fulsm")
 }
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fulsm"]
+animation = &"aim_still"
 
 [sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_f1ej7"]
 
@@ -1049,29 +1054,46 @@ input_1/auto_advance = false
 input_1/break_loop_at_end = false
 input_1/reset = true
 
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_4r5pv"]
+input_0/name = "melee"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "ranged"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
+
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_oprun"]
-graph_offset = Vector2(-613.237, 44.1151)
+graph_offset = Vector2(-574.535, 212.44)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_fulsm")
+nodes/Animation/position = Vector2(-160, 620)
 nodes/Attack/node = SubResource("AnimationNodeOneShot_f1ej7")
 nodes/Attack/position = Vector2(260, 100)
 nodes/Idle/node = SubResource("AnimationNodeAnimation_oprun")
 nodes/Idle/position = Vector2(-20, 260)
 nodes/Punch/node = SubResource("AnimationNodeAnimation_a8ls1")
-nodes/Punch/position = Vector2(120, 340)
+nodes/Punch/position = Vector2(-160, 420)
 nodes/Run/node = SubResource("AnimationNodeAnimation_qfm1y")
 nodes/Run/position = Vector2(-20, 100)
 nodes/RunIdle/node = SubResource("AnimationNodeTransition_fulsm")
 nodes/RunIdle/position = Vector2(120, 100)
+nodes/Type/node = SubResource("AnimationNodeTransition_4r5pv")
+nodes/Type/position = Vector2(120, 340)
 nodes/output/position = Vector2(400, 100)
-node_connections = [&"Attack", 0, &"RunIdle", &"Attack", 1, &"Punch", &"RunIdle", 0, &"Run", &"RunIdle", 1, &"Idle", &"output", 0, &"Attack"]
+node_connections = [&"Attack", 0, &"RunIdle", &"Attack", 1, &"Type", &"RunIdle", 0, &"Run", &"RunIdle", 1, &"Idle", &"Type", 0, &"Punch", &"Type", 1, &"Animation", &"output", 0, &"Attack"]
 
 [node name="Player" type="CharacterBody3D"]
+floor_max_angle = 0.837758
 script = ExtResource("1_urp6f")
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="."]
+transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 0, 0, 0)
 remote_path = NodePath("../CameraPivot")
 update_rotation = false
 
 [node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, -6.3573e-08, 0, 1, 0, 6.3573e-08, 0, 1, 0, 0, 0)
 top_level = true
 script = ExtResource("2_bwjto")
 
@@ -1321,3 +1343,21 @@ parameters/Attack/request = 0
 parameters/RunIdle/current_state = "Idle"
 parameters/RunIdle/transition_request = ""
 parameters/RunIdle/current_index = 1
+parameters/Type/current_state = "ranged"
+parameters/Type/transition_request = ""
+parameters/Type/current_index = 1
+
+[node name="Wall Grab" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03665, -0.0273162)
+
+[node name="Mantle" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47578, -0.0273162)
+debug_shape_custom_color = Color(0, 1, 0, 1)
+
+[node name="Feet" type="RayCast3D" parent="."]
+
+[node name="WallRunLeft" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03845, 0)
+
+[node name="WallRunRight" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03845, 0)

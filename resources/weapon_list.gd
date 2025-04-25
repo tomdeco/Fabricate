@@ -10,7 +10,7 @@ var MELEE_WEAPONS = [
 ]
 
 var RANGED_WEAPONS = [
-	
+	"revolver"
 ]
 
 func _init():

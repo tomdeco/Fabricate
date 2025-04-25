@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cusv2l8kdfw3o"]
+
+[ext_resource type="Texture2D" uid="uid://c2276duk45is3" path="res://textures/outdoors/shingle.png" id="1_esnvy"]
+
+[resource]
+albedo_texture = ExtResource("1_esnvy")
+metallic_specular = 0.0
+texture_filter = 2

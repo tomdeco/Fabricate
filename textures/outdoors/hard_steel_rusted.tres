@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://hnrthy7otkur"]
+
+[ext_resource type="Texture2D" uid="uid://cply3ydn3y0dy" path="res://textures/outdoors/hard_steel_rusted.png" id="1_f0vgn"]
+
+[resource]
+albedo_texture = ExtResource("1_f0vgn")
+metallic_specular = 0.0
+texture_filter = 2

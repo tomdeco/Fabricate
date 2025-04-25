@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://50q3fsb6p52t"]
+
+[ext_resource type="Texture2D" uid="uid://ydss0lj6c672" path="res://textures/IMG_20250418_190959_HDR.jpg" id="1_7nyw1"]
+
+[resource]
+albedo_texture = ExtResource("1_7nyw1")
+metallic_specular = 0.0
+texture_filter = 2

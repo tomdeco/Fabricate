@@ -35,7 +35,6 @@ func _init(parent, _ATTACK_SPEED: float):
 func _process(delta: float) -> void:
 	if MELEE_TIMER > 0:
 		MELEE_TIMER -= delta
-		print(MELEE_TIMER)
 	
 func set_attack_speed(SPEED: float):
 	ATTACK_SPEED = SPEED
@@ -53,7 +52,10 @@ func melee_attack(hitbox: Area3D):
 				npc.receiveDamage(EQUIPPED_WEAPON.damage)
 				
 		MELEE_TIMER = ATTACK_SPEED
-
+		
+func ranged_attack():
+	var vlh
+	
 func isNPC(entity: PhysicsBody3D):
 	if entity != PARENT:
 		if entity is NPC:
