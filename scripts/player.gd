@@ -6,21 +6,32 @@ extends CharacterBody3D
 @onready var cam = $CameraPivot 
 
 ## Ray Cast Object. Detect grabbable walls
-@onready var grab_ray = $"Wall Grab"
+@onready var grab_ray = $"Rays/Wall Grab"
 
-@onready var mantle_ray = $Mantle
+@onready var mantle_ray = $Rays/Mantle
 
-#@onready var feet = $Feet
+@onready var l_wallrun_ray = $Rays/WallRunLeft
 
-@onready var l_wallrun_ray = $WallRunLeft
+@onready var r_wallrun_ray = $Rays/WallRunRight
 
-@onready var r_wallrun_ray = $WallRunRight
+@onready var floor_ray = $Rays/Floor
 
 ## Player constant velocity (in meters per second).
 var PLAYER_SPEED = 10
 
 ## The speed added by dashing
 var DASH_SPEED = 10
+
+## The total horizontal velocity active on the player 
+var TOTAL_SPEED = 0
+
+## The player velocity before external forces such as gravity or momentum
+var INITAL_VELOCITY: Vector3
+
+## The current velocity of the player. All changes made to player speed are made through here, and then applied to its root node 
+var CURRENT_VELOCITY: Vector3
+
+var ACCELERATION: float = 0
 
 ## Original rotation from last time the player is non-stationary.
 var origin_rotation = rotation
@@ -40,14 +51,18 @@ var equipped_weapon_mesh: BoneAttachment3D
 ## Handle all timing and related functions for the dash ability 
 var dash_timer: Timer
 
+## Time to wait after dashing
+var dash_wait_timer: Timer
+
 var wall_timer: Timer
 
-var wall_jump_vars = {
-	"wait_latch": false,
-	"mantle_latch": false,
-	"collide": false,
-	"wall": null
-}
+var isWallGrabbed = false
+var isWallGrabDisabled = false
+var isAutoGrabbingEnabled = false
+var isWallRunning = false
+var isOnRamp = false
+
+var currentNormal = Vector3(0, 1, 0)
 
 var wall_run_vars = {
 	"collide": false,
@@ -57,7 +72,9 @@ var wall_run_vars = {
 func _init():
 	combat = Combat.new(self, 1.5)
 	dash_timer = Timer.new() 
+	dash_wait_timer = Timer.new()
 	wall_timer = Timer.new()
+	
 	
 
 func _ready() -> void:
@@ -71,6 +88,12 @@ func initalizeTimers():
 	dash_timer.stop()
 	add_child(dash_timer)
 	
+	# Dash Wait Timer
+	dash_wait_timer.one_shot = true
+	dash_wait_timer.wait_time = 1 + dash_timer.wait_time
+	dash_wait_timer.stop()
+	add_child(dash_wait_timer)
+	
 	# Wall-jump Timer
 	wall_timer.one_shot = true
 	wall_timer.wait_time = 1.5
@@ -81,11 +104,11 @@ func _physics_process(delta: float) -> void:
 	combat._process(delta)
 	move(delta)
 	
-	grab_ray.target_position = Vector3(0, 0, -0.7)
+	grab_ray.target_position = Vector3(0, 0, -0.5)
 	mantle_ray.target_position = Vector3(0, 0, -0.7)
-	#feet.target_position = Vector3(0, 0, -1)
-	l_wallrun_ray.target_position = Vector3(-0.7, 0, 0)
-	r_wallrun_ray.target_position = Vector3(0.7, 0, 0)
+	l_wallrun_ray.target_position = Vector3(-1.0, 0, 0)
+	r_wallrun_ray.target_position = Vector3(1.0, 0, 0)
+	floor_ray.target_position = Vector3(0, -0.5, 0)
 	
 	attack(delta)
 	animate()
@@ -107,9 +130,18 @@ func animate():
 		animator.set("parameters/Type/transition_request", "ranged")	
 		animator.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)				
 
-func apply_velocity(speed, delta):
-	velocity.z = -cos(rotation.y) * speed
-	velocity.x = -sin(rotation.y) * speed
+func add_initial_velocity(direction: Vector3, speed: float):
+	INITAL_VELOCITY.x = direction.x * speed
+	INITAL_VELOCITY.y = direction.y * speed
+	INITAL_VELOCITY.z = direction.z * speed
+
+func add_velocity(direction: Vector3, speed: float):
+
+	CURRENT_VELOCITY.x += direction.x * speed
+	CURRENT_VELOCITY.y += direction.y * speed
+	CURRENT_VELOCITY.z += direction.z * speed
+	
+	
 
 func move_forward(delta, _cam_rotation):
 	if(Input.is_action_pressed("move_left")):
@@ -119,10 +151,17 @@ func move_forward(delta, _cam_rotation):
 			rotation.y = cam.rotation.y - PI/4
 		else:
 			rotation.y = cam.rotation.y
-	apply_velocity(PLAYER_SPEED, delta)
+	var direction = Vector3(-sin(rotation.y), 0, -cos(rotation.y))
+	add_initial_velocity(direction, PLAYER_SPEED)
 	
 	
 func move_backward(delta, _cam_rotation):
+	
+	if abs(CURRENT_VELOCITY.length()) > 0:
+		CURRENT_VELOCITY.x = 0
+		CURRENT_VELOCITY.z = 0 
+		return
+	
 	if(Input.is_action_pressed("move_left")):
 		rotation.y = _cam_rotation.y - PI - PI/4
 	else:
@@ -130,119 +169,206 @@ func move_backward(delta, _cam_rotation):
 			rotation.y = _cam_rotation.y - PI + PI/4
 		else:
 			rotation.y = _cam_rotation.y - PI
-	
-	apply_velocity(PLAYER_SPEED, delta)
+			
+	var direction = Vector3(-sin(rotation.y), 0, -cos(rotation.y))
+	add_initial_velocity(direction, PLAYER_SPEED)
 	
 
 func move_left(delta, _cam_rotation):
 	rotation.y = _cam_rotation.y + PI/2
-	apply_velocity(PLAYER_SPEED, delta)
+	var direction = Vector3(-sin(rotation.y), 0, -cos(rotation.y))
+	add_initial_velocity(direction, PLAYER_SPEED)
 	
 
 	
 func move_right(delta, _cam_rotation):
 
 	rotation.y = _cam_rotation.y - PI/2
-	apply_velocity(PLAYER_SPEED, delta)
+	var direction = Vector3(-sin(rotation.y), 0, -cos(rotation.y))
+	add_initial_velocity(direction, PLAYER_SPEED)
 	
 	
 func jump(delta, acceleration):
-	if Input.is_action_pressed("jump") && is_on_floor():
-		velocity.y = 25;	
-			
-func stop_airtime_velocity(target_rotation, delta) -> bool:
-	if !is_on_floor():
-		print("player ", rotation.y, ":target ", target_rotation)
-		if rotation.y > target_rotation - PI/6 and rotation.y < target_rotation + PI/6:
-			apply_velocity(0, delta)
-			return true
-	return false
-		
-
+	if Input.is_action_pressed("jump") and is_on_floor():
+		add_velocity(currentNormal, 25)	
+		#CURRENT_VELOCITY += INITAL_VELOCITY
+				
 func dash(delta):
-	if dash_timer.is_stopped():
-		velocity.z = -cos(rotation.y) * (PLAYER_SPEED + DASH_SPEED) 
-		velocity.x = -sin(rotation.y) * (PLAYER_SPEED + DASH_SPEED) 
+	var direction = Vector3(-sin(rotation.y), 0, -cos(rotation.y))
+	if dash_wait_timer.is_stopped():
+		#velocity.z = -cos(rotation.y) * (PLAYER_SPEED + DASH_SPEED) 
+		#velocity.x = -sin(rotation.y) * (PLAYER_SPEED + DASH_SPEED)
+		add_velocity(direction, DASH_SPEED)
 		dash_timer.start()
-	if !dash_timer.is_stopped():
-		velocity.z = -cos(rotation.y) * (PLAYER_SPEED + DASH_SPEED) 
-		velocity.x = -sin(rotation.y) * (PLAYER_SPEED + DASH_SPEED) 
+		dash_wait_timer.start()
+		TOTAL_SPEED = 20
+	#if !dash_timer.is_stopped():
+		#velocity.z = -cos(rotation.y) * (PLAYER_SPEED + DASH_SPEED) 
+		#velocity.x = -sin(rotation.y) * (PLAYER_SPEED + DASH_SPEED)
+		#add_velocity(direction, DASH_SPEED) 
+		
+	
 	
 func wallrun(delta):
-	var wallrun = l_wallrun_ray.is_colliding() or r_wallrun_ray.is_colliding()
-	wall_run_vars["collide"] = wallrun
-	if wallrun and !is_on_floor():
+	return false
+	var leftCollision = l_wallrun_ray.is_colliding()
+	var rightCollision = r_wallrun_ray.is_colliding() 
+	var isColliding = leftCollision or rightCollision
+	var isMoving = false
+	
+	if CURRENT_VELOCITY.x + CURRENT_VELOCITY.z != 0:
+		isMoving = true
+		
+	if is_on_floor() or !isMoving:
+		isWallRunning = false
+		return false	
+	 
+	if isMoving and isColliding and !is_on_floor() and CURRENT_VELOCITY.length() > 15:
+		isWallRunning = true
+	
+	if isWallRunning:
+		if 	leftCollision:
+			var normal: Vector3 = l_wallrun_ray.get_collision_normal()
+			rotation.y = atan2(normal.x, normal.z) - PI/2
+		else:
+			var normal: Vector3 = r_wallrun_ray.get_collision_normal()
+			rotation.y = atan2(normal.x, normal.z) + PI/2
+	
 		if Input.is_action_pressed("move_backward"):
-			wall_run_vars["collide"] = false
-			return
+			isWallRunning = false
+			return false
 			
 		if Input.is_action_pressed("jump"):
-			if l_wallrun_ray.is_colliding():
-				rotation.y += PI/2
+			isWallRunning = false
+			if leftCollision:
+				rotation.y -= PI/2
+				velocity.y = 10
+				add_initial_velocity(rotation, PLAYER_SPEED)
 				
-			if r_wallrun_ray.is_colliding():
-				rotation.y -= PI/2	
+				
+			if rightCollision:
+				rotation.y += PI/2	
+				velocity.y = 25
+				add_initial_velocity(rotation, PLAYER_SPEED)
+				
+			return false
+				
 		velocity.y = -2 
-		
-		
+		return true
+	
+	return false
 			
 		
 		
 	
 func wall_grapple(delta, acceleration):
-	
 	var state = grab_ray.is_colliding()
-	if !is_on_floor():
-		if state and wall_jump_vars["wall"] != grab_ray.get_collider_rid():
-			var normal: Vector3 = grab_ray.get_collision_normal()
+	if !is_on_floor() and !isWallGrabDisabled:
+		if (isWallGrabbed and Input.is_action_just_pressed("jump")):
+			isWallGrabbed = false
+			isAutoGrabbingEnabled = true
+			rotation.y -= PI
+			var direction = Vector3(-sin(rotation.y), 0, -cos(rotation.y))
+			add_velocity(direction, PLAYER_SPEED)
+			add_velocity(Vector3(0, 1, 0), 25)
+			return
 		
+		if (state and Input.is_action_just_pressed("jump") and !isWallGrabbed) or (state and isAutoGrabbingEnabled and !isWallGrabbed):
+			isWallGrabbed = true
+					
+		if (isWallGrabbed and state) or (isAutoGrabbingEnabled and state):
+			var normal: Vector3 = grab_ray.get_collision_normal()		
 			rotation.y = atan2(normal.x, normal.z)
+			CURRENT_VELOCITY = Vector3.ZERO
+			
+		if Input.is_action_pressed("move_backward"):
+			isAutoGrabbingEnabled = false
+			isWallGrabbed = false
+			isWallGrabDisabled = true
+	
+	if is_on_floor():
+		isWallGrabDisabled = false
+		isAutoGrabbingEnabled = false
+	
+	var mantle_state = !mantle_ray.is_colliding()
+	if state and mantle_state:
+			isWallGrabbed = true
 			velocity.y = 0
 			velocity.x = 0
 			velocity.z = 0	
-			if wall_jump_vars["collide"] == false:
-				wall_timer.start()
-				wall_jump_vars["collide"] = true
-			
-		if !state or wall_timer.is_stopped():
-			wall_jump_vars["collide"] = false
-			wall_jump_vars["wall"] = grab_ray.get_collider_rid()
-			
-		if state and Input.is_action_pressed("jump"):
-			wall_jump_vars["wall"] = grab_ray.get_collider_rid()
-			rotation.y -= PI
-			velocity.y = 25
-			apply_velocity(PLAYER_SPEED, delta)
-		
-		var mantle_state = !mantle_ray.is_colliding()
-		if state and mantle_state:
-			wall_timer.start()
 			if Input.is_action_pressed("move_forward"):
 				var displacement = Vector3(-sin(rotation.y), mantle_ray.position.y , -cos(rotation.y))
 				position += displacement
-			
-		if state and Input.is_action_pressed("move_backward"):
-			wall_timer.stop()
-
-			
-	if is_on_floor():
-		wall_jump_vars["wall"] = null
+				isWallGrabbed = false
+		
 	
 		
+#func updateSlope():
+	
+	#if floor_ray.is_colliding():
+		#var normal = floor_ray.get_collision_normal()	
+		#if currentNormal != normal:
+			#var n1 = Vector2(currentNormal.x, currentNormal.z)
+			#var n2 = Vector2(normal.x, normal.z)
+			#var total = n1 + n2
+			#if true:
+				#currentNormal = normal
+		#var direction = Vector2(-sin(rotation.y), -cos(rotation.y))
+		#var b_rotation := Quaternion(transform.basis.y, normal)
+		#transform.basis = Basis(b_rotation * basis.get_rotation_quaternion())
+		#rotation.x = rotation.x * direction.x
+		#rotation.z = rotation.z * -direction.y
+#
+	#if velocity.y < 0:
+		#rotation.x = 0
+		#rotation.z = 0
+
+
+		
+func transferVelocity():
+	if floor_ray.is_colliding():
+		var normal: Vector3 = floor_ray.get_collision_normal()	
+		print(normal)
+		if currentNormal != normal:
+			
+			
+			if currentNormal.y != normal.y:
+					
+			
+				
+				#var norm_rotation1 = Quaternion(Vector3(1, 0, 1), PI/2)
+				#var new_norm = normal * norm_rotation1 
+				var magnitude = CURRENT_VELOCITY.length() 
+				add_velocity(Vector3(normal.y, 0, 0), magnitude)
+			
+				print(CURRENT_VELOCITY)
+				currentNormal = normal	
+				return true
+			else:
+				currentNormal = Vector3(0, 1, 0)
+		
+		if currentNormal != Vector3(0, 1, 0):
+			return true
+		
+		return true
+
+	
 ## Handles basic player movement (even better tho)
-func move(delta):
-	if is_on_floor():
-		velocity.x = 0
-		velocity.z = 0
+func move(delta):		
+	var horizontal_acceleration = -9.8 * 5
 	var fall_acceleration = -9.8 * 10
 	var target_velocity = Vector3.ZERO
 	var cam_rotation: Vector3 = $CameraPivot.rotation
+
+	#updateSlope()
 	
-	
-	if is_on_floor():
+	if is_on_floor():	
+		if !transferVelocity():
+			CURRENT_VELOCITY = Vector3.ZERO
+
 		if Input.is_action_pressed("move_forward"):
 			STATIONARY_CONTINUOUS_TURN = false
-			origin_rotation = rotation
+			#origin_rotation = rotation
 			move_forward(delta, cam_rotation)
 		else:
 			if Input.is_action_pressed("move_backward"):
@@ -253,31 +379,42 @@ func move(delta):
 				else:
 					if Input.is_action_pressed("move_right"):
 						move_right(delta, cam_rotation)
-					else:
-						#velocity.x = 0
-						#velocity.z = 0
-						
+					else:	
+						INITAL_VELOCITY = Vector3.ZERO
 						var rotation_diff = cam_rotation - origin_rotation		
 						if(cos(rotation_diff.y) < 0 || STATIONARY_CONTINUOUS_TURN):
 							STATIONARY_CONTINUOUS_TURN = true
 							rotation.y = cam_rotation.y
 	else:
-		print(rotation.y, " ",cam.rotation.y)
-		if Input.is_action_pressed("move_forward"):
+		CURRENT_VELOCITY += INITAL_VELOCITY
+		INITAL_VELOCITY = Vector3.ZERO
+		var direction = Vector3(-sin(rotation.y), 0, -cos(rotation.y))
+		if Input.is_action_just_pressed("move_forward"):
 			if abs(rotation.y - cam.rotation.y) > PI/2:
-				apply_velocity(5, delta)
+				CURRENT_VELOCITY.x = CURRENT_VELOCITY.x / 2
+				CURRENT_VELOCITY.z = CURRENT_VELOCITY.z / 2
+				#add_velocity(direction, 5)
+			else: 
+				if CURRENT_VELOCITY.x + CURRENT_VELOCITY.z == 0:
+					add_velocity(direction, 5)
 		else:
-			if Input.is_action_pressed("move_backward"):
-				if abs(rotation.y - cam.rotation.y) < PI/2:
-					apply_velocity(5, delta)
+			if Input.is_action_just_pressed("move_backward"):
+				if abs(rotation.y - cam.rotation.y) < PI/2 and CURRENT_VELOCITY.x + CURRENT_VELOCITY.z > 0:
+					CURRENT_VELOCITY.x = CURRENT_VELOCITY.x / 2
+					CURRENT_VELOCITY.z = CURRENT_VELOCITY.z / 2
+					#add_velocity(direction, 5)
 			else:
-				if Input.is_action_pressed("move_left"):
+				if Input.is_action_just_pressed("move_left"):
 					if rotation.y < cam.rotation.y:
-						apply_velocity(5, delta)
+						CURRENT_VELOCITY.x = CURRENT_VELOCITY.x / 2
+						CURRENT_VELOCITY.z = CURRENT_VELOCITY.z / 2
+						#add_velocity(direction, -5)
 				else:
-					if Input.is_action_pressed("move_right"):
+					if Input.is_action_just_pressed("move_right"):
 						if rotation.y > cam.rotation.y:
-							apply_velocity(5, delta)
+							CURRENT_VELOCITY.x = CURRENT_VELOCITY.x / 2
+							CURRENT_VELOCITY.z = CURRENT_VELOCITY.z / 2
+							#add_velocity(direction, -5)
 			
 		
 	if Input.is_action_pressed("dash") or !dash_timer.is_stopped():
@@ -285,15 +422,32 @@ func move(delta):
 		
 	jump(delta, fall_acceleration)
 	wall_grapple(delta, fall_acceleration)		
-	wallrun(delta)
-	if !wall_jump_vars["collide"] and !wall_run_vars["collide"]:
-		velocity.y += (fall_acceleration * delta)
+	
 
+
+
+	if CURRENT_VELOCITY.x + CURRENT_VELOCITY.z != 0:
+		ACCELERATION += delta
+		var direction = Vector3(-sin(rotation.y), 0, -cos(rotation.y))
+		CURRENT_VELOCITY.x -= (0.1 * ACCELERATION * direction.x)
+		CURRENT_VELOCITY.z -= (0.1 * ACCELERATION * direction.z)
+	else:
+		ACCELERATION = 0
 	
-		
+	
+	
+	
+	
+	if !wallrun(delta):
+		if !isWallGrabbed:
+			if !is_on_floor():
+				add_velocity(Vector3(0, 1, 0), fall_acceleration * delta)
+	
+
+	velocity = INITAL_VELOCITY + CURRENT_VELOCITY	
+	#print(CURRENT_VELOCITY)
+	#print(velocity)
 	move_and_slide()
-	
-	
 
 func attack(delta: float):
 	if Input.is_action_pressed("attack"):
@@ -322,66 +476,3 @@ func setWeapon(name: String, type: String):
 func removeWeapon():
 	$model/Armature/Skeleton3D.remove_child(equipped_weapon_mesh)
 	combat.EQUIPPED_WEAPON = Weapon.new()
-
-## Handles basic player movement. 
-func old_move(delta):
-	
-	var fall_acceleration = -9.8 * 10
-	var target_velocity = Vector3.ZERO
-	var cam_rotation: Vector3 = $CameraPivot.rotation
-
-	
-	
-	
-	if Input.is_action_pressed("move_forward"):
-		STATIONARY_CONTINUOUS_TURN = false
-		origin_rotation = rotation
-		
-		if Input.is_action_pressed("move_left"):
-			rotation.y = cam_rotation.y + PI/4
-	
-		else:
-			if Input.is_action_pressed("move_right"):
-				rotation.y = cam_rotation.y - PI/4
-			else:
-				rotation.y = cam_rotation.y
-
-			
-		velocity.z = -cos(rotation.y) * PLAYER_SPEED
-		velocity.x = -sin(rotation.y) * PLAYER_SPEED
-	else: 
-	
-		if Input.is_action_pressed("move_left"):
-			rotation.y = cam_rotation.y + PI/2
-			velocity.z = -cos(rotation.y) * PLAYER_SPEED
-			velocity.x = -sin(rotation.y) * PLAYER_SPEED
-		else:
-			if Input.is_action_pressed("move_right"):
-				rotation.y = cam_rotation.y - PI/2
-				velocity.z = -cos(rotation.y) * PLAYER_SPEED
-				velocity.x = -sin(rotation.y) * PLAYER_SPEED
-			else: 
-				if Input.is_action_pressed("move_backward"):
-					velocity.z = cos(rotation.y) * 7
-					velocity.x = sin(rotation.y) * 7
-				else:
-					velocity.x = 0
-					velocity.z = 0
-			
-					var rotation_diff = cam_rotation - origin_rotation		
-					if(cos(rotation_diff.y) < 0 || STATIONARY_CONTINUOUS_TURN):
-						STATIONARY_CONTINUOUS_TURN = true
-						rotation.y = cam_rotation.y
-		
-	
-		
-	if Input.is_action_pressed("jump") && is_on_floor():
-		velocity.y += 25;
-		
-	if(!is_on_floor()):
-		velocity.y += (fall_acceleration * delta)
-			
-	move_and_slide()
-	
-	
-	

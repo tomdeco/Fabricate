@@ -10,3 +10,6 @@ func _init() -> void:
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("pause"):
+		get_tree().quit()
