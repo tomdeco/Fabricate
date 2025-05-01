@@ -13,3 +13,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("pause"):
 		get_tree().quit()
+		
+	if Input.is_action_pressed("debug_reset"):
+		get_tree().reload_current_scene()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=321 format=4 uid="uid://cqa5cc11r62rq"]
+[gd_scene load_steps=314 format=4 uid="uid://cqa5cc11r62rq"]
 
 [ext_resource type="Script" uid="uid://cibpie6yjcnbn" path="res://scripts/root.gd" id="1_cdqbm"]
 [ext_resource type="Script" uid="uid://c1q5wt3aq7x77" path="res://addons/func_godot/src/map/func_godot_map.gd" id="3_jka67"]
@@ -13,8 +13,6 @@
 [ext_resource type="Material" uid="uid://cusv2l8kdfw3o" path="res://textures/outdoors/shingle.tres" id="9_xsp7o"]
 [ext_resource type="PackedScene" uid="uid://chlbnc4y7u207" path="res://resources/etc/tree.tscn" id="10_7pvxh"]
 [ext_resource type="Material" uid="uid://d2ldxki1a14y2" path="res://textures/outdoors/blue_ice.tres" id="10_l5cgh"]
-[ext_resource type="Script" uid="uid://cemsf8qg1bog3" path="res://scenes/hud.gd" id="14_dylgi"]
-[ext_resource type="FontFile" uid="uid://cxu2prbxwl8et" path="res://resources/fonts/Ac437_SperryPC_8x16.ttf" id="14_vgks2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xsp7o"]
 sky_top_color = Color(0.190234, 0.233818, 0.294432, 1)
@@ -1034,28 +1032,6 @@ points = PackedVector3Array(-12.5, -24, 40, -12.5, -25, 40, 13, -25, 40, 13, -24
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7lncp"]
 points = PackedVector3Array(-12.5, -23.5, 40, -12.5, -24, 40, -12, -24, 40, -12, -23.5, 40, -12.5, -23.5, 61, -12.5, -24, 61, -12, -24, 61, -12, -23.5, 61)
 
-[sub_resource type="Theme" id="Theme_dylgi"]
-default_font = ExtResource("14_vgks2")
-default_font_size = 44
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_dylgi"]
-noise_type = 0
-frequency = 0.2414
-fractal_octaves = 7
-fractal_gain = 0.345
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jrhyn"]
-noise = SubResource("FastNoiseLite_dylgi")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_log26"]
-texture = SubResource("NoiseTexture2D_jrhyn")
-
-[sub_resource type="LabelSettings" id="LabelSettings_vgks2"]
-font_size = 61
-font_color = Color(1, 0.223529, 0.231373, 1)
-shadow_size = 4
-shadow_color = Color(0, 0, 0, 1)
-
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_cdqbm")
 
@@ -2033,50 +2009,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0797539, -7.20803, 15.9422
 
 [node name="Player" parent="." instance=ExtResource("8_jsk3o")]
 transform = Transform3D(1.94707e-07, 0, -1, 0, 1, 0, 1, 0, 1.94707e-07, -19.3578, 3.00929, 84.647)
-
-[node name="HUD" type="CanvasLayer" parent="."]
-script = ExtResource("14_dylgi")
-
-[node name="Control" type="Control" parent="HUD"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 389.0
-offset_bottom = 121.0
-theme = SubResource("Theme_dylgi")
-
-[node name="Panel" type="Panel" parent="HUD/Control"]
-layout_mode = 0
-offset_right = 472.0
-offset_bottom = 152.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_log26")
-
-[node name="hp_label" type="Label" parent="HUD/Control/Panel"]
-layout_mode = 0
-offset_left = 11.0
-offset_top = 8.0
-offset_right = 87.0
-offset_bottom = 70.0
-text = "HP:"
-label_settings = SubResource("LabelSettings_vgks2")
-
-[node name="hp_label2" type="Label" parent="HUD/Control/Panel"]
-offset_left = 100.0
-offset_top = 8.0
-offset_right = 176.0
-offset_bottom = 70.0
-label_settings = SubResource("LabelSettings_vgks2")
-
-[node name="speed_label" type="Label" parent="HUD/Control/Panel"]
-offset_left = 12.0
-offset_top = 77.0
-offset_right = 88.0
-offset_bottom = 139.0
-text = "SPEED:"
-label_settings = SubResource("LabelSettings_vgks2")
-
-[node name="speed" type="Label" parent="HUD/Control/Panel"]
-offset_left = 170.0
-offset_top = 78.0
-offset_right = 322.0
-offset_bottom = 140.0
-label_settings = SubResource("LabelSettings_vgks2")

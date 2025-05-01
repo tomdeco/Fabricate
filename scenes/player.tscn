@@ -1084,6 +1084,7 @@ nodes/output/position = Vector2(400, 100)
 node_connections = [&"Attack", 0, &"RunIdle", &"Attack", 1, &"Type", &"RunIdle", 0, &"Run", &"RunIdle", 1, &"Idle", &"Type", 0, &"Punch", &"Type", 1, &"Animation", &"output", 0, &"Attack"]
 
 [node name="Player" type="CharacterBody3D"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 floor_stop_on_slope = false
 floor_max_angle = 0.802851
 floor_snap_length = 0.65
@@ -1095,7 +1096,7 @@ remote_path = NodePath("../CameraPivot")
 update_rotation = false
 
 [node name="CameraPivot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, -6.3573e-08, 0, 1, 0, 6.3573e-08, 0, 1, 0, 0, 0)
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0, 0)
 top_level = true
 script = ExtResource("2_bwjto")
 
@@ -1353,15 +1354,23 @@ parameters/Type/current_index = 1
 
 [node name="Wall Grab" type="RayCast3D" parent="Rays"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03665, -0.0273162)
+visible = false
 
 [node name="Mantle" type="RayCast3D" parent="Rays"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61393, -0.0273162)
+visible = false
 debug_shape_custom_color = Color(0, 1, 0, 1)
 
 [node name="WallRunLeft" type="RayCast3D" parent="Rays"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03845, 0)
+visible = false
 
 [node name="WallRunRight" type="RayCast3D" parent="Rays"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03845, 0)
+visible = false
 
 [node name="Floor" type="RayCast3D" parent="Rays"]
+
+[node name="RemoteTransform3D2" type="RemoteTransform3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.851607, -0.50572)
+update_rotation = false
