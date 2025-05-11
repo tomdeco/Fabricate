@@ -13,15 +13,24 @@ var MAX_HP = 100
 var hp = 100
 
 ## Container of items the entity currently posesses
-var inventory: Array
+var inventory: Inventory
 
 ## The entities currently equipped item
-var equipped_item: Item
+var equipped_item: Item = null
 
-func _init(_HP) -> void:
-	inventory = []
-	
+## Create a new entity. Specify max HP and inventory size.
+func _init(_HP, _inventory_size) -> void:
+	inventory = Inventory.new(_inventory_size)
 	MAX_HP = _HP 
 	
+## Equip an item to the entity
 func equip(_item: Item):
 	equipped_item = _item
+	
+func get_item(_idx: int):
+	return inventory.get_item(_idx)
+	
+## Add an item to the entity's inventory. 
+func addToInventory(_item: Item):
+	inventory.add(_item)
+	

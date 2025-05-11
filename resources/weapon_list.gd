@@ -6,7 +6,8 @@ class_name WeaponList
 var weapon_list = []
 
 var MELEE_WEAPONS = [
-	"sword"
+	"sword",
+	"unarmed"
 ]
 
 var RANGED_WEAPONS = [
@@ -26,8 +27,7 @@ func _init():
 		weapon_list.push_back(load(formatted_path))
 
 	
-func getWeapon(name: String, type: String):
+func getWeapon(name: String):
 	for wep: Weapon in weapon_list:
 		if name == wep.name:
-			if type == wep.type:
 				return wep.duplicate()

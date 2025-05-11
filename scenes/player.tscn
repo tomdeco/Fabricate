@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=4 uid="uid://cogqj4s1jyp3m"]
+[gd_scene load_steps=86 format=4 uid="uid://cogqj4s1jyp3m"]
 
 [ext_resource type="Script" uid="uid://d3elpsq28bbi2" path="res://scripts/player.gd" id="1_urp6f"]
 [ext_resource type="Script" uid="uid://1c21antyypfy" path="res://scripts/camera_pivot.gd" id="2_bwjto"]
@@ -14,6 +14,12 @@
 [ext_resource type="Texture2D" uid="uid://dpor8jyvqhoyq" path="res://anim/rig_practice_shoes.png" id="12_dx0e4"]
 [ext_resource type="Texture2D" uid="uid://bg7884brbnjco" path="res://anim/rig_practice_mouth.png" id="13_jm5j8"]
 [ext_resource type="Animation" uid="uid://dejq8k6ibci4e" path="res://anim/aim_still.res" id="14_f1ej7"]
+[ext_resource type="Script" uid="uid://cemsf8qg1bog3" path="res://scenes/hud.gd" id="15_qfm1y"]
+[ext_resource type="FontFile" uid="uid://cxu2prbxwl8et" path="res://resources/fonts/Ac437_SperryPC_8x16.ttf" id="16_fulsm"]
+[ext_resource type="Script" uid="uid://bnjcgf8f4wnxv" path="res://scenes/inventory_ui.gd" id="17_4r5pv"]
+[ext_resource type="Texture2D" uid="uid://di21dsfr08hti" path="res://resources/ui/param_frame_new.png" id="17_qfm1y"]
+[ext_resource type="Texture2D" uid="uid://buylehv3l5o2r" path="res://resources/ui/melee.png" id="18_60mlk"]
+[ext_resource type="Script" uid="uid://be6nwybek7cuh" path="res://scenes/item_container.gd" id="19_a38lo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a0tk4"]
 size = Vector3(1, 1.60599, 0.470703)
@@ -1083,6 +1089,25 @@ nodes/Type/position = Vector2(120, 340)
 nodes/output/position = Vector2(400, 100)
 node_connections = [&"Attack", 0, &"RunIdle", &"Attack", 1, &"Type", &"RunIdle", 0, &"Run", &"RunIdle", 1, &"Idle", &"Type", 0, &"Punch", &"Type", 1, &"Animation", &"output", 0, &"Attack"]
 
+[sub_resource type="Theme" id="Theme_60mlk"]
+default_font = ExtResource("16_fulsm")
+default_font_size = 44
+
+[sub_resource type="LabelSettings" id="LabelSettings_ujl30"]
+font_size = 61
+font_color = Color(1, 0.223529, 0.231373, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_60mlk"]
+bg_color = Color(1.44392e-06, 0.745634, 0.54847, 1)
+skew = Vector2(1.95, -0.625)
+corner_radius_top_left = 240
+corner_radius_top_right = 240
+corner_radius_bottom_right = 240
+corner_radius_bottom_left = 240
+corner_detail = 20
+
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 floor_stop_on_slope = false
@@ -1101,7 +1126,7 @@ top_level = true
 script = ExtResource("2_bwjto")
 
 [node name="MainCam" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 0.967179, 0.254096, 0, -0.254096, 0.967179, 0.0050392, 2.55106, 5.00795)
+transform = Transform3D(1, 7.10543e-15, -2.84217e-14, 0, 0.967179, 0.254096, 2.84217e-14, -0.254096, 0.967179, 1.44214, 2.55106, 5.00795)
 current = true
 fov = 80.5
 
@@ -1370,7 +1395,188 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03845, 0)
 visible = false
 
 [node name="Floor" type="RayCast3D" parent="Rays"]
+visible = false
 
 [node name="RemoteTransform3D2" type="RemoteTransform3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.851607, -0.50572)
 update_rotation = false
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("15_qfm1y")
+
+[node name="HUD" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme = SubResource("Theme_60mlk")
+
+[node name="Params" type="Control" parent="HUD/HUD"]
+z_index = 6
+layout_mode = 2
+anchors_preset = 0
+anchor_top = -0.025037
+anchor_right = 0.5
+anchor_bottom = 0.555963
+offset_left = 64.0
+offset_top = 56.224
+offset_right = 614.005
+offset_bottom = 251.736
+scale = Vector2(0.33895, 0.33895)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="HP" type="Control" parent="HUD/HUD/Params"]
+layout_mode = 2
+anchors_preset = 0
+offset_left = 384.0
+offset_top = 96.0
+offset_right = 972.0
+offset_bottom = 193.0
+
+[node name="hp_label" type="Label" parent="HUD/HUD/Params/HP"]
+layout_mode = 2
+offset_top = 17.0
+offset_right = 588.0
+offset_bottom = 79.0
+text = "HP:"
+label_settings = SubResource("LabelSettings_ujl30")
+
+[node name="hp_label2" type="Label" parent="HUD/HUD/Params/HP"]
+layout_mode = 2
+anchor_left = 0.151
+anchor_top = 0.485
+anchor_right = 0.151
+anchor_bottom = 0.485
+offset_left = 0.211998
+offset_top = -31.045
+offset_right = 569.212
+offset_bottom = 30.955
+label_settings = SubResource("LabelSettings_ujl30")
+
+[node name="Speed" type="Control" parent="HUD/HUD/Params"]
+layout_mode = 2
+anchors_preset = 0
+offset_left = 194.0
+offset_top = 347.0
+offset_right = 782.0
+offset_bottom = 436.0
+
+[node name="speed_label" type="Label" parent="HUD/HUD/Params/Speed"]
+layout_mode = 2
+offset_top = 13.0
+offset_right = 588.0
+offset_bottom = 75.0
+text = "SPEED:"
+label_settings = SubResource("LabelSettings_ujl30")
+
+[node name="speed" type="Label" parent="HUD/HUD/Params/Speed"]
+layout_mode = 2
+anchor_left = 0.273
+anchor_top = 0.5
+anchor_right = 0.273
+anchor_bottom = 0.5
+offset_left = 0.262787
+offset_top = -31.5738
+offset_right = 588.263
+offset_bottom = 30.4262
+label_settings = SubResource("LabelSettings_ujl30")
+
+[node name="Tex" type="Control" parent="HUD/HUD/Params"]
+modulate = Color(0.220142, 0.486166, 0.963586, 1)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 11.0
+offset_top = -73.0
+offset_right = 3085.33
+offset_bottom = 1424.0
+scale = Vector2(0.35839, 0.35839)
+
+[node name="TextureRect" type="TextureRect" parent="HUD/HUD/Params/Tex"]
+layout_mode = 2
+anchor_left = -0.181
+anchor_top = -0.216
+anchor_right = -0.181
+anchor_bottom = -0.216
+offset_left = 556.454
+offset_top = 323.352
+offset_right = 3630.78
+offset_bottom = 1820.35
+texture = ExtResource("17_qfm1y")
+expand_mode = 1
+
+[node name="EquipIcon" type="PanelContainer" parent="HUD/HUD/Params"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+offset_left = 71.0
+offset_top = 47.0
+offset_right = 259.0
+offset_bottom = 236.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="HUD/HUD/Params/EquipIcon"]
+z_index = -1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_60mlk")
+
+[node name="TextureRect" type="TextureRect" parent="HUD/HUD/Params/EquipIcon"]
+modulate = Color(0, 0, 0, 1)
+z_index = 1
+layout_mode = 2
+texture = ExtResource("18_60mlk")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Inventory" type="PanelContainer" parent="HUD/HUD"]
+modulate = Color(0.41552, 0.501852, 1, 1)
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.494
+anchor_right = 0.5
+anchor_bottom = 0.494
+offset_left = 128.0
+offset_top = -128.112
+offset_right = 256.0
+offset_bottom = 191.888
+script = ExtResource("17_4r5pv")
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemContainer" type="Container" parent="HUD/HUD/Inventory"]
+layout_direction = 2
+layout_mode = 2
+script = ExtResource("19_a38lo")
+metadata/_edit_use_anchors_ = true
+
+[node name="Controls2" type="Label" parent="HUD/HUD"]
+layout_mode = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = -216.0
+offset_right = 340.0
+offset_bottom = 69.0
+scale = Vector2(0.491371, 0.491371)
+text = "Controls
+Exit - ESC
+Reload - R
+Move - WASD
+Jump - Space
+Dash - Shift"
+metadata/_edit_use_anchors_ = true
+
+[node name="Crosshair" type="CenterContainer" parent="HUD/HUD"]
+visible = false
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 1932.5
+offset_top = 1001.5
+offset_right = 1972.5
+offset_bottom = 1041.5
+grow_horizontal = 2
+grow_vertical = 2

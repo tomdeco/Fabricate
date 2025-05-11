@@ -41,6 +41,8 @@ func set_attack_speed(SPEED: float):
 
 func setWeapon(weapon: Weapon):
 	EQUIPPED_WEAPON = weapon
+	
+
 	EQUIPPED_WEAPON_MESH = EQUIPPED_WEAPON.mesh.instantiate()
 
 func melee_attack(hitbox: Area3D):

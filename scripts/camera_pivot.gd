@@ -4,6 +4,9 @@ var rot_y = 0
 var MOUSE_OVERRIDE = false
 
 func _process(delta: float) -> void:
+	
+
+	
 	if !MOUSE_OVERRIDE && (Input.is_action_pressed("move_forward") || Input.is_action_pressed("move_backward")):
 		if Input.is_action_pressed("move_right"):
 			rotation.y -= (PI/2 * delta)
@@ -15,6 +18,8 @@ func _process(delta: float) -> void:
 
 func _input(event):
 	MOUSE_OVERRIDE = false
+	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+		return
 	if event is InputEventMouseMotion:
 		MOUSE_OVERRIDE = true
 		# modify accumulated mouse rotation

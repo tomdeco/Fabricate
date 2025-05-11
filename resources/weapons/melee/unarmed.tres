@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://crnx5fwhlfy"]
+
+[ext_resource type="Script" uid="uid://copad00j7c8hh" path="res://resources/weapon.gd" id="1_8x73w"]
+[ext_resource type="Texture2D" uid="uid://1m0mhaglewot" path="res://resources/weapons/melee/unarmed/icon2.png" id="1_cofsf"]
+[ext_resource type="PackedScene" uid="uid://bhl4iuv54pfb" path="res://resources/weapons/melee/unarmed/unarmed.tscn" id="1_rb0rk"]
+
+[resource]
+script = ExtResource("1_8x73w")
+damage = 5.0
+type = "MELEE"
+name = "Unarmed"
+icon = ExtResource("1_cofsf")
+mesh = ExtResource("1_rb0rk")
+size = 1
+metadata/_custom_type_script = "uid://copad00j7c8hh"
