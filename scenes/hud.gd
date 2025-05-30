@@ -1,21 +1,25 @@
 extends CanvasLayer
 
-@onready var params: EntityParams = $"..".params
+@onready var player = $".."
 
 #func _ready() -> void:
 	#var window_size = get_viewport().size
 	#$HUD.size = window_size
-
-func _process(delta: float) -> void:
-	update_hp($"..".params.hp)
+	
+func update_hud():
+	update_hp(player.get_hp())
 	update_speed($"..".velocity.length())
-	set_equip_icon(params.equipped_item.icon)
+	update_clonite_count(player.parameters[Enums.EntityParameterID.CLONITES])
+	set_equip_icon($"..".equipped_item.icon)
 
 func update_hp(hp):
 	$HUD/Params/HP/hp_label2.text = str(hp)
 
 func update_speed(speed):
 	$HUD/Params/Speed/speed.text = str(speed)
+	
+func update_clonite_count(count):
+	$Inventory/LabelPanel/CloniteCount.text = str(count)
 
 func set_equip_icon(tex):
 	$HUD/Params/EquipIcon/TextureRect.texture = tex

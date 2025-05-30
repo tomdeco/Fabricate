@@ -52,7 +52,7 @@ func _init(_player) -> void:
 	dash_timer = Timer.new() 
 	dash_wait_timer = Timer.new()
 	wall_timer = Timer.new()
-	PLAYER_SPEED = player.params.MOVEMENT_SPEED
+	PLAYER_SPEED = player.parameters[Enums.EntityParameterID.MOVEMENT_SPEED]
 
 func _ready() -> void:
 	setRays()
@@ -275,7 +275,6 @@ func applyMomentum(delta, player: Player):
 		if normal.y != 1:
 			var vec = Vector3(normal.x, normal.y - 0.5, normal.z)
 			var new_vel = magnitude*delta*normal.y
-			print(vec)
 			
 			add_velocity(vec,new_vel)
 	

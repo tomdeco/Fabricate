@@ -14,10 +14,16 @@ func _init(size: int):
 
 ## Add an item to the inventory.
 func add(item: Item):
-	_contents.push_back(item)		
+	_contents.push_back(item)	
+	
+func remove(item: Item):
+	_contents.erase(item)	
 
 func get_item(idx: int) -> Item:
 	return _contents[idx]
 	
 func get_storage_space():
-	return _contents.size()
+	var size = 0
+	for item: Item in _contents:
+		size += item.size
+	return size

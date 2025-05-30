@@ -1,4 +1,4 @@
-extends CharacterBody3D
+extends Entity
 
 class_name Player
 
@@ -7,28 +7,16 @@ class_name Player
 ## Camera object
 @onready var cam = $CameraPivot 
 
-## Entity parameters belonging to the player
-var params: EntityParams
-
 ## Movement code specific to the player
 var movement: Movement;
 
 ## The players attack instance
-var combat: Combat;
+#var combat: Combat;
 
 ## Root of the inventory UI hirearchy
-@onready var inventory_ui = $HUD/HUD/Inventory
-
+@onready var inventory_ui = $HUD/Inventory/ItemFrame
 ## The bone where items attach when equipped
 @onready var equip_bone = $model/Armature/Skeleton3D
-
-
-## A reference to the players currently equipped weapon resource. 
-#var equipped_item
-
-
-## A reference to the players currently equipped weapon mesh. Weapons use the BoneAttachment3D node in order to attach to their hand
-var equipped_item_mesh: BoneAttachment3D
 
 var wall_run_vars = {
 	"collide": false,
@@ -36,36 +24,50 @@ var wall_run_vars = {
 }
 
 func _init():
-	params = EntityParams.new(100, 10)
-	combat = Combat.new(self, 1.5)
+
+	super(100, 10)
+	inventory = Inventory.new(10)
+	#combat = Combat.new(self, 1.5)
 	movement = Movement.new(self)
-	params.MOVEMENT_SPEED = 10
+	parameters[Enums.EntityParameterID.MOVEMENT_SPEED] = 10
 	movement.origin_rotation = rotation
 	add_child(movement)
 
 func _ready() -> void:
-	var wep: Weapon = $"..".weapon_list.getWeapon("Sword")
+
+	
+	var rev: Weapon = Root.item_list.getWeapon("revolver")
+	equip(rev)
+	
+	var wep: Weapon = Root.item_list.getWeapon("sword")
 	addToInventory(wep)
-	equip(wep)
+	
 	cam.rotation.y = rotation.y
 	
 
 	
 func _process(delta):	
 	
+	$HUD.update_hud()
 	if Input.is_action_pressed("inventory"):
+		$"CameraPivot/Inventory Cam".make_current()
+		
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		$HUD/HUD/Inventory.visible = true
+		$HUD/Inventory.visible = true
 	else:
+		$CameraPivot/MainCam.make_current()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		$HUD/HUD/Inventory.visible = false
+		$HUD/Inventory.visible = false
+		
+		applyEntityEffects(delta)
 
 func _physics_process(delta: float) -> void:
 	
-	combat._process(delta)
+	#combat._process(delta)
 	movement.process(delta, self)
 	
-	attack(delta)
+
+	use()
 	animate()
 
 ## Run animation relevant routines
@@ -77,37 +79,53 @@ func animate():
 	else:
 		animator.set("parameters/RunIdle/transition_request", "Idle")
 		
-	if Input.is_action_pressed("attack") && combat.MELEE_TIMER == combat.ATTACK_SPEED:
-		animator.set("parameters/Type/transition_request", "melee")	
-		animator.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
-		
-	if Input.is_action_pressed("attack") && combat.EQUIPPED_WEAPON.type == "RANGED":
-		animator.set("parameters/Type/transition_request", "ranged")	
-		animator.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)				
+	if equipped_item is Weapon:
+	
+		if Input.is_action_pressed("attack") && equipped_item is MeleeWeapon:
+			animator.set("parameters/Type/transition_request", "melee")	
+			animator.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+			
+		if Input.is_action_pressed("attack") && equipped_item is RangedWeapon:
+			animator.set("parameters/Type/transition_request", "melee")	
+			animator.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)				
 
 func addToInventory(item: Item):
-	params.addToInventory(item)
+	super(item)
 	inventory_ui.add_to_container(item)
 	
-func attack(delta: float):
-	if Input.is_action_pressed("attack"):
-		if combat.EQUIPPED_WEAPON.type == "MELEE":
-			var hitbox: Area3D = combat.EQUIPPED_WEAPON_MESH.get_child(1)
-			combat.melee_attack(hitbox)
-		if combat.EQUIPPED_WEAPON.type == "RANGED":
-			var y = $CameraPivot.rotation.y
-			rotation.y = y
-			combat.ranged_attack()
+func removeFromInventory(item: Item):
+	super(item)
 	
+	
+## Use the currently equipped item. 
+func use():
+	if Input.is_action_pressed("inventory"):
+		return
+	if Input.is_action_pressed("attack"):
+		var y = cam.rotation.y
+		rotation.y = y
+		equipped_item.use()
+			
+
 func equip(item: Item):
 	if equip_bone.get_child_count() > 0:
-		equip_bone.remove_child(equipped_item_mesh)
+		equip_bone.remove_child(equipped_item_scene)
 	
-	if item is Weapon:
-		combat.setWeapon(item)
-		params.equip(item)
-	equipped_item_mesh = item.mesh.instantiate()
-	equip_bone.add_child(equipped_item_mesh)
-	var idx = equip_bone.find_bone("forearm.R")
-	equipped_item_mesh.bone_idx = idx
+	#if item is Weapon:
+		#combat.setWeapon(item)
+	super(item)
+	equipped_item_scene = item.mesh.instantiate()
+	
+	if item is MeleeWeapon:
+		item.loadHitbox(equipped_item_scene)
+		
+	if item is RangedWeapon:
+		item.loadRay($CameraPivot/MainCam/AimRay)
+	
+	equip_bone.add_child(equipped_item_scene)
+	var idx = equip_bone.find_bone("hand.R")
+	equipped_item_scene.bone_idx = idx
+
+
+
 	

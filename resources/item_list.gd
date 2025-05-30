@@ -2,8 +2,9 @@ extends Node
 
 ## Load and organize all weapons loaded into the game. Includes getters for weapons.
 
-class_name WeaponList
+class_name Item_List
 var weapon_list = []
+var consumable_list = []
 
 var MELEE_WEAPONS = [
 	"sword",
@@ -12,6 +13,10 @@ var MELEE_WEAPONS = [
 
 var RANGED_WEAPONS = [
 	"revolver"
+]
+
+var CONSUMABLES = [
+	"s_health"
 ]
 
 func _init():
@@ -25,9 +30,20 @@ func _init():
 	for wep in RANGED_WEAPONS:
 		var formatted_path = ranged_path % wep
 		weapon_list.push_back(load(formatted_path))
+		
+	var consumable_path = "res://resources/items/%s.tres"
+	for item in CONSUMABLES:
+		var formatted_path = consumable_path % item
+		consumable_list.push_back(load(formatted_path))
 
 	
-func getWeapon(name: String):
+func getConsume(id: String):
+	for con in consumable_list:
+		if id == con.id:
+			return con.duplicate()
+
+	
+func getWeapon(id: String):
 	for wep: Weapon in weapon_list:
-		if name == wep.name:
-				return wep.duplicate()
+		if id == wep.id:
+			return wep.duplicate()

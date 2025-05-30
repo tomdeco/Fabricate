@@ -4,17 +4,17 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bn6gvvnvx3f4y"
-path="res://.godot/imported/pills.glb-2d4947f7bc25b8a2db709df687fed15e.scn"
+path="res://.godot/imported/pills.glb-79da3ee174ddd1c3289e986131dd4d7c.scn"
 
 [deps]
 
-source_file="res://resources/items/health/pills.glb"
-dest_files=["res://.godot/imported/pills.glb-2d4947f7bc25b8a2db709df687fed15e.scn"]
+source_file="res://resources/items/s_health/pills.glb"
+dest_files=["res://.godot/imported/pills.glb-79da3ee174ddd1c3289e986131dd4d7c.scn"]
 
 [params]
 
-nodes/root_type=""
-nodes/root_name=""
+nodes/root_type="BoneAttachment3D"
+nodes/root_name="s_health"
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false

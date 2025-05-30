@@ -1,6 +1,8 @@
-[gd_scene load_steps=7 format=4 uid="uid://cjvdnbm4ftogc"]
+[gd_scene load_steps=6 format=4 uid="uid://cjvdnbm4ftogc"]
 
-[ext_resource type="Script" uid="uid://dqyptfr7c8eoy" path="res://scenes/npc.gd" id="1_rqnho"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_evh5r"]
+height = 2.40942
+radius = 3.09961
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amnbb"]
 resource_name = "Material.002"
@@ -72,21 +74,13 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_o07gt")
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_evh5r"]
-height = 1.97424
-radius = 3.09961
-
-[node name="NPC" type="RigidBody3D"]
-script = ExtResource("1_rqnho")
-metadata/_custom_type_script = "uid://nmd8svp8m5a3"
+[node name="CollisionShape3D" type="CollisionShape3D"]
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 1.08679, 0)
+shape = SubResource("CylinderShape3D_evh5r")
+debug_color = Color(0.698039, 0.494118, 0.054902, 1)
 
 [node name="DOnut" type="MeshInstance3D" parent="."]
-transform = Transform3D(2298.2, 0, -4440.52, 0, 5000, 0, 4440.52, 0, 2298.2, 0, 0.929888, 0)
+transform = Transform3D(2298.2, 0, -4440.52, 0, 5000, 0, 4440.52, 0, 2298.2, 0, -0.266165, 0)
 gi_mode = 2
 mesh = SubResource("ArrayMesh_df8av")
 skeleton = NodePath("")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10504, 0)
-shape = SubResource("CylinderShape3D_evh5r")
-debug_color = Color(0.698039, 0.494118, 0.054902, 1)

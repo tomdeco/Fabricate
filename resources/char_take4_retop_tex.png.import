@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dg2aomm46cx5s"
-path.s3tc="res://.godot/imported/pills_label.png-67c71f671851470b06d862ad6944e938.s3tc.ctex"
+uid="uid://cbm68vmolgew2"
+path.s3tc="res://.godot/imported/char_take4_retop_tex.png-7a1f728b6d52e6e6fe8cbf309c19e967.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "b6e9815ed840c0b48e68c58d515eda8f"
+"md5": "362a4dc23f21f078c9de361e5006ddd5"
 }
 
 [deps]
 
-source_file="res://resources/items/health/pills_label.png"
-dest_files=["res://.godot/imported/pills_label.png-67c71f671851470b06d862ad6944e938.s3tc.ctex"]
+source_file="res://resources/char_take4_retop_tex.png"
+dest_files=["res://.godot/imported/char_take4_retop_tex.png-7a1f728b6d52e6e6fe8cbf309c19e967.s3tc.ctex"]
 
 [params]
 

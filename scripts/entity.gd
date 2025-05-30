@@ -1,0 +1,89 @@
+extends CharacterBody3D
+## Base class for all animate objects. 
+
+class_name Entity
+
+## How fast the entity moves without any modifiers. This is equal to 10 by default.
+var MOVEMENT_SPEED = 10
+
+## Maximum attainable HP the entity may have. 100 by default.
+var MAX_HP = 100
+
+## Entity parameters including health, base damage, speed
+var parameters = {
+	Enums.EntityParameterID.MAX_HEALTH: 100, 	
+	Enums.EntityParameterID.HEALTH: 100, 		
+	Enums.EntityParameterID.BASE_DAMAGE: 0,  		
+	Enums.EntityParameterID.MOVEMENT_SPEED: 10,
+	Enums.EntityParameterID.CLONITES: 0
+}
+
+
+## The current HP of the entity
+@export var hp: float
+
+## Container of items the entity currently posesses
+var inventory: Inventory
+
+## The entities currently equipped item
+var equipped_item: Item = null
+
+## A reference to the players currently equipped weapon mesh. Weapons use the BoneAttachment3D node in order to attach to their hand
+var equipped_item_scene: BoneAttachment3D
+
+## Store all effects active on the entity
+var effects = []#Array([], TYPE_OBJECT, "EntityEffect", EntityEffect)
+
+## Create a new entity. Specify max HP and inventory size.
+func _init(_HP, _inventory_size) -> void:
+	inventory = Inventory.new(_inventory_size)
+	set_parameter(Enums.EntityParameterID.MAX_HEALTH, _HP)
+	set_parameter(Enums.EntityParameterID.HEALTH, _HP)
+	
+## Equip an item to the entity
+func equip(_item: Item):
+	equipped_item = _item 
+	#if equipped_item is MeleeWeapon:
+		#equipped_item.scene = equipped_item.mesh.instantiate()
+	
+func use():
+	equipped_item.use()
+	
+func get_item(_idx: int):
+	return inventory.get_item(_idx)
+	
+func get_hp():
+	return get_parameter(Enums.EntityParameterID.HEALTH)
+	
+## Add an item to the entity's inventory. 
+func addToInventory(_item: Item):
+	inventory.add(_item)
+	
+func removeFromInventory(_item: Item):
+	inventory.remove(_item)
+	
+## Give the enitity clonites
+func addClonites(amount: int):
+	parameters[Enums.EntityParameterID.CLONITES] += amount	
+
+func addEntityEffect(_consumable: Consumable):
+	effects.push_back(_consumable.entity_effect)
+	
+func applyEntityEffects(delta):
+	for e_effect: EntityEffect in effects:
+		if e_effect.one_shot:
+			for effect: Effect in e_effect.effects:
+				parameters[effect.target] = effect.perform_operation(effect.CallableOperation[effect.operation], parameters[effect.target], 10)
+			effects.erase(e_effect)
+		else:
+			if e_effect.is_done():
+				effects.erase(e_effect)
+			else:	
+				for effect: Effect in e_effect.effects:
+					parameters[effect.target] = effect.perform_operation(effect.CallableOperation[effect.operation], parameters[effect.target], 10)
+	
+func set_parameter(id: int, value):
+	parameters[id] = value
+	
+func get_parameter(id: int):
+	return parameters[id]

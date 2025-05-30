@@ -23,10 +23,12 @@ config/windows_native_icon="res://icon.ico"
 [autoload]
 
 Console="*res://addons/console/console.gd"
+Enums="*res://scripts/enums.gd"
+Root="*res://scripts/root.gd"
+Hivemind="*res://scripts/ai/hivemind.gd"
 
 [display]
 
-window/size/mode=3
 window/stretch/mode="canvas_items"
 
 [editor_plugins]

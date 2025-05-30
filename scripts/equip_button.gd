@@ -6,8 +6,11 @@ class_name EquipButton
 
 var item
 var rect
+var slot
 
-func _init(_item: Item, _rect: Rect2):
+func _init(_item: Item, _rect: Rect2, _slot):
 	item = _item
 	rect = _rect
 	icon = item.icon
+	slot = _slot
+	

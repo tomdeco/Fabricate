@@ -20,7 +20,7 @@ var MELEE_TIMER = 0
 var IS_ATTACKING = false
 
 ## The weapon currently in use
-var EQUIPPED_WEAPON
+var EQUIPPED_WEAPON: Weapon
 
 var EQUIPPED_WEAPON_MESH : BoneAttachment3D
 
@@ -45,7 +45,17 @@ func setWeapon(weapon: Weapon):
 
 	EQUIPPED_WEAPON_MESH = EQUIPPED_WEAPON.mesh.instantiate()
 
-func melee_attack(hitbox: Area3D):
+func attack():
+	if EQUIPPED_WEAPON.type == "MELEE":
+		var wep: MeleeWeapon = EQUIPPED_WEAPON
+		melee_attack(wep.hitbox)
+	if EQUIPPED_WEAPON.type == "RANGED":
+		var cam: Node3D = $CameraPivot
+		var y = cam.rotation.y
+		PARENT.rotation.y = y
+		ranged_attack()
+
+func melee_attack(hitbox):
 	if MELEE_TIMER <= 0:
 		var bodies = hitbox.get_overlapping_bodies()
 		for el in bodies:
@@ -59,7 +69,7 @@ func ranged_attack():
 	var vlh
 	
 func isNPC(entity: PhysicsBody3D):
-	if entity != PARENT:
+	if entity is not Player:
 		if entity is NPC:
 			return true
 	return false	
