@@ -1,8 +1,4 @@
-[gd_scene load_steps=6 format=4 uid="uid://cjvdnbm4ftogc"]
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_evh5r"]
-height = 2.40942
-radius = 3.09961
+[gd_resource type="ArrayMesh" load_steps=4 format=4 uid="uid://b3s0w4ilkfsnl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amnbb"]
 resource_name = "Material.002"
@@ -42,7 +38,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_df8av"]
+[resource]
 resource_name = "do nutv3_Torus_001"
 _surfaces = [{
 "aabb": AABB(-0.000605382, -0.000238836, -0.000602874, 0.00120786, 0.000483904, 0.00120107),
@@ -73,14 +69,3 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_o07gt")
-
-[node name="CollisionShape3D" type="CollisionShape3D"]
-transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 1.08679, 0)
-shape = SubResource("CylinderShape3D_evh5r")
-debug_color = Color(0.698039, 0.494118, 0.054902, 1)
-
-[node name="DOnut" type="MeshInstance3D" parent="."]
-transform = Transform3D(2298.2, 0, -4440.52, 0, 5000, 0, 4440.52, 0, 2298.2, 0, -0.266165, 0)
-gi_mode = 2
-mesh = SubResource("ArrayMesh_df8av")
-skeleton = NodePath("")

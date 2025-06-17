@@ -7,6 +7,8 @@
 [resource]
 script = ExtResource("3_4fltq")
 type = 0
+fire_mode = 0
+fire_rate = 0.0
 damage = 25.0
 name = "Revolver"
 icon = ExtResource("1_3rl6a")

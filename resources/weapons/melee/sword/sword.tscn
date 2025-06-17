@@ -6,7 +6,7 @@
 size = Vector3(2.03027, 0.521973, 0.313232)
 
 [node name="Sword" instance=ExtResource("1_v8k0m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.58839, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.197076, 0)
 
 [node name="sword" parent="." index="0"]
 transform = Transform3D(2.79342e-09, -0.187, 3.80289e-09, 0, -8.17403e-09, -0.087, 0.037, 1.41181e-08, -2.8711e-16, 0.0665014, 0.204291, 0)

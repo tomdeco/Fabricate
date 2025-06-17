@@ -328,6 +328,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_6n010")
 
 [node name="Revolver" type="BoneAttachment3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0407079, -0.227065, 0)
 bone_name = "forearm.R"
 bone_idx = 13
 

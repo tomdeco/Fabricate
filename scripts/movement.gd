@@ -278,15 +278,18 @@ func applyMomentum(delta, player: Player):
 			
 			add_velocity(vec,new_vel)
 	
-	if player.is_on_floor():
-		var decrease = 2 * delta
-		var normal_direction = currentNormal.normalized()
-		add_velocity(-direction, (magnitude * 0.25 * delta))
-		
-		if magnitude < PLAYER_SPEED:
-			current_velocity.x = 0
-			current_velocity.z = 0
+	#if player.is_on_floor():
+		#var decrease = 2 * delta
+		#var normal_direction = currentNormal.normalized()
+		#add_velocity(-direction, (magnitude * 0.25 * delta))
+		#
+		#if magnitude < PLAYER_SPEED:
+			#current_velocity.x = 0
+			#current_velocity.z = 0
 
+func noclip():
+	if Input.is_action_pressed("jump"):
+		player.velocity.y = 50
 ## Handles basic player movement (even better tho)
 func process(delta, player: Player):		
 	var horizontal_acceleration = -9.8 * 5
@@ -362,5 +365,10 @@ func process(delta, player: Player):
 		
 				
 
+
 	player.velocity = inital_velocity + current_velocity	
+	
+	if Root.noclip:
+		noclip()
+
 	player.move_and_slide()

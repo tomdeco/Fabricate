@@ -3,15 +3,9 @@ extends CharacterBody3D
 
 class_name Entity
 
-## How fast the entity moves without any modifiers. This is equal to 10 by default.
-var MOVEMENT_SPEED = 10
-
-## Maximum attainable HP the entity may have. 100 by default.
-var MAX_HP = 100
-
 ## Entity parameters including health, base damage, speed
 var parameters = {
-	Enums.EntityParameterID.MAX_HEALTH: 100, 	
+	Enums.EntityParameterID.MAX_HEALTH: 100, 
 	Enums.EntityParameterID.HEALTH: 100, 		
 	Enums.EntityParameterID.BASE_DAMAGE: 0,  		
 	Enums.EntityParameterID.MOVEMENT_SPEED: 10,
@@ -19,8 +13,7 @@ var parameters = {
 }
 
 
-## The current HP of the entity
-@export var hp: float
+
 
 ## Container of items the entity currently posesses
 var inventory: Inventory
@@ -43,8 +36,8 @@ func _init(_HP, _inventory_size) -> void:
 ## Equip an item to the entity
 func equip(_item: Item):
 	equipped_item = _item 
-	#if equipped_item is MeleeWeapon:
-		#equipped_item.scene = equipped_item.mesh.instantiate()
+	if equipped_item is MeleeWeapon:
+		equipped_item.parent = self
 	
 func use():
 	equipped_item.use()
@@ -87,3 +80,6 @@ func set_parameter(id: int, value):
 	
 func get_parameter(id: int):
 	return parameters[id]
+	
+func receiveDamage(dmg: float):
+	parameters[Enums.EntityParameterID.HEALTH] -= dmg

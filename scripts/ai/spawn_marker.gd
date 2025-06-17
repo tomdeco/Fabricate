@@ -20,9 +20,13 @@ var npc: NPC
 @export var detect_range: float
 
 ## What signal activates the spawner. Used in Signal Mode
-#@export var connection: Signal
+var connection: Signal
 
 @export var mode: Enums.SpawnMarkerModes
+
+@export var weapon: Weapon
+
+var patrol_route: PatrolRoute
 
 signal player_within_vicinity
 
@@ -42,6 +46,8 @@ func _process(delta: float) -> void:
 		var cam = EditorInterface.get_editor_viewport_3d().get_camera_3d()
 		var direction = (position - cam.position).normalized()
 		icon.rotation.y = atan2(direction.x * PI, direction.z * PI)
+		
+		update_configuration_warnings()
 			
 		
 	if !Engine.is_editor_hint():
@@ -52,10 +58,35 @@ func _process(delta: float) -> void:
 				if check_vicinity(Hivemind.player):
 					spawn()
 
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings = []
+	
+	var nodes = get_children()
+	var patrolnode_child_exists = false
+	for node in nodes:
+		if node is PatrolRoute:
+			patrolnode_child_exists = true
+	if !patrolnode_child_exists:
+		warnings.append("SpawnMarkers must have a PatrolRoute child!")
+		
+	return warnings
+
+
 func spawn():
 	enabled = false
 	var npc = NPC.new(entity)
+	
+	var nodes = get_children()
+	for node in nodes:
+		if node is PatrolRoute:
+			patrol_route = node
+	
+	npc.patrol = patrol_route
+	npc.current_routenode = patrol_route.get_head()
 	npc.position = position
+	npc.equip(weapon)
+	
+	Hivemind.add_npc(npc)
 	add_sibling(npc)
 	
 func check_vicinity(player: Player):

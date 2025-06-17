@@ -43,6 +43,7 @@ func _ready() -> void:
 	addToInventory(wep)
 	
 	cam.rotation.y = rotation.y
+	Hivemind.player = self
 	
 
 	
@@ -105,6 +106,9 @@ func use():
 		var y = cam.rotation.y
 		rotation.y = y
 		equipped_item.use()
+		return
+	if equipped_item is RangedWeapon:
+		equipped_item.fire_latch = false
 			
 
 func equip(item: Item):

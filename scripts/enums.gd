@@ -9,6 +9,13 @@ enum EntityParameterID {
 	CLONITES ## How many clonites are carried
 }
 
+## The three modes an NPC can be in
+enum NpcNavigationMode {
+	IDLE,
+	PATROL,
+	COMBAT
+}
+
 ## Operations that carry out the effects
 enum EffectOperations {
 	ADD,
@@ -26,6 +33,11 @@ enum RangedWeaponTypes {
 	GUN,
 	THROWABLE,
 	EMITTER 
+}
+
+enum FireMode {
+	SEMI_AUTO, ## Semi-Automatic, single fire with auto loading
+	AUTO ## Fully automatic, spray and pray baby
 }
 
 enum SpawnMarkerModes {

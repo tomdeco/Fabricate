@@ -1,5 +1,7 @@
 extends Node3D
 
+var noclip: bool = false
+
 var item_list: Item_List
 
 
@@ -27,6 +29,7 @@ func set_console_commands():
 	Console.add_command("consume_list", c_list_consume, [], 0, "Lists all available consumables in the game")
 	Console.add_command("give_c", c_give_consume, ["item_name"], 1, "TEMPORARY FUNCTION, gives consumable")
 	Console.add_command("give_clonites", c_give_clonites, ["amount"], 1, "Give the player a specified amount of clonites")
+	Console.add_command("noclip", c_noclip)
 	
 func c_version():
 	Console.print_line("Fabricate Pre-Alpha")
@@ -58,3 +61,13 @@ func c_give_clonites(amount):
 	player.addClonites(int(amount))
 	var str = "Gave player " + amount + " clonites"
 	Console.print_line(str)
+	
+func c_noclip():
+	if noclip:
+		Console.print_line("noclip disabled")
+		noclip = false
+	else:
+		Console.print_line("noclip enabled")
+		noclip = true
+
+	

@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://kb80a7ruy6dq"
+path="res://.godot/imported/ai_ground.map-cea608add4edc08d2e4f9f376c50fc69.tres"
+
+[deps]
+
+source_file="res://trenchbroom/models/ai_ground.map"
+dest_files=["res://.godot/imported/ai_ground.map-cea608add4edc08d2e4f9f376c50fc69.tres"]
+
+[params]
+

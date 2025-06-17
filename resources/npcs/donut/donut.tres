@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="NPCResource" load_steps=3 format=3 uid="uid://uj10y8fvx1vj"]
 
-[ext_resource type="PackedScene" uid="uid://cjvdnbm4ftogc" path="res://scenes/donut.tscn" id="1_fiuwp"]
+[ext_resource type="PackedScene" uid="uid://00xuhiwbwdqq" path="res://resources/npcs/donut/donut.tscn" id="1_fiuwp"]
 [ext_resource type="Script" uid="uid://carnl207uqyyn" path="res://resources/npc_resource.gd" id="1_la7qi"]
 
 [resource]
@@ -11,5 +11,7 @@ max_health = 100.0
 base_damage = 0.0
 movement_speed = 10.0
 clonites = 0
-scene = ExtResource("1_fiuwp")
+npc_scene = ExtResource("1_fiuwp")
+ai_mode = 1
+navigation_layer = 1
 metadata/_custom_type_script = "uid://carnl207uqyyn"
