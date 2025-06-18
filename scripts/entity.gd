@@ -42,6 +42,11 @@ func equip(_item: Item):
 func use():
 	equipped_item.use()
 	
+	if equipped_item is RangedWeapon:
+		for child in equipped_item_scene.get_children():
+			if child is GPUParticles3D:
+				child.restart()
+	
 func get_item(_idx: int):
 	return inventory.get_item(_idx)
 	

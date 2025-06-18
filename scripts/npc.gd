@@ -74,18 +74,44 @@ func _init(resource: NPCResource):
 func use():
 	if equipped_item is RangedWeapon:
 		if equipped_item.fire_mode == Enums.FireMode.SEMI_AUTO and semi_fire_timer.is_stopped():
-			equipped_item.use()
+			
+			print("fire")
+			if track_ray.get_collider() is Player:
+				var target: Player = track_ray.get_collider()
+				process_accuracy(target)
+				
+			
+			super()
 			semi_fire_timer.start()
 			
 		return
 	if equipped_item is MeleeWeapon:
 		if melee_atk_timer.is_stopped():
-			equipped_item.use()
+			super()
 			melee_atk_timer.start()
 		return
 		
 	#equipped_item.use()
 	
+func process_accuracy(target: Entity):
+	var vel = target.velocity
+	var accuracy_factor = (pow(vel.length(), 2.0) / 16)
+	
+	if accuracy_factor > 100:
+		accuracy_factor = 100
+	
+	if accuracy_factor <= 0:
+		accuracy_factor = 1
+	
+	var rng = RandomNumberGenerator.new()
+	var x_num = rng.randf_range(-4*accuracy_factor/100, 4*accuracy_factor/100)
+	var y_num = rng.randf_range(-4*accuracy_factor/100, 4*accuracy_factor/100)
+	
+	if equipped_item is RangedWeapon:
+		track_ray.target_position = track_ray.target_position
+		track_ray.target_position.x += x_num * sin(target.rotation.x)
+		track_ray.target_position.y += y_num
+		track_ray.target_position.z += x_num * cos(target.rotation.x)
 
 func equip(item: Item):
 	super(item)
@@ -95,6 +121,7 @@ func equip(item: Item):
 		
 	if item is RangedWeapon:
 		item.loadRay(track_ray)
+		add_child(item.ray)
 		
 	if bone_idx < 0:
 		equipped_item_scene.rotate(Vector3(0, 1, 0), PI/2)

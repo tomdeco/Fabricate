@@ -550,7 +550,6 @@ nodes/output/position = Vector2(400, 100)
 node_connections = [&"Attack", 0, &"RunIdle", &"Attack", 1, &"Punch", &"RunIdle", 0, &"Run", &"RunIdle", 1, &"Idle", &"output", 0, &"Attack"]
 
 [node name="Player" type="CharacterBody3D"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 floor_stop_on_slope = false
 floor_snap_length = 0.65
 script = ExtResource("1_urp6f")
@@ -565,12 +564,12 @@ transform = Transform3D(0.996375, 0, 0.0850691, 0, 1, 0, -0.0850691, 0, 0.996375
 remote_path = NodePath("../CameraPivot/Inventory Cam")
 
 [node name="CameraPivot" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 top_level = true
 script = ExtResource("2_bwjto")
 
 [node name="MainCam" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 7.10543e-15, -2.84217e-14, 0, 0.967179, 0.254096, 2.84217e-14, -0.254096, 0.967179, 1.44214, 2.55106, 5.00795)
+transform = Transform3D(1, 7.22184e-15, -2.74889e-14, 0, 0.967179, 0.254096, 2.84217e-14, -0.254096, 0.967179, 1.44214, 2.55106, 5.00795)
 current = true
 fov = 80.5
 
@@ -579,7 +578,7 @@ visible = false
 target_position = Vector3(0, 0, -100)
 
 [node name="Inventory Cam" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(-0.996375, 0, -0.0850692, 0, 1, 0, 0.0850692, 0, -0.996375, -1.73947, 1.10708, -1.68462)
+transform = Transform3D(0.996375, 0, 0.0850691, 0, 1, 0, -0.0850691, 0, 0.996375, 1.73947, 1.10708, 1.68462)
 top_level = true
 
 [node name="Collision" type="CollisionShape3D" parent="."]

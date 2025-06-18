@@ -1,6 +1,6 @@
 extends Node
 
-class_name Movement
+class_name Movement_old
 
 ## Player constant velocity (in meters per second).
 var PLAYER_SPEED
@@ -255,28 +255,29 @@ func wall_grapple(delta, acceleration, player: Player):
 func applyMomentum(delta, player: Player):
 	var direction = Vector3(-sin(player.rotation.y), 0, -cos(player.rotation.y))
 	var magnitude = abs(Vector2(current_velocity.x, current_velocity.z).length())
-	current_velocity.x = 0
-	current_velocity.z = 0
-	
-	add_velocity(direction, magnitude)
-	
-	if player.is_on_floor():
-		current_velocity.y = 0
-		
-	if player.is_on_wall():
-		var wall = player.get_wall_normal()
-		if wall.y == 0:
-			currentNormal.x = 0
-			currentNormal.z = 0
-
-	if floor_ray.is_colliding():
-		var normal = floor_ray.get_collision_normal()
-		var diff = cos(player.rotation.z) - normal.y
-		if normal.y != 1:
-			var vec = Vector3(normal.x, normal.y - 0.5, normal.z)
-			var new_vel = magnitude*delta*normal.y
-			
-			add_velocity(vec,new_vel)
+	#current_velocity.x = 0
+	#current_velocity.z = 0
+	#
+	#
+	#add_velocity(direction, magnitude)
+	#
+	#if player.is_on_floor():
+		#current_velocity.y = 0
+		#
+	#if player.is_on_wall():
+		#var wall = player.get_wall_normal()
+		#if wall.y == 0:
+			#currentNormal.x = 0
+			#currentNormal.z = 0
+#
+	#if floor_ray.is_colliding():
+		#var normal = floor_ray.get_collision_normal()
+		#var diff = cos(player.rotation.z) - normal.y
+		#if normal.y != 1:
+			#var vec = Vector3(normal.x, normal.y - 0.5, normal.z)
+			#var new_vel = magnitude*delta*normal.y
+			#
+			#add_velocity(vec.normalized(),new_vel)
 	
 	#if player.is_on_floor():
 		#var decrease = 2 * delta

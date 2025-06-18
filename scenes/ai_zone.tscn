@@ -192,7 +192,7 @@ sky_material = SubResource("PanoramaSkyMaterial_3or8g")
 background_mode = 2
 background_energy_multiplier = 4.41
 sky = SubResource("Sky_vk5e7")
-ambient_light_source = 2
+ambient_light_source = 3
 ambient_light_color = Color(0.979118, 0.910645, 0.873191, 1)
 ambient_light_sky_contribution = 0.15
 ambient_light_energy = 0.24
@@ -202,6 +202,7 @@ tonemap_exposure = 1.01
 tonemap_white = 4.74
 ssr_fade_in = 0.356762
 ssr_depth_tolerance = 72.21
+glow_enabled = true
 glow_normalized = true
 glow_intensity = 3.07
 glow_strength = 0.0
@@ -352,7 +353,7 @@ metadata/_custom_type_script = "uid://d4anoxpy11rst"
 [node name="PatrolRoute" type="Node3D" parent="Node3D/SpawnMarker" node_paths=PackedStringArray("nodes")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.1602, 1.17291, 0.779783)
 script = ExtResource("12_7luxs")
-nodes = [NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4")]
+nodes = [NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4")]
 metadata/_custom_type_script = "uid://b6acvdo05f2yi"
 
 [node name="RouteNode" type="Node3D" parent="Node3D/SpawnMarker/PatrolRoute" node_paths=PackedStringArray("next", "prev")]
@@ -393,7 +394,7 @@ metadata/_custom_type_script = "uid://d4anoxpy11rst"
 [node name="PatrolRoute" type="Node3D" parent="Node3D/SpawnMarker2" node_paths=PackedStringArray("nodes")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20.5599)
 script = ExtResource("12_7luxs")
-nodes = [NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4")]
+nodes = [NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4"), NodePath("RouteNode"), NodePath("RouteNode2"), NodePath("RouteNode3"), NodePath("RouteNode4")]
 metadata/_custom_type_script = "uid://b6acvdo05f2yi"
 
 [node name="RouteNode" type="Node3D" parent="Node3D/SpawnMarker2/PatrolRoute" node_paths=PackedStringArray("next", "prev")]

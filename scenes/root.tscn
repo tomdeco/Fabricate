@@ -8,6 +8,6 @@
 script = ExtResource("1_cdqbm")
 
 [node name="Player" parent="." instance=ExtResource("8_jsk3o")]
-transform = Transform3D(-2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, -19.3578, 3.00929, -1.32557)
+transform = Transform3D(-0.999146, 0, 0.0413173, 0, 1, 0, -0.0413173, 0, -0.999146, -62.365, -8.98053, 102.805)
 
 [node name="AI_zone" parent="." instance=ExtResource("3_sqa0i")]

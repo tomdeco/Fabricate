@@ -65,7 +65,7 @@ func _process(delta):
 func _physics_process(delta: float) -> void:
 	
 	#combat._process(delta)
-	movement.process(delta, self)
+	movement.process(delta)
 	
 
 	use()
@@ -105,7 +105,7 @@ func use():
 	if Input.is_action_pressed("attack"):
 		var y = cam.rotation.y
 		rotation.y = y
-		equipped_item.use()
+		super()
 		return
 	if equipped_item is RangedWeapon:
 		equipped_item.fire_latch = false
