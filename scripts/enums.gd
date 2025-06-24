@@ -9,6 +9,15 @@ enum EntityParameterID {
 	CLONITES ## How many clonites are carried
 }
 
+## Flags specifically for handling KB+M control schemes
+enum DiscreteMovementFlag {
+	FORWARD,
+	BACKWARD,
+	LEFT,
+	RIGHT,
+	JUMP
+}
+
 ## The three modes an NPC can be in
 enum NpcNavigationMode {
 	IDLE,
