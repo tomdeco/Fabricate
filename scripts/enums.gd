@@ -54,3 +54,10 @@ enum SpawnMarkerModes {
 	PROXIMITY, ## Spawn when a player is detected within a range.
 	SIGNAL ## Spawn when a signal is recieved.
 }
+
+## Classifications for the three types of abilities
+enum AbilityType {
+	MOVEMENT,
+	OFFENSIVE,
+	DEFENSIVE
+}

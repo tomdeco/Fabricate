@@ -16,7 +16,8 @@ var RANGED_WEAPONS = [
 ]
 
 var CONSUMABLES = [
-	"s_health"
+	"s_health",
+	"propellant"
 ]
 
 func _init():

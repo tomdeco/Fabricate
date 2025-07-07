@@ -30,11 +30,15 @@ var one_shot: bool = false
 ## Contain the included effects.
 @export var effects = Array([], TYPE_OBJECT, "Effect", Effect)
 
-func _init(_id = "na", _name = "", _icon = null, _duration = 0, _effects = []) -> void:
+## Contain the included abilities.
+@export var abilities = Array([], TYPE_OBJECT, "Ability", Ability)
+
+func _init(_id = "na", _name = "", _icon = null, _duration = 0, _effects = [], _abilities = []) -> void:
 	id = _id
 	name = _name
 	icon = _icon
 	effects = _effects
+	abilities = _abilities
 	duration = _duration
 	time_elapsed = 0.0
 	

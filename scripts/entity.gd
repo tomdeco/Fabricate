@@ -12,8 +12,7 @@ var parameters = {
 	Enums.EntityParameterID.CLONITES: 0
 }
 
-
-
+var HAS_DOUBLE_JUMPED: bool = false
 
 ## Container of items the entity currently posesses
 var inventory: Inventory
@@ -26,6 +25,16 @@ var equipped_item_scene: BoneAttachment3D
 
 ## Store all effects active on the entity
 var effects = []#Array([], TYPE_OBJECT, "EntityEffect", EntityEffect)
+
+var physics_call_queue: Array[Callable] = []
+
+func _physics_process(delta: float) -> void:
+	if physics_call_queue.size() == 0:
+		return
+	for callable in physics_call_queue:
+		callable.call(self)
+		
+	physics_call_queue.clear()
 
 ## Create a new entity. Specify max HP and inventory size.
 func _init(_HP, _inventory_size) -> void:
@@ -72,13 +81,30 @@ func applyEntityEffects(delta):
 		if e_effect.one_shot:
 			for effect: Effect in e_effect.effects:
 				parameters[effect.target] = effect.perform_operation(effect.CallableOperation[effect.operation], parameters[effect.target], 10)
-			effects.erase(e_effect)
+			
+			for ability: Ability in e_effect.abilities:
+				var method = Callable.create(AbilityFunctions, ability.method)
+				# If the ability is of the movement type, execute it during _physics_process instead
+				if ability.type == Enums.AbilityType.MOVEMENT:
+					physics_call_queue.push_back(method)
+				else:
+					method.call(self)
+
+			effects.erase(e_effect)	
 		else:
 			if e_effect.is_done():
 				effects.erase(e_effect)
 			else:	
 				for effect: Effect in e_effect.effects:
 					parameters[effect.target] = effect.perform_operation(effect.CallableOperation[effect.operation], parameters[effect.target], 10)
+			
+				for ability: Ability in e_effect.abilities:
+					var method = Callable.create(AbilityFunctions, ability.method)
+					# If the ability is of the movement type, execute it during _physics_process instead
+					if ability.type == Enums.AbilityType.MOVEMENT:
+						physics_call_queue.push_back(method)
+					else:
+						method.call(self)
 	
 func set_parameter(id: int, value):
 	parameters[id] = value

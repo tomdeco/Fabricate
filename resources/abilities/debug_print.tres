@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Ability" load_steps=2 format=3 uid="uid://d3rgrpll7mr55"]
+
+[ext_resource type="Script" uid="uid://bjwvxr5lrp1yb" path="res://scripts/ability.gd" id="1_lj0hf"]
+
+[resource]
+script = ExtResource("1_lj0hf")
+name = "Debug Print"
+type = 0
+method = "m_debug_print"
+metadata/_custom_type_script = "uid://bjwvxr5lrp1yb"

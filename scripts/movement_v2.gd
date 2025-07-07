@@ -14,8 +14,11 @@ var player: Player
 var PLAYER_SPEED
 var origin_rotation
 
-## The calculated velocity of the player
-var velocity: Vector3
+## The velocity of the player based on inputs
+var applied_velocity: Vector3
+
+## The velocity of the player based on external, environmental factors
+var real_velocity: Vector3
 
 ## Discrete Movement Flags (for KB+M controls)
 var MOVE: bool = false
@@ -40,6 +43,7 @@ func _init(_player) -> void:
 	wall_timer = Timer.new()
 	PLAYER_SPEED = player.parameters[Enums.EntityParameterID.MOVEMENT_SPEED]
 	
+## Update all movement related flags for input polling
 func set_movement_flags():
 	## Reset MOVE to false by default
 	MOVE = false
@@ -53,10 +57,11 @@ func set_movement_flags():
 	
 	## If any movement input is made, MOVE will become true
 	for idx in KBM_Controls:
-		if KBM_Controls[idx]:
+		if KBM_Controls[idx] and idx != Enums.DiscreteMovementFlag.JUMP:
 			MOVE = true
 	
-func set_direction() -> Vector3: 
+## Set the direction of the players trajectory using discrete, KB+M controls
+func set_direction_kbm() -> Vector3: 
 	var direction: Vector3 = Vector3.ZERO
 	if KBM_Controls[Enums.DiscreteMovementFlag.FORWARD]:
 		direction.y += 0
@@ -84,31 +89,66 @@ func set_direction() -> Vector3:
 	direction.y += player.cam.rotation.y
 	return direction
 	
+## Set the players trajectory using continuous, analog controller input
+## NOT CURRENTLTY IMPLEMENTED
+func set_direction_controller():
+	pass
+	
+## Calculate the real velocity of the player based on external forces and factors
+func calculate_real_velocity(delta: float):
+	var angle = player.get_floor_angle()
+	var normal = player.get_floor_normal()
+	normal.y -= PI/2
+	
+	## Stop the player when they hit a wall		
+	if player.is_on_wall():
+		real_velocity.x = 0
+		real_velocity.z = 0
+	
+	## Add negative vertical velocity when falling
+	if !player.is_on_floor():
+		real_velocity.y += -9.81 * 10 * delta
+	else:
+		
+		## Add negative velocity based on the normal of the floor
+		var norm: Vector3 = player.get_floor_normal() - Vector3.UP
+		if norm.length() == 0:
+			## Reset the vertical component to 0 when on a flat surface
+			real_velocity.y = 0
+			
+			## If the real horizontal velocity becomes less than the base player speed, set real horizontal velocity to zero
+			var horizontal_magnitude = Vector2(real_velocity.x, real_velocity.z).length()
+			if horizontal_magnitude < PLAYER_SPEED:
+				real_velocity.x = 0
+				real_velocity.z = 0
+			
+			## Add friction (decceleration) when on a flat surface
+			var speed_loss = real_velocity.normalized() * 5.0 * delta
+			real_velocity -= speed_loss 
+			
+			
+		else:
+			real_velocity += normal * 9.81 * 10 * delta
+			
+	return 	real_velocity
+
 func process(delta):
-	velocity = player.velocity
 	
 	set_movement_flags()
-	var direction_modifier = set_direction()
+	var direction_modifier = set_direction_kbm()
 	player.rotation.y = (direction_modifier.y)
-	velocity.x = 0
-	velocity.z = 0
+	applied_velocity.x = 0
+	applied_velocity.z = 0
 	
+	real_velocity = calculate_real_velocity(delta)
 	
 	if MOVE:
-		velocity.z = -PLAYER_SPEED
-		
+		applied_velocity.z = -PLAYER_SPEED
+	
+	applied_velocity = applied_velocity.rotated(Vector3(0, 1, 0), direction_modifier.y)
 	if KBM_Controls[Enums.DiscreteMovementFlag.JUMP] and player.is_on_floor():
-		var normal = player.get_floor_angle()
-		velocity.z = -20
-		velocity = velocity.rotated(Vector3(1, 0, 0), normal + PI/2)
-	velocity = velocity.rotated(Vector3(0, 1, 0), direction_modifier.y)
-	
-	
+		real_velocity.y += 20
 
-	
-	if !player.is_on_floor():
-		velocity.y += -9.81 * 10 * delta
-
-		
-	player.velocity = velocity
+	var total_velocity = applied_velocity + real_velocity
+	player.velocity = total_velocity
 	player.move_and_slide()

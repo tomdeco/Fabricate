@@ -26,6 +26,7 @@ Console="*res://addons/console/console.gd"
 Enums="*res://scripts/enums.gd"
 Root="*res://scripts/root.gd"
 Hivemind="*res://scripts/ai/hivemind.gd"
+AbilityFunctions="*res://scripts/ability_functions.gd"
 
 [display]
 
