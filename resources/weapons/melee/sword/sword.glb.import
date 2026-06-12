@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://o0v2j8rgvmde"
+uid="uid://3pkthcp2le3"
 path="res://.godot/imported/sword.glb-5109f5f734bbce669a2eefe22f840bc0.scn"
 
 [deps]
@@ -13,11 +13,13 @@ dest_files=["res://.godot/imported/sword.glb-5109f5f734bbce669a2eefe22f840bc0.sc
 
 [params]
 
-nodes/root_type="BoneAttachment3D"
-nodes/root_name="Sword"
+nodes/root_type="Node3D"
+nodes/root_name=""
+nodes/root_script=null
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
 nodes/use_node_type_suffixes=true
 meshes/ensure_tangents=true
 meshes/generate_lods=true
@@ -27,26 +29,20 @@ meshes/lightmap_texel_size=0.2
 meshes/force_disable_compression=false
 skins/use_named_skins=true
 animation/import=true
-animation/fps=30
+animation/fps=120.0
 animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
 _subresources={
 "nodes": {
-"PATH:Ball": {
-"import/skip_import": true
-},
-"PATH:Blade": {
-"import/skip_import": true
-},
-"PATH:Handle": {
-"import/skip_import": true
-},
-"PATH:Hilt": {
+"PATH:AnimationPlayer": {
 "import/skip_import": true
 }
 }
 }
-gltf/naming_version=1
+gltf/naming_version=2
 gltf/embedded_image_handling=1

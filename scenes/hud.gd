@@ -11,6 +11,8 @@ func update_hud():
 	update_speed($"..".velocity.length())
 	update_clonite_count(player.parameters[Enums.EntityParameterID.CLONITES])
 	set_equip_icon($"..".equipped_item.icon)
+	
+	update_debug_info()
 
 func update_hp(hp):
 	$HUD/Params/HP/hp_label2.text = str(hp)
@@ -23,3 +25,25 @@ func update_clonite_count(count):
 
 func set_equip_icon(tex):
 	$HUD/Params/EquipIcon/TextureRect.texture = tex
+	
+func update_debug_info():
+	update_debug_velocity(player.velocity)
+	update_debug_collision()
+	
+func update_debug_velocity(velocity: Vector3):
+	$HUD/Debug/Velocity/Container/x.text = "X: {}".format([velocity.x], "{}")
+	$HUD/Debug/Velocity/Container/y.text = "Y: {}".format([velocity.y], "{}")
+	$HUD/Debug/Velocity/Container/z.text = "Z: {}".format([velocity.z], "{}")
+	
+func update_debug_collision():
+	if player.is_on_floor():
+		$HUD/Debug/Collision/VBoxContainer/floor.text = "Floor collision: True"
+	else:
+		$HUD/Debug/Collision/VBoxContainer/floor.text = "Floor collision: False"
+		
+	if player.is_on_wall():
+		$HUD/Debug/Collision/VBoxContainer/wall.text = "Wall collision: True"
+	else:
+		$HUD/Debug/Collision/VBoxContainer/wall.text = "Wall collision: False"
+	
+	

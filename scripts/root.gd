@@ -30,6 +30,7 @@ func set_console_commands():
 	Console.add_command("give_c", c_give_consume, ["item_name"], 1, "TEMPORARY FUNCTION, gives consumable")
 	Console.add_command("give_clonites", c_give_clonites, ["amount"], 1, "Give the player a specified amount of clonites")
 	Console.add_command("noclip", c_noclip)
+	Console.add_command("toggle_hivemind", c_toggle_hivemind, [], 0, "Toggle Hivemind AI simulation")
 	
 func c_version():
 	Console.print_line("Fabricate Pre-Alpha")
@@ -69,5 +70,12 @@ func c_noclip():
 	else:
 		Console.print_line("noclip enabled")
 		noclip = true
+		
+func c_toggle_hivemind():
+	Hivemind.enabled = !Hivemind.enabled
+	if Hivemind.enabled:
+		Console.print_line("Hivemind AI has been enabled")
+	else:
+		Console.print_line("Hivemind AI has been disabled")
 
 	

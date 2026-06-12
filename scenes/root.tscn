@@ -1,13 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://cqa5cc11r62rq"]
+[gd_scene format=3 uid="uid://cqa5cc11r62rq"]
 
 [ext_resource type="Script" uid="uid://cibpie6yjcnbn" path="res://scripts/root.gd" id="1_cdqbm"]
 [ext_resource type="PackedScene" uid="uid://d0x083w2ls7cg" path="res://scenes/proto_zone.tscn" id="3_lrqlo"]
 [ext_resource type="PackedScene" uid="uid://cogqj4s1jyp3m" path="res://scenes/player.tscn" id="8_jsk3o"]
 
-[node name="Node3D" type="Node3D"]
+[node name="Node3D" type="Node3D" unique_id=1228453814]
 script = ExtResource("1_cdqbm")
 
-[node name="Player" parent="." instance=ExtResource("8_jsk3o")]
-transform = Transform3D(-0.999146, 0, 0.0413173, 0, 1, 0, -0.0413173, 0, -0.999146, -21.2947, 3.70694, 85.4406)
+[node name="Player" parent="." unique_id=595298277 instance=ExtResource("8_jsk3o")]
+transform = Transform3D(-0.999146, 0, 0.0413173, 0, 1, 0, -0.0413173, 0, -0.999146, 10.839687, -23.320396, 84.27363)
+floor_constant_speed = true
+floor_snap_length = 0.26
 
-[node name="ProtoZone" parent="." instance=ExtResource("3_lrqlo")]
+[node name="ProtoZone" parent="." unique_id=1172534699 instance=ExtResource("3_lrqlo")]

@@ -5,10 +5,11 @@ class_name Player
 @onready var animator = get_node("model/AnimationTree")
 
 ## Camera object
-@onready var cam = $CameraPivot 
+@onready var cam: Camera3D = $MainCam
 
 ## Movement code specific to the player
 var movement: Movement;
+
 
 ## The players attack instance
 #var combat: Combat;
@@ -41,8 +42,7 @@ func _ready() -> void:
 	
 	var wep: Weapon = Root.item_list.getWeapon("sword")
 	addToInventory(wep)
-	
-	cam.rotation.y = rotation.y
+
 	Hivemind.player = self
 	
 
@@ -51,22 +51,21 @@ func _process(delta):
 	
 	$HUD.update_hud()
 	if Input.is_action_pressed("inventory"):
-		$"CameraPivot/Inventory Cam".make_current()
-		
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		$HUD/Inventory.visible = true
 	else:
-		$CameraPivot/MainCam.make_current()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		$HUD/Inventory.visible = false
 		
 		applyEntityEffects(delta)
+	
+		
+	
 
 func _physics_process(delta: float) -> void:
 	
 	#combat._process(delta)
 	movement.process(delta)
-	
 
 	use()
 	animate()
@@ -75,20 +74,20 @@ func _physics_process(delta: float) -> void:
 func animate():
 	var vel = Vector2(velocity.x, velocity.z)
 
-	if vel.length() > 0:
-		animator.set("parameters/RunIdle/transition_request", "Run")	
-	else:
-		animator.set("parameters/RunIdle/transition_request", "Idle")
-		
-	if equipped_item is Weapon:
-	
-		if Input.is_action_pressed("attack") && equipped_item is MeleeWeapon:
-			animator.set("parameters/Type/transition_request", "melee")	
-			animator.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
-			
-		if Input.is_action_pressed("attack") && equipped_item is RangedWeapon:
-			animator.set("parameters/Type/transition_request", "melee")	
-			animator.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)				
+	#if vel.length() > 0:
+		#animator.set("parameters/RunIdle/transition_request", "Run")	
+	#else:
+		#animator.set("parameters/RunIdle/transition_request", "Idle")
+		#
+	#if equipped_item is Weapon:
+	#
+		#if Input.is_action_pressed("attack") && equipped_item is MeleeWeapon:
+			#animator.set("parameters/Type/transition_request", "melee")	
+			#animator.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+			#
+		#if Input.is_action_pressed("attack") && equipped_item is RangedWeapon:
+			#animator.set("parameters/Type/transition_request", "melee")	
+			#animator.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)				
 
 func addToInventory(item: Item):
 	super(item)
@@ -103,8 +102,8 @@ func use():
 	if Input.is_action_pressed("inventory"):
 		return
 	if Input.is_action_pressed("attack"):
-		var y = cam.rotation.y
-		rotation.y = y
+		#var y = cam.rotation.y
+		#rotation.y = y
 		super()
 		return
 	if equipped_item is RangedWeapon:
@@ -112,24 +111,22 @@ func use():
 			
 
 func equip(item: Item):
-	if equip_bone.get_child_count() > 0:
-		equip_bone.remove_child(equipped_item_scene)
-	
 	#if item is Weapon:
 		#combat.setWeapon(item)
+	
 	super(item)
 	equipped_item_scene = item.mesh.instantiate()
+	var current = $MainCam/EquippedItem.get_child(0)
+	$MainCam/EquippedItem.remove_child(current)
+	$MainCam/EquippedItem.add_child(equipped_item_scene)
 	
-	if item is MeleeWeapon:
-		item.loadHitbox(equipped_item_scene)
+	
 		
 	if item is RangedWeapon:
 		item.loadRay($CameraPivot/MainCam/AimRay)
+		
 	
-	equip_bone.add_child(equipped_item_scene)
-	var idx = equip_bone.find_bone("hand.R")
-	equipped_item_scene.bone_idx = idx
-
-
-
 	
+var rot_x = 0
+var rot_y = 0
+var MOUSE_OVERRIDE = false

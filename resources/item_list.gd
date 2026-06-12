@@ -7,8 +7,9 @@ var weapon_list = []
 var consumable_list = []
 
 var MELEE_WEAPONS = [
-	"sword",
-	"unarmed"
+	"unarmed",
+	"sword"
+	
 ]
 
 var RANGED_WEAPONS = [

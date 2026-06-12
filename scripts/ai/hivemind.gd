@@ -24,10 +24,14 @@ var player_location_known: bool = false
 ## How long the player has been out of sight by all active NPCs
 var player_lost_time: float = 0.0
 
+# Hivemind AI is enabled
+var enabled: bool = true
+
 var TIME_TILL_PLAYER_LOST = 5.0
 
 func _physics_process(delta: float) -> void:
-	simulate_npcs(delta)
+	if enabled:
+		simulate_npcs(delta)
 
 func add_npc(npc: NPC):
 	active_npcs.push_back(npc)

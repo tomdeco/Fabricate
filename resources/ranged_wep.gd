@@ -23,12 +23,14 @@ func _init(p_name = '', p_damage = 1, p_icon = null, p_mesh = null, p_size = 1, 
 	fire_rate = p_rate
 	
 func use():
-	ray.force_raycast_update()
+	
+	
+	#ray.force_raycast_update()
 	fire_latch = true
-	var el = ray.get_collider()
-	if el is Entity:
-		print("hit")
-		el.receiveDamage(damage)
+	#var el = ray.get_collider()
+	#if el is Entity:
+		#print("hit")
+		#el.receiveDamage(damage)
 		
 func loadRay(_ray: RayCast3D):
 	ray = _ray

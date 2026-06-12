@@ -6,7 +6,7 @@ class_name Inventory
 var SIZE
 
 ## Items are stored here 
-var _contents: Array
+var _contents: Array[Item]
 
 ## Create a new inventory. Specify the inventory size.
 func _init(size: int):

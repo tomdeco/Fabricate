@@ -2,20 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dieefivfbkovw"
-path="res://.godot/imported/icon_godambler3d.svg-f7df9bfe58320474198644aa06a8f3f6.ctex"
+uid="uid://ch11wuobcuq22"
+path.s3tc="res://.godot/imported/sword_gloves.png-a4f752ac94c66a526b36188be980f368.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "2d04a7ab70a1c1d7a302fb7f52a8fc50"
 }
 
 [deps]
 
-source_file="res://addons/func_godot/icons/icon_godambler3d.svg"
-dest_files=["res://.godot/imported/icon_godambler3d.svg-f7df9bfe58320474198644aa06a8f3f6.ctex"]
+source_file="res://resources/weapons/melee/sword/sword_gloves.png"
+dest_files=["res://.godot/imported/sword_gloves.png-a4f752ac94c66a526b36188be980f368.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -23,7 +27,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -37,7 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
+detect_3d/compress_to=0

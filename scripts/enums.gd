@@ -15,7 +15,8 @@ enum DiscreteMovementFlag {
 	BACKWARD,
 	LEFT,
 	RIGHT,
-	JUMP
+	JUMP,
+	DASH
 }
 
 ## The three modes an NPC can be in

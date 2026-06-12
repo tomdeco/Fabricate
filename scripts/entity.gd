@@ -17,11 +17,10 @@ var HAS_DOUBLE_JUMPED: bool = false
 ## Container of items the entity currently posesses
 var inventory: Inventory
 
+var equipped_item_scene: Node3D
+
 ## The entities currently equipped item
 var equipped_item: Item = null
-
-## A reference to the players currently equipped weapon mesh. Weapons use the BoneAttachment3D node in order to attach to their hand
-var equipped_item_scene: BoneAttachment3D
 
 ## Store all effects active on the entity
 var effects = []#Array([], TYPE_OBJECT, "EntityEffect", EntityEffect)
@@ -44,17 +43,14 @@ func _init(_HP, _inventory_size) -> void:
 	
 ## Equip an item to the entity
 func equip(_item: Item):
+
+	
 	equipped_item = _item 
 	if equipped_item is MeleeWeapon:
 		equipped_item.parent = self
 	
 func use():
 	equipped_item.use()
-	
-	if equipped_item is RangedWeapon:
-		for child in equipped_item_scene.get_children():
-			if child is GPUParticles3D:
-				child.restart()
 	
 func get_item(_idx: int):
 	return inventory.get_item(_idx)

@@ -1,375 +1,196 @@
 extends Node
 
-class_name Movement_old
-
-## Player constant velocity (in meters per second).
-var PLAYER_SPEED
-
-## The speed added by dashing
-var DASH_SPEED = 10
-
-## The player velocity before external forces such as gravity or momentum
-var inital_velocity: Vector3
-
-## The current velocity of the player. All changes made to player speed are made through here, and then applied to its root node 
-var current_velocity: Vector3
-
-var ACCELERATION: float = 0
+class_name Movement
 
 ## Handle all timing and related functions for the dash ability 
 var dash_timer: Timer
+var dash_length: float = 1.0
+var dash_factor: float = 2.0
 
 ## Time to wait after dashing
 var dash_wait_timer: Timer
 
 var wall_timer: Timer
 
-## Ray Cast Object. Detect grabbable walls
-var grab_ray: RayCast3D
-var mantle_ray: RayCast3D
-var l_wallrun_ray: RayCast3D
-var r_wallrun_ray: RayCast3D
-var floor_ray: RayCast3D
-
-var isWallGrabbed = false
-var isWallGrabDisabled = false
-var isAutoGrabbingEnabled = false
-var isWallRunning = false
-var isOnRamp = false
-
-var currentNormal = Vector3(0, 1, 0)
-
-## Original rotation from last time the player is non-stationary.
+var player: Player
 var origin_rotation
 
-## Whether the camera acts as free-look or crosshair.
-var STATIONARY_CONTINUOUS_TURN = false 
+## The velocity of the player based on inputs
+var applied_velocity: Vector3
 
-var player: Player
+## The velocity of the player based on external, environmental factors
+var real_velocity: Vector3
+
+## Discrete Movement Flags (for KB+M controls)
+var MOVE: bool = false
+var KBM_Controls: Dictionary = {
+	Enums.DiscreteMovementFlag.FORWARD: false,
+	Enums.DiscreteMovementFlag.BACKWARD: false,
+	Enums.DiscreteMovementFlag.LEFT: false,
+	Enums.DiscreteMovementFlag.RIGHT: false,
+	Enums.DiscreteMovementFlag.JUMP: false,
+	Enums.DiscreteMovementFlag.DASH: false
+}
+
+var move_forward: bool
+var move_backward: bool
+var move_left: bool
+var move_right: bool
+var move: bool
 
 func _init(_player) -> void:
 	player = _player
+	
 	dash_timer = Timer.new() 
-	dash_wait_timer = Timer.new()
-	wall_timer = Timer.new()
-	PLAYER_SPEED = player.parameters[Enums.EntityParameterID.MOVEMENT_SPEED]
-
-func _ready() -> void:
-	setRays()
-	dash_timer = Timer.new() 
-	dash_wait_timer = Timer.new()
-	wall_timer = Timer.new()
-	initalizeTimers()
-
-func initalizeTimers():
-	# Dash Timer
+	dash_timer.wait_time = dash_length
 	dash_timer.one_shot = true
-	dash_timer.wait_time = 0.25
-	dash_timer.stop()
 	add_child(dash_timer)
 	
-	# Dash Wait Timer
-	dash_wait_timer.one_shot = true
-	dash_wait_timer.wait_time = 1 + dash_timer.wait_time
-	dash_wait_timer.stop()
-	add_child(dash_wait_timer)
+	dash_wait_timer = Timer.new()
+	wall_timer = Timer.new()
 	
-	# Wall-jump Timer
-	wall_timer.one_shot = true
-	wall_timer.wait_time = 1.5
-	add_child(wall_timer)
+## Update all movement related flags for input polling
+func set_movement_flags():
+	## Reset MOVE to false by default
+	MOVE = false
 	
-
-func setRays():
-	grab_ray = $"../Rays/Wall Grab"
-	mantle_ray = $"../Rays/Mantle"
-	l_wallrun_ray = $"../Rays/WallRunLeft"
-	r_wallrun_ray = $"../Rays/WallRunRight"
-	floor_ray = $"../Rays/Floor"
+	## Set all KBM control flags according to player input
+	KBM_Controls[Enums.DiscreteMovementFlag.LEFT] = Input.is_action_pressed("move_left")
+	KBM_Controls[Enums.DiscreteMovementFlag.RIGHT] = Input.is_action_pressed("move_right")
+	KBM_Controls[Enums.DiscreteMovementFlag.FORWARD] = Input.is_action_pressed("move_forward")
+	KBM_Controls[Enums.DiscreteMovementFlag.BACKWARD] = Input.is_action_pressed("move_backward")
+	KBM_Controls[Enums.DiscreteMovementFlag.JUMP] = Input.is_action_pressed("jump")
+	KBM_Controls[Enums.DiscreteMovementFlag.DASH] = Input.is_action_just_pressed("dash")
 	
-	grab_ray.target_position = Vector3(0, 0, -0.5)
-	mantle_ray.target_position = Vector3(0, 0, -0.7)
-	l_wallrun_ray.target_position = Vector3(-1.0, 0, 0)
-	r_wallrun_ray.target_position = Vector3(1.0, 0, 0)
-	floor_ray.target_position = Vector3(0, -1.0, 0)
-
-func add_initial_velocity(direction: Vector3, speed: float):
-	inital_velocity.x = direction.x * speed
-	inital_velocity.y = direction.y * speed
-	inital_velocity.z = direction.z * speed
-
-func add_velocity(direction: Vector3, speed: float):
-
-	current_velocity.x += direction.x * speed
-	current_velocity.y += direction.y * speed
-	current_velocity.z += direction.z * speed
+	## If any movement input is made, MOVE will become true
+	for idx in KBM_Controls:
+		if KBM_Controls[idx] and idx != Enums.DiscreteMovementFlag.JUMP:
+			MOVE = true
 	
-func move_forward(delta, player):
-	if(Input.is_action_pressed("move_left")):
-		player.rotation.y = player.cam.rotation.y + PI/4
-	else:
-		if Input.is_action_pressed("move_right"):
-			player.rotation.y = player.cam.rotation.y - PI/4
+## Set the direction of the players trajectory using discrete, KB+M controls
+func set_direction_kbm() -> Vector3: 
+	var direction: Vector3 = Vector3.ZERO
+	if KBM_Controls[Enums.DiscreteMovementFlag.FORWARD]:
+		direction.y += 0
+		if KBM_Controls[Enums.DiscreteMovementFlag.RIGHT]:
+			direction.y -= 0.25
 		else:
-			player.rotation.y = player.cam.rotation.y
-	var direction = Vector3(-sin(player.rotation.y), 0, -cos(player.rotation.y))
-	add_initial_velocity(direction, PLAYER_SPEED)
-	
-	
-func move_backward(delta, player):
-	
-	if abs(current_velocity.length()) > 0:
-		current_velocity.x = 0
-		current_velocity.z = 0 
-		return
-	
-	if(Input.is_action_pressed("move_left")):
-		player.rotation.y = player.cam.rotation.y - PI - PI/4
-	else:
-		if Input.is_action_pressed("move_right"):
-			player.rotation.y = player.cam.rotation.y - PI + PI/4
+			if KBM_Controls[Enums.DiscreteMovementFlag.LEFT]:
+				direction.y += 0.25
+	else:			
+		if KBM_Controls[Enums.DiscreteMovementFlag.BACKWARD]:
+			direction.y -= 1
+			if KBM_Controls[Enums.DiscreteMovementFlag.RIGHT]:
+				direction.y += 0.25
+			else:
+				if KBM_Controls[Enums.DiscreteMovementFlag.LEFT]:
+					direction.y -= 0.25
 		else:
-			player.rotation.y = player.cam.rotation.y - PI
-			
-	var direction = Vector3(-sin(player.rotation.y), 0, -cos(player.rotation.y))
-	add_initial_velocity(direction, PLAYER_SPEED)
-	
-
-func move_left(delta, player):
-	player.rotation.y = player.cam.rotation.y + PI/2
-	var direction = Vector3(-sin(player.rotation.y), 0, -cos(player.rotation.y))
-	add_initial_velocity(direction, PLAYER_SPEED)
-	
-
-	
-func move_right(delta, player):
-
-	player.rotation.y = player.cam.rotation.y - PI/2
-	var direction = Vector3(-sin(player.rotation.y), 0, -cos(player.rotation.y))
-	add_initial_velocity(direction, PLAYER_SPEED)
-	
-	
-func jump(delta, acceleration, player):
-	if Input.is_action_pressed("jump") and player.is_on_floor():
-		add_velocity(currentNormal, 25)	
-		#CURRENT_VELOCITY += INITAL_VELOCITY
-				
-func dash(delta, player: Player):
-	var direction = Vector3(-sin(player.rotation.y), 0, -cos(player.rotation.y))
-	if dash_wait_timer.is_stopped():
-		add_velocity(direction, DASH_SPEED)
-		dash_timer.start()
-		dash_wait_timer.start()
-
-func wallrun(delta, player: Player):
-	#return false
-	var leftCollision = l_wallrun_ray.is_colliding()
-	var rightCollision = r_wallrun_ray.is_colliding() 
-	var isColliding = leftCollision or rightCollision
-	var isMoving = false
-	
-	if current_velocity.x + current_velocity.z != 0:
-		isMoving = true
-		
-	if player.is_on_floor() or !isMoving:
-		isWallRunning = false
-		return false	
-		
-	if Vector2(current_velocity.x, current_velocity.z).length() < 20:
-		return
-	 
-	if isMoving and isColliding and !player.is_on_floor():
-		isWallRunning = true
-	
-	if isWallRunning:
-		if 	leftCollision:
-			var normal: Vector3 = l_wallrun_ray.get_collision_normal()
-			player.rotation.y = atan2(normal.x, normal.z) - PI/2
-		else:
-			var normal: Vector3 = r_wallrun_ray.get_collision_normal()
-			player.rotation.y = atan2(normal.x, normal.z) + PI/2
-	
-		if Input.is_action_pressed("move_backward"):
-			isWallRunning = false
-			return false
-			
-		if Input.is_action_pressed("jump"):
-			isWallRunning = false
-			if leftCollision:
-				player.rotation.y -= PI/2
-				player.velocity.y = 10
-				add_initial_velocity(player.rotation, PLAYER_SPEED)
-				
-				
-			if rightCollision:
-				player.rotation.y += PI/2	
-				player.velocity.y = 25
-				add_initial_velocity(player.rotation, PLAYER_SPEED)
-				
-			return false
-				
-		player.velocity.y = -2 
-		return true
-	return false
-			
-func wall_grapple(delta, acceleration, player: Player):
-	var state = grab_ray.is_colliding()
-	if !player.is_on_floor() and !isWallGrabDisabled:
-		if (isWallGrabbed and Input.is_action_just_pressed("jump")):
-			isWallGrabbed = false
-			isAutoGrabbingEnabled = true
-			player.rotation.y -= PI
-			var direction = Vector3(-sin(player.rotation.y), 0, -cos(player.rotation.y))
-			add_velocity(direction, PLAYER_SPEED)
-			add_velocity(Vector3(0, 1, 0), 25)
-			return
-		
-		if (state and Input.is_action_just_pressed("jump") and !isWallGrabbed) or (state and isAutoGrabbingEnabled and !isWallGrabbed):
-			isWallGrabbed = true
+			if KBM_Controls[Enums.DiscreteMovementFlag.LEFT]:
+				direction.y += 0.5
+			else:
+				if KBM_Controls[Enums.DiscreteMovementFlag.RIGHT]:
+					direction.y -= 0.5
 					
-		if (isWallGrabbed and state) or (isAutoGrabbingEnabled and state):
-			var normal: Vector3 = grab_ray.get_collision_normal()		
-			player.rotation.y = atan2(normal.x, normal.z)
-			current_velocity = Vector3.ZERO
-			
-		if Input.is_action_pressed("move_backward"):
-			isAutoGrabbingEnabled = false
-			isWallGrabbed = false
-			isWallGrabDisabled = true
 	
-	if player.is_on_floor():
-		isWallGrabDisabled = false
-		isAutoGrabbingEnabled = false
+	direction *= PI
+	direction.y += player.rotation.y
+	return direction
 	
-	var mantle_state = !mantle_ray.is_colliding()
-	if state and mantle_state:
-			isWallGrabbed = true
-			player.velocity.y = 0
-			player.velocity.x = 0
-			player.velocity.z = 0	
-			if Input.is_action_pressed("move_forward"):
-				var displacement = Vector3(-sin(player.rotation.y), mantle_ray.position.y , -cos(player.rotation.y))
-				player.position += displacement
-				isWallGrabbed = false
-				
-func applyMomentum(delta, player: Player):
-	var direction = Vector3(-sin(player.rotation.y), 0, -cos(player.rotation.y))
-	var magnitude = abs(Vector2(current_velocity.x, current_velocity.z).length())
-	#current_velocity.x = 0
-	#current_velocity.z = 0
+## Set the players trajectory using continuous, analog controller input
+## NOT CURRENTLTY IMPLEMENTED
+func set_direction_controller():
+	pass
+	
+
+func calculateDash(base_velocity: float, delta: float):
+	var dash_component = 1 + ((dash_timer.time_left*dash_factor)/dash_length)
+	return base_velocity*dash_component
+	
+
+## Calculate the real velocity of the player based on external forces and factors
+func calculate_real_velocity(delta: float):
+	#var angle = player.get_floor_angle()
+	#var normal = player.get_floor_normal()
+	#normal.y -= PI/2
 	#
-	#
-	#add_velocity(direction, magnitude)
-	#
-	#if player.is_on_floor():
-		#current_velocity.y = 0
-		#
+	### Stop the player when they hit a wall		
 	#if player.is_on_wall():
-		#var wall = player.get_wall_normal()
-		#if wall.y == 0:
-			#currentNormal.x = 0
-			#currentNormal.z = 0
-#
-	#if floor_ray.is_colliding():
-		#var normal = floor_ray.get_collision_normal()
-		#var diff = cos(player.rotation.z) - normal.y
-		#if normal.y != 1:
-			#var vec = Vector3(normal.x, normal.y - 0.5, normal.z)
-			#var new_vel = magnitude*delta*normal.y
-			#
-			#add_velocity(vec.normalized(),new_vel)
+		#real_velocity.x = 0
+		#real_velocity.z = 0
 	
-	#if player.is_on_floor():
-		#var decrease = 2 * delta
-		#var normal_direction = currentNormal.normalized()
-		#add_velocity(-direction, (magnitude * 0.25 * delta))
-		#
-		#if magnitude < PLAYER_SPEED:
-			#current_velocity.x = 0
-			#current_velocity.z = 0
-
-func noclip():
-	if Input.is_action_pressed("jump"):
-		player.velocity.y = 50
-## Handles basic player movement (even better tho)
-func process(delta, player: Player):		
-	var horizontal_acceleration = -9.8 * 5
-	var fall_acceleration = -9.8 * 10
-	var target_velocity = Vector3.ZERO
-	#var cam_rotation: Vector3 = $CameraPivot.rotation
-	var direction = Vector3(-sin(player.rotation.y), 0, -cos(player.rotation.y))
-	#var magnitude = abs(Vector2(CURRENT_VELOCITY.x, CURRENT_VELOCITY.z).length())
-	
-	applyMomentum(delta, player)
-	
-	if player.is_on_floor():	
-		if Input.is_action_pressed("move_forward"):
-			STATIONARY_CONTINUOUS_TURN = false
-			#origin_rotation = rotation
-			move_forward(delta, player)
-		else:
-			if Input.is_action_pressed("move_backward"):
-				move_backward(delta, player)
-			else:
-				if Input.is_action_pressed("move_left"):
-					move_left(delta, player)
-				else:
-					if Input.is_action_pressed("move_right"):
-						move_right(delta, player)
-					else:	
-						inital_velocity = Vector3.ZERO
-						var rotation_diff = player.rotation - origin_rotation		
-						if(cos(rotation_diff.y) < 0 || STATIONARY_CONTINUOUS_TURN):
-							STATIONARY_CONTINUOUS_TURN = true
-							player.rotation.y = player.cam.rotation.y
+	## Add negative vertical velocity when falling
+	if !player.is_on_floor():
+		real_velocity.y += -9.81 * 10 * delta
 	else:
-		current_velocity += inital_velocity
-		inital_velocity = Vector3.ZERO
-		if Input.is_action_just_pressed("move_forward"):
-			if abs(player.rotation.y - player.cam.rotation.y) > PI/2:
-				current_velocity.x = current_velocity.x / 2
-				current_velocity.z = current_velocity.z / 2
-				#add_velocity(direction, 5)
-			else: 
-				if current_velocity.x + current_velocity.z == 0:
-					add_velocity(direction, 5)
-		else:
-			if Input.is_action_just_pressed("move_backward"):
-				if abs(player.rotation.y - player.cam.rotation.y) < PI/2 and current_velocity.x + current_velocity.z > 0:
-					current_velocity.x = current_velocity.x / 2
-					current_velocity.z = current_velocity.z / 2
-					#add_velocity(direction, 5)
-			else:
-				if Input.is_action_just_pressed("move_left"):
-					if player.rotation.y < player.cam.rotation.y:
-						current_velocity.x = current_velocity.x / 2
-						current_velocity.z = current_velocity.z / 2
-						#add_velocity(direction, -5)
-				else:
-					if Input.is_action_just_pressed("move_right"):
-						if player.rotation.y > player.cam.rotation.y:
-							current_velocity.x = current_velocity.x / 2
-							current_velocity.z = current_velocity.z / 2
-							#add_velocity(direction, -5)
-			
-		
-	if Input.is_action_pressed("dash") or !dash_timer.is_stopped():
-		dash(delta, player)
-		
-	jump(delta, fall_acceleration, player)
-	wall_grapple(delta, fall_acceleration, player)		
-
-	if !wallrun(delta, player):
-		if !isWallGrabbed:
-			if !player.is_on_floor():
-				add_velocity(Vector3(0, 1, 0), fall_acceleration * delta)
-		
-				
-
-
-	player.velocity = inital_velocity + current_velocity	
+		real_velocity.y = 0
 	
-	if Root.noclip:
-		noclip()
+		
+	return 	real_velocity
 
+
+var rot_x = 0
+var rot_y = 0
+var MOUSE_OVERRIDE = false
+
+func set_camera_kbm(event: InputEvent):
+	MOUSE_OVERRIDE = false
+	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+		return
+	if event is InputEventMouseMotion:
+		MOUSE_OVERRIDE = true
+		# modify accumulated mouse rotation
+		rot_x += event.relative.x * 0.01
+		rot_y += event.relative.y * 0.01
+		
+		if(rot_y > PI/2):
+			rot_y = PI/2
+			
+		if(rot_y < -PI/2):
+			rot_y = -PI/2
+		
+		player.transform.basis = Basis() # reset rotation
+		player.cam.transform.basis = Basis()
+		
+		player.rotate_object_local(Vector3(0, -1, 0), rot_x)
+		player.cam.rotate_object_local(Vector3(-1, 0, 0), rot_y) # then rotate in X
+	
+		if(abs(rot_x) > 2*PI):
+			rot_x = 0
+			
+func _input(event: InputEvent):
+	set_camera_kbm(event)
+
+func process(delta):
+	#player.rotation.y = player.cam.rotation.y
+	
+	set_movement_flags()
+	var direction_modifier = set_direction_kbm()
+	applied_velocity.x = 0
+	applied_velocity.z = 0
+	
+	
+		
+	
+	real_velocity = calculate_real_velocity(delta)
+	
+	if KBM_Controls[Enums.DiscreteMovementFlag.DASH] and dash_timer.is_stopped():
+		dash_timer.start()
+		
+	
+	if MOVE:
+		applied_velocity.z = -player.parameters[Enums.EntityParameterID.MOVEMENT_SPEED]
+		if dash_timer.time_left > 0:
+			applied_velocity.z = calculateDash(applied_velocity.z, delta)
+	
+	applied_velocity = applied_velocity.rotated(Vector3(0, 1, 0), direction_modifier.y)
+	if KBM_Controls[Enums.DiscreteMovementFlag.JUMP] and player.is_on_floor():
+		real_velocity.y = 30
+		
+
+
+	var total_velocity = applied_velocity + real_velocity
+	
+	player.velocity = total_velocity
 	player.move_and_slide()
+	

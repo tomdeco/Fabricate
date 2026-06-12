@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=4 uid="uid://cepogkbm7sko5"]
+[gd_scene format=4 uid="uid://cepogkbm7sko5"]
 
 [ext_resource type="Script" uid="uid://c1q5wt3aq7x77" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_7luxs"]
 [ext_resource type="Resource" uid="uid://bkhxcqsquw1yg" path="res://addons/func_godot/func_godot_default_map_settings.tres" id="2_30g2s"]
@@ -14,7 +14,7 @@
 [ext_resource type="Resource" uid="uid://rsfpdukns58j" path="res://resources/weapons/ranged/revolver.tres" id="12_dkmfk"]
 [ext_resource type="Script" uid="uid://bfh0hcwiiuh5" path="res://scripts/ai/route_node.gd" id="13_30g2s"]
 [ext_resource type="PackedScene" uid="uid://ba01bcrurc5f3" path="res://resources/zone1/terrain/cliff.tscn" id="14_hpuhg"]
-[ext_resource type="Resource" uid="uid://d04ncisi864g2" path="res://resources/weapons/melee/sword.tres" id="15_v5hq4"]
+[ext_resource type="Resource" uid="uid://d04ncisi864g2" path="res://resources/weapons/melee/sword_old.tres" id="15_v5hq4"]
 [ext_resource type="Texture2D" uid="uid://c3x83sahc1pir" path="res://resources/Panorama_Desert_02-2048x1024.png" id="17_v5hq4"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_dkmfk"]
