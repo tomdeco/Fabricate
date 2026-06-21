@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://wwus6m4r8utg"]
+
+[ext_resource type="Script" uid="uid://4lr2qlfi5xq" path="res://Scripts/Entity/entity.gd" id="1_l64q4"]
+[ext_resource type="PackedScene" uid="uid://cau0knd31iwj5" path="res://Resources/hitboxes/EmptyHitbox.tscn" id="1_rag6n"]
+
+[node name="Entity" type="CharacterBody3D" unique_id=1314013891]
+script = ExtResource("1_l64q4")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1678800448]
+
+[node name="Hitbox" type="Area3D" parent="." unique_id=702220692]
+
+[node name="CollisionShape3D" parent="Hitbox" unique_id=2039780854 instance=ExtResource("1_rag6n")]

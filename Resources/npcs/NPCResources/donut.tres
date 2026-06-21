@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="NPCResource" format=3 uid="uid://uj10y8fvx1vj"]
+
+[ext_resource type="PackedScene" uid="uid://dlr101gfcg5nw" path="res://Scene/Entity/Donut.tscn" id="1_iy13p"]
+[ext_resource type="Script" uid="uid://carnl207uqyyn" path="res://Resources/npc_resource.gd" id="1_la7qi"]
+
+[resource]
+script = ExtResource("1_la7qi")
+id = "donut"
+name = "The Donut"
+max_health = 100.0
+movement_speed = 10.0
+npc_scene = ExtResource("1_iy13p")
+ai_mode = 1
+navigation_layer = 1
+metadata/_custom_type_script = "uid://carnl207uqyyn"

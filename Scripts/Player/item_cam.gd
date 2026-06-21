@@ -1,0 +1,23 @@
+@tool
+extends Camera3D
+
+@onready var main_cam = $"../../../WorldViewContainer/WorldView/MainCam"
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	
+	
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	set_global_transform(main_cam.get_global_transform())
+	if Engine.is_editor_hint():
+		set_global_transform(main_cam.get_global_transform())
+		var editorItem = preload("res://Resources/weapons/melee/sword/sword.tscn")
+		add_child(editorItem)
+	
+	
+		
+	pass

@@ -1,0 +1,478 @@
+[gd_scene format=3 uid="uid://doy7kcnrwdv1a"]
+
+[ext_resource type="PackedScene" uid="uid://wwus6m4r8utg" path="res://Scene/Entity/Entity.tscn" id="1_n6bxc"]
+[ext_resource type="Script" uid="uid://d3elpsq28bbi2" path="res://Scripts/Entity/player.gd" id="2_n6bxc"]
+[ext_resource type="Environment" uid="uid://cjb2hf5f6exac" path="res://protozone_env.tres" id="5_f1ej7"]
+[ext_resource type="PackedScene" uid="uid://bu36dy0bt6qe4" path="res://Resources/weapons/ranged/revolver/revolver.tscn" id="7_a8ls1"]
+[ext_resource type="Script" uid="uid://drqc6g1ivbgwe" path="res://Scripts/Player/item_view.gd" id="10_d2wvv"]
+[ext_resource type="Script" uid="uid://ctjuc3l4udba4" path="res://Scripts/Player/item_cam.gd" id="11_3v2ag"]
+[ext_resource type="Texture2D" uid="uid://daxahg4cmtv28" path="res://textures/ui/crosshair.png" id="12_qfm1y"]
+[ext_resource type="Script" uid="uid://cemsf8qg1bog3" path="res://Scripts/UI/hud.gd" id="15_qfm1y"]
+[ext_resource type="FontFile" uid="uid://cxu2prbxwl8et" path="res://Resources/fonts/Ac437_SperryPC_8x16.ttf" id="16_fulsm"]
+[ext_resource type="Script" uid="uid://bnjcgf8f4wnxv" path="res://Scripts/UI/inventory_ui.gd" id="17_4r5pv"]
+[ext_resource type="Script" uid="uid://byv0q1urarqq4" path="res://Scripts/Player/main_cam.gd" id="17_fulsm"]
+[ext_resource type="Texture2D" uid="uid://di21dsfr08hti" path="res://Resources/ui/param_frame_new.png" id="17_qfm1y"]
+[ext_resource type="Texture2D" uid="uid://buylehv3l5o2r" path="res://Resources/ui/melee.png" id="18_60mlk"]
+[ext_resource type="Script" uid="uid://be6nwybek7cuh" path="res://Scripts/UI/item_container.gd" id="19_a38lo"]
+[ext_resource type="Texture2D" uid="uid://cijy06j7r6dv0" path="res://Resources/ui/inventory_box.png" id="19_i4ail"]
+[ext_resource type="FontFile" uid="uid://b7pbwk2a8dbfi" path="res://Resources/fonts/Ac437_Acer_VGA_8x8.ttf" id="22_a38lo"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2qgql"]
+
+[sub_resource type="Theme" id="Theme_xjlt7"]
+default_font = ExtResource("16_fulsm")
+default_font_size = 44
+
+[sub_resource type="LabelSettings" id="LabelSettings_utr26"]
+font_size = 61
+font_color = Color(1, 0.223529, 0.231373, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u0a8y"]
+bg_color = Color(1.44392e-06, 0.745634, 0.54847, 1)
+skew = Vector2(1.95, -0.625)
+corner_radius_top_left = 240
+corner_radius_top_right = 240
+corner_radius_bottom_right = 240
+corner_radius_bottom_left = 240
+corner_detail = 20
+
+[sub_resource type="SystemFont" id="SystemFont_ur7pv"]
+subpixel_positioning = 0
+
+[sub_resource type="Theme" id="Theme_5vcmg"]
+default_font = SubResource("SystemFont_ur7pv")
+default_font_size = 9
+
+[sub_resource type="Theme" id="Theme_7mevl"]
+default_font = ExtResource("16_fulsm")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ld6d"]
+bg_color = Color(0, 0.278431, 0.431373, 1)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f6eio"]
+texture = ExtResource("19_i4ail")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7sw0a"]
+bg_color = Color(0, 0.462353, 0.699656, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_o4wa6"]
+font_size = 19
+
+[sub_resource type="LabelSettings" id="LabelSettings_l0oha"]
+font = ExtResource("22_a38lo")
+font_size = 11
+
+[node name="Player" unique_id=1314013891 instance=ExtResource("1_n6bxc")]
+script = ExtResource("2_n6bxc")
+
+[node name="Collision" parent="." index="0" unique_id=1678800448]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0413818, 0)
+shape = SubResource("CapsuleShape3D_2qgql")
+
+[node name="Rays" type="Node3D" parent="." index="1" unique_id=1618382180]
+
+[node name="Wall Grab" type="RayCast3D" parent="Rays" index="0" unique_id=1253082213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03665, -0.0273162)
+visible = false
+
+[node name="Mantle" type="RayCast3D" parent="Rays" index="1" unique_id=828310529]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61393, -0.0273162)
+visible = false
+debug_shape_custom_color = Color(0, 1, 0, 1)
+
+[node name="WallRunLeft" type="RayCast3D" parent="Rays" index="2" unique_id=2022355312]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03845, 0)
+visible = false
+
+[node name="WallRunRight" type="RayCast3D" parent="Rays" index="3" unique_id=1057330279]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03845, 0)
+visible = false
+
+[node name="WorldViewContainer" type="SubViewportContainer" parent="." index="2" unique_id=443309119]
+offset_right = 2560.0
+offset_bottom = 1389.0
+stretch = true
+script = ExtResource("10_d2wvv")
+
+[node name="WorldView" type="SubViewport" parent="WorldViewContainer" index="0" unique_id=763063304]
+handle_input_locally = false
+size = Vector2i(2560, 1389)
+render_target_update_mode = 4
+
+[node name="MainCam" type="Camera3D" parent="WorldViewContainer/WorldView" index="0" unique_id=1348542584]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.515936, 0)
+current = true
+fov = 100.0
+script = ExtResource("17_fulsm")
+
+[node name="AimRay" type="RayCast3D" parent="WorldViewContainer/WorldView/MainCam" index="0" unique_id=717579637]
+visible = false
+target_position = Vector3(0, 0, -100)
+
+[node name="ItemViewContainer" type="SubViewportContainer" parent="." index="3" unique_id=706452860]
+offset_right = 2560.0
+offset_bottom = 1389.0
+stretch = true
+script = ExtResource("10_d2wvv")
+
+[node name="ItemView" type="SubViewport" parent="ItemViewContainer" index="0" unique_id=610071601]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(2560, 1389)
+render_target_update_mode = 4
+
+[node name="ItemCam" type="Camera3D" parent="ItemViewContainer/ItemView" index="0" unique_id=431223793]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.515936, 0)
+environment = ExtResource("5_f1ej7")
+current = true
+fov = 100.0
+script = ExtResource("11_3v2ag")
+
+[node name="EquippedItem" type="Node3D" parent="ItemViewContainer/ItemView/ItemCam" index="0" unique_id=222252586]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.30701753, -0.36337197, -0.2121615)
+
+[node name="revolver_rigged" parent="ItemViewContainer/ItemView/ItemCam/EquippedItem" index="0" unique_id=154566764 instance=ExtResource("7_a8ls1")]
+
+[node name="HUD" type="CanvasLayer" parent="." index="4" unique_id=1188979671]
+script = ExtResource("15_qfm1y")
+
+[node name="HUD" type="Control" parent="HUD" index="0" unique_id=220914221]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1.0
+offset_right = 1153.0
+offset_bottom = 648.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme = SubResource("Theme_xjlt7")
+
+[node name="Params" type="Control" parent="HUD/HUD" index="0" unique_id=754294291]
+z_index = 6
+anchors_preset = 0
+anchor_top = -0.025037
+anchor_right = 0.5
+anchor_bottom = 0.555963
+offset_left = 64.0
+offset_top = 56.224
+offset_right = 614.005
+offset_bottom = 251.736
+scale = Vector2(0.33895, 0.33895)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="HP" type="Control" parent="HUD/HUD/Params" index="0" unique_id=983893320]
+anchors_preset = 0
+offset_left = 384.0
+offset_top = 96.0
+offset_right = 972.0
+offset_bottom = 193.0
+
+[node name="hp_label" type="Label" parent="HUD/HUD/Params/HP" index="0" unique_id=2009306331]
+layout_mode = 0
+offset_top = 17.0
+offset_right = 588.0
+offset_bottom = 79.0
+text = "HP:"
+label_settings = SubResource("LabelSettings_utr26")
+
+[node name="hp_label2" type="Label" parent="HUD/HUD/Params/HP" index="1" unique_id=294021697]
+layout_mode = 0
+anchor_left = 0.151
+anchor_top = 0.485
+anchor_right = 0.151
+anchor_bottom = 0.485
+offset_left = 0.211998
+offset_top = -31.045
+offset_right = 569.212
+offset_bottom = 30.955
+label_settings = SubResource("LabelSettings_utr26")
+
+[node name="Speed" type="Control" parent="HUD/HUD/Params" index="1" unique_id=1926486496]
+anchors_preset = 0
+offset_left = 194.0
+offset_top = 347.0
+offset_right = 782.0
+offset_bottom = 436.0
+
+[node name="speed_label" type="Label" parent="HUD/HUD/Params/Speed" index="0" unique_id=961492357]
+layout_mode = 0
+offset_top = 13.0
+offset_right = 588.0
+offset_bottom = 75.0
+text = "SPEED:"
+label_settings = SubResource("LabelSettings_utr26")
+
+[node name="speed" type="Label" parent="HUD/HUD/Params/Speed" index="1" unique_id=1975347979]
+layout_mode = 0
+anchor_left = 0.273
+anchor_top = 0.5
+anchor_right = 0.273
+anchor_bottom = 0.5
+offset_left = 0.262787
+offset_top = -31.5738
+offset_right = 588.263
+offset_bottom = 30.4262
+label_settings = SubResource("LabelSettings_utr26")
+
+[node name="EntityEffects" type="Control" parent="HUD/HUD/Params" index="2" unique_id=1317867443]
+anchors_preset = 0
+offset_left = 378.0
+offset_top = 64.0
+offset_right = 378.0
+offset_bottom = 64.0
+
+[node name="HFlowContainer" type="HFlowContainer" parent="HUD/HUD/Params/EntityEffects" index="0" unique_id=1810217446]
+layout_mode = 0
+offset_left = -0.363204
+offset_top = -69.9007
+offset_right = 660.637
+offset_bottom = 1.09935
+
+[node name="Tex" type="Control" parent="HUD/HUD/Params" index="3" unique_id=1330532368]
+modulate = Color(0.220142, 0.486166, 0.963586, 1)
+anchors_preset = 0
+offset_left = 11.0
+offset_top = -73.0
+offset_right = 3085.33
+offset_bottom = 1424.0
+scale = Vector2(0.35839, 0.35839)
+
+[node name="TextureRect" type="TextureRect" parent="HUD/HUD/Params/Tex" index="0" unique_id=192108470]
+layout_mode = 0
+anchor_left = -0.181
+anchor_top = -0.216
+anchor_right = -0.181
+anchor_bottom = -0.216
+offset_left = 556.454
+offset_top = 323.352
+offset_right = 3630.78
+offset_bottom = 1820.35
+texture = ExtResource("17_qfm1y")
+expand_mode = 1
+
+[node name="EquipIcon" type="PanelContainer" parent="HUD/HUD/Params" index="4" unique_id=367100154]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 71.0
+offset_top = 47.0
+offset_right = 259.0
+offset_bottom = 236.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="HUD/HUD/Params/EquipIcon" index="0" unique_id=1773551025]
+z_index = -1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_u0a8y")
+
+[node name="TextureRect" type="TextureRect" parent="HUD/HUD/Params/EquipIcon" index="1" unique_id=1282088452]
+modulate = Color(0, 0, 0, 1)
+z_index = 1
+layout_mode = 2
+texture = ExtResource("18_60mlk")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Controls2" type="Label" parent="HUD/HUD" index="1" unique_id=1750464481]
+layout_mode = 0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = -216.0
+offset_right = 340.0
+offset_bottom = 69.0
+scale = Vector2(0.491371, 0.491371)
+text = "Controls
+Exit - ESC
+Reload - R
+Move - WASD
+Jump - Space
+Inventory - Q
+Dash - Shift"
+metadata/_edit_use_anchors_ = true
+
+[node name="Crosshair" type="CenterContainer" parent="HUD/HUD" index="2" unique_id=424561435]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = -32.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.4, 0.4)
+use_top_left = true
+
+[node name="TextureRect" type="TextureRect" parent="HUD/HUD/Crosshair" index="0" unique_id=1670069280]
+layout_mode = 2
+texture = ExtResource("12_qfm1y")
+
+[node name="Debug" type="Control" parent="HUD/HUD" index="3" unique_id=937986929]
+anchors_preset = 0
+offset_left = 928.0
+offset_top = 13.0
+offset_right = 1132.0
+offset_bottom = 125.0
+theme = SubResource("Theme_5vcmg")
+
+[node name="ColorRect" type="ColorRect" parent="HUD/HUD/Debug" index="0" unique_id=939823265]
+layout_mode = 0
+offset_right = 198.0
+offset_bottom = 81.0
+color = Color(0, 0, 0, 0.6666667)
+
+[node name="Velocity" type="Control" parent="HUD/HUD/Debug" index="1" unique_id=1192302622]
+anchors_preset = 0
+
+[node name="Container" type="VBoxContainer" parent="HUD/HUD/Debug/Velocity" index="0" unique_id=1390404054]
+layout_mode = 0
+offset_right = 147.0
+offset_bottom = 69.0
+
+[node name="Header" type="Label" parent="HUD/HUD/Debug/Velocity/Container" index="0" unique_id=698321044]
+layout_mode = 2
+text = "Velocity"
+
+[node name="x" type="Label" parent="HUD/HUD/Debug/Velocity/Container" index="1" unique_id=885486262]
+layout_mode = 2
+text = "X"
+
+[node name="y" type="Label" parent="HUD/HUD/Debug/Velocity/Container" index="2" unique_id=1346223456]
+layout_mode = 2
+text = "Y"
+
+[node name="z" type="Label" parent="HUD/HUD/Debug/Velocity/Container" index="3" unique_id=1191215557]
+layout_mode = 2
+text = "Z"
+
+[node name="Collision" type="Control" parent="HUD/HUD/Debug" index="2" unique_id=1860452203]
+anchors_preset = 0
+offset_top = 57.0
+offset_bottom = 57.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/HUD/Debug/Collision" index="0" unique_id=862714119]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="wall" type="Label" parent="HUD/HUD/Debug/Collision/VBoxContainer" index="0" unique_id=502831994]
+layout_mode = 2
+
+[node name="floor" type="Label" parent="HUD/HUD/Debug/Collision/VBoxContainer" index="1" unique_id=794782983]
+layout_mode = 2
+text = "Floor Collision"
+
+[node name="PlayerMenu" type="Control" parent="HUD" index="1" unique_id=1935627296]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Inventory" type="Control" parent="HUD" index="2" unique_id=72966843]
+layout_mode = 3
+anchor_left = 1.0
+anchor_top = 0.555
+anchor_right = 1.0
+anchor_bottom = 0.555
+offset_left = -467.0
+offset_top = -164.64001
+offset_right = -55.0
+offset_bottom = 154.35999
+theme = SubResource("Theme_7mevl")
+
+[node name="Background" type="Panel" parent="HUD/Inventory" index="0" unique_id=73325507]
+z_index = -2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -137.0
+offset_top = -127.5
+offset_right = 138.0
+offset_bottom = 105.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6ld6d")
+
+[node name="ItemFrame" type="PanelContainer" parent="HUD/Inventory" index="1" unique_id=919567797]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.494
+anchor_right = 0.5
+anchor_bottom = 0.494
+offset_left = -128.0
+offset_top = -94.848
+offset_right = 128.0
+offset_bottom = 97.152
+theme_override_styles/panel = SubResource("StyleBoxTexture_f6eio")
+script = ExtResource("17_4r5pv")
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemContainer" type="Container" parent="HUD/Inventory/ItemFrame" index="0" unique_id=107654058]
+layout_direction = 2
+layout_mode = 2
+script = ExtResource("19_a38lo")
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelPanel" type="Panel" parent="HUD/Inventory" index="2" unique_id=888611533]
+z_index = -1
+layout_mode = 0
+offset_left = 78.0
+offset_top = 38.0
+offset_right = 342.0
+offset_bottom = 60.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7sw0a")
+
+[node name="Label" type="Label" parent="HUD/Inventory/LabelPanel" index="0" unique_id=1186372796]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -127.0
+offset_top = -10.0
+offset_right = -56.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Inventory"
+label_settings = SubResource("LabelSettings_o4wa6")
+
+[node name="CloniteCount" type="Label" parent="HUD/Inventory/LabelPanel" index="1" unique_id=2114930055]
+layout_mode = 0
+offset_left = 212.0
+offset_top = 3.0
+offset_right = 254.0
+offset_bottom = 19.0
+text = "999"
+horizontal_alignment = 2
+
+[node name="ReferenceRect" type="ReferenceRect" parent="HUD/Inventory/LabelPanel" index="2" unique_id=440914430]
+layout_mode = 0
+offset_left = 195.0
+offset_right = 216.0
+offset_bottom = 22.0
+border_width = 1.5
+editor_only = false
+
+[node name="Label" type="Label" parent="HUD/Inventory/LabelPanel/ReferenceRect" index="0" unique_id=551334121]
+layout_mode = 0
+offset_left = -8.0
+offset_top = 5.0
+offset_right = 29.0
+offset_bottom = 27.0
+text = "ICON"
+label_settings = SubResource("LabelSettings_l0oha")

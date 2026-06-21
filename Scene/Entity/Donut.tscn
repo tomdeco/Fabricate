@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dlr101gfcg5nw"]
+
+[ext_resource type="PackedScene" uid="uid://bqim5dqillogy" path="res://Scene/Entity/NPC.tscn" id="1_6gpbv"]
+[ext_resource type="ArrayMesh" uid="uid://b3s0w4ilkfsnl" path="res://Resources/Mesh/donut.tres" id="2_ka72b"]
+[ext_resource type="Texture2D" uid="uid://ceifmvn8nclvd" path="res://icon.svg" id="3_05lv8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6gpbv"]
+
+[node name="Donut" unique_id=1314013891 instance=ExtResource("1_6gpbv")]
+top_level = true
+ai_mode = 1
+
+[node name="Collision" parent="." index="0" unique_id=1678800448]
+shape = SubResource("BoxShape3D_6gpbv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="7" unique_id=195424101]
+transform = Transform3D(766.815, 0, 0, 0, 1285.15, 0, 0, 0, 626.934, 0, 0, 0)
+mesh = ExtResource("2_ka72b")
+
+[node name="Sprite3D" type="Sprite3D" parent="." index="8" unique_id=20588828]
+transform = Transform3D(0.418679, 0, 0, 0, 0.480737, 0, 0, 0, 1, 0, 0, -0.41042078)
+texture = ExtResource("3_05lv8")
+
+[node name="Equipped" type="Node3D" parent="." index="9" unique_id=205640212]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4028075, 0)

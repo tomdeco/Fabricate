@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Consumable" format=3 uid="uid://bfiq8ffd252lp"]
+
+[ext_resource type="Resource" uid="uid://mq0sn7hugv7b" path="res://Resources/entity_effects/Small Health Boost/Small Health Boost.tres" id="1_7qgmj"]
+[ext_resource type="Texture2D" uid="uid://d0v6rlcpku7h1" path="res://Resources/entity_effects/Small Health Boost/icon.png" id="2_ogfh8"]
+[ext_resource type="PackedScene" uid="uid://300hprs4ab38" path="res://Resources/items/s_health/s_health.tscn" id="3_g6orr"]
+[ext_resource type="Script" uid="uid://b2dcwpb25bskv" path="res://Resources/consumable.gd" id="3_xa0nw"]
+
+[resource]
+script = ExtResource("3_xa0nw")
+entity_effect = ExtResource("1_7qgmj")
+name = "Small Health Kit"
+icon = ExtResource("2_ogfh8")
+mesh = ExtResource("3_g6orr")
+size = 1
+id = "s_health"
+metadata/_custom_type_script = "uid://b2dcwpb25bskv"

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://byxoj0emommn4"]
+
+[ext_resource type="PackedScene" uid="uid://3pkthcp2le3" path="res://Resources/weapons/melee/sword/sword.glb" id="1_a6m75"]
+
+[node name="sword2" unique_id=564940643 instance=ExtResource("1_a6m75")]

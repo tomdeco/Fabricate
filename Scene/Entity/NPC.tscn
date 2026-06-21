@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bqim5dqillogy"]
+
+[ext_resource type="PackedScene" uid="uid://wwus6m4r8utg" path="res://Scene/Entity/Entity.tscn" id="1_im54e"]
+[ext_resource type="Script" uid="uid://b6acvdo05f2yi" path="res://Scripts/AI/patrol_route.gd" id="2_87bl2"]
+[ext_resource type="Script" uid="uid://nmd8svp8m5a3" path="res://Scripts/Entity/npc.gd" id="2_bikga"]
+[ext_resource type="Shape3D" uid="uid://dq42mpy34ngbn" path="res://Resources/npcs/vision_shape.tres" id="2_g3bq5"]
+
+[node name="NPC" unique_id=1314013891 instance=ExtResource("1_im54e")]
+script = ExtResource("2_bikga")
+ai_mode = 0
+
+[node name="PatrolRoute" type="Node3D" parent="." index="2" unique_id=1799379670]
+top_level = true
+script = ExtResource("2_87bl2")
+metadata/_custom_type_script = "uid://b6acvdo05f2yi"
+
+[node name="DetectionRay" type="ShapeCast3D" parent="." index="3" unique_id=2057353424]
+shape = ExtResource("2_g3bq5")
+target_position = Vector3(0, 1, 0)
+
+[node name="TrackRay" type="RayCast3D" parent="." index="4" unique_id=63790289]
+top_level = true
+target_position = Vector3(0, 1, 0)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="5" unique_id=1979629728]
+
+[node name="Timers" type="Node" parent="." index="6" unique_id=1165479939]
+
+[node name="SemiFire" type="Timer" parent="Timers" index="0" unique_id=1917006162]
+wait_time = 0.65
+one_shot = true
+
+[node name="MeleeAttack" type="Timer" parent="Timers" index="1" unique_id=796175397]
+wait_time = 0.5
+one_shot = true
