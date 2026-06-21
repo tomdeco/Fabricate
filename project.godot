@@ -27,16 +27,14 @@ config/windows_native_icon="res://icon.ico"
 [autoload]
 
 Console="*uid://ouiu5xh1cs8n"
-Enums="*res://scripts/enums.gd"
-Root="*res://scripts/root.gd"
-Hivemind="*res://scripts/ai/hivemind.gd"
-AbilityFunctions="*res://scripts/ability_functions.gd"
+Enums="*res://Scripts/enums.gd"
+Root="*res://Scripts/root.gd"
+Hivemind="*res://Scripts/AI/hivemind.gd"
+AbilityFunctions="*res://Scripts/Game/ability_functions.gd"
 
 [display]
 
-window/size/mode=3
 window/size/borderless=true
-window/stretch/mode="canvas_items"
 
 [editor_plugins]
 

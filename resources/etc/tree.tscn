@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://chlbnc4y7u207"]
-
-[ext_resource type="PackedScene" uid="uid://u6huoo8f0hyu" path="res://resources/etc/DipshitTree_model.glb" id="1_brfkd"]
-
-[node name="DipshitTree_model" instance=ExtResource("1_brfkd")]

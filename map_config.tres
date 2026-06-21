@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="FuncGodotMapSettings" load_steps=4 format=3 uid="uid://deq545ducvscs"]
+[gd_resource type="Resource" script_class="FuncGodotMapSettings" format=3 uid="uid://deq545ducvscs"]
 
 [ext_resource type="Material" uid="uid://cvex6toty8yn7" path="res://addons/func_godot/textures/default_material.tres" id="1_6bx7o"]
 [ext_resource type="Resource" uid="uid://crgpdahjaj" path="res://addons/func_godot/fgd/func_godot_fgd.tres" id="2_7pvlf"]
