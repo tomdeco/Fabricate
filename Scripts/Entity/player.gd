@@ -9,8 +9,6 @@ class_name Player
 ## Root of the inventory UI hirearchy
 @onready var inventory_ui = $HUD/Inventory/ItemFrame
 
-
-
 ## Movement code specific to the player
 var movement: Movement;
 
@@ -25,7 +23,6 @@ func _init():
 	inventory = Inventory.new(10)
 	#combat = Combat.new(self, 1.5)
 	movement = Movement.new(self)
-	parameters[Enums.EntityParameterID.MOVEMENT_SPEED] = 10
 	movement.origin_rotation = rotation
 	add_child(movement)
 	
@@ -33,6 +30,7 @@ func _init():
 
 func _ready() -> void:
 	equipSlot = $ItemViewContainer/ItemView/ItemCam/EquippedItem
+	rangedRayCast = $WorldViewContainer/WorldView/MainCam/AimRay
 	var rev: Weapon = Root.item_list.getWeapon("revolver")
 	var sword: Weapon = Root.item_list.getWeapon("sword")
 	equip(sword)
@@ -62,6 +60,7 @@ func _process(delta):
 	
 
 func _physics_process(delta: float) -> void:
+	$Rays/Velocity.target_position = velocity
 	movement.process(delta)
 	use()
 
@@ -77,7 +76,7 @@ func removeFromInventory(item: Item):
 func use():
 	if Input.is_action_pressed("inventory"):
 		return
-	if Input.is_action_pressed("attack"):
+	if Input.is_action_just_pressed("attack"):
 		#var y = cam.rotation.y
 		#rotation.y = y
 		super()

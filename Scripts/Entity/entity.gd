@@ -3,6 +3,24 @@ extends CharacterBody3D
 
 class_name Entity
 
+## The name of the entity. Displayed during gameplay
+@export var _name: String = "Default"
+
+## The name used by the engine. Not shown during gameplay
+@export var id: String = "default"
+
+## Maximum acheviable health
+@export var max_health: float
+ 
+## Applicable to melee only
+@export var base_damage: float 
+
+## How fast the NPC moves in m/s
+@export var movement_speed: float 
+
+## How many clonites are dropped upon death
+@export var clonites: int 
+
 ## Entity parameters including health, base damage, speed
 @export var parameters = {
 	Enums.EntityParameterID.MAX_HEALTH: 100, 
@@ -27,13 +45,24 @@ var effects = []#Array([], TYPE_OBJECT, "EntityEffect", EntityEffect)
 
 var physics_call_queue: Array[Callable] = []
 
+## The current angle of the floor
+var currentFloorAngle: float = 0.0
+## The current norm of the floor
+var currentFloorNorm: Vector3 = Vector3.UP
+
 ## Node3D where item scene is instantiated
 @onready var equipSlot: Node3D
 
 ## Hitbox currently used by entity
 @onready var hitbox: Area3D = find_child("Hitbox")
 
+## Raycast for ranged weapon hit detection. 
+var rangedRayCast: RayCast3D
+
 var scene: Node3D
+
+func _init() -> void:
+	name = _name
 
 func _physics_process(delta: float) -> void:
 	if physics_call_queue.size() == 0:

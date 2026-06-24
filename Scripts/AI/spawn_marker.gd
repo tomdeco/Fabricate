@@ -12,7 +12,7 @@ var icon: Sprite3D
 @export var enabled = true
 
 ## Which NPC to spawn
-@export var entity: NPCResource
+@export var entity: PackedScene
 
 ## How far the spawner can detect the player. Used in Proximity Mode
 @export var detect_range: float
@@ -75,7 +75,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func spawn():
 	enabled = false
-	var npc = entity.npc_scene.instantiate()
+	var npc = entity.instantiate()
 	self.add_child(npc)
 	
 	

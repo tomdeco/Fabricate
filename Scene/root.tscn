@@ -1,13 +1,22 @@
 [gd_scene format=3 uid="uid://cqa5cc11r62rq"]
 
 [ext_resource type="Script" uid="uid://cibpie6yjcnbn" path="res://Scripts/root.gd" id="1_cdqbm"]
-[ext_resource type="PackedScene" uid="uid://cepogkbm7sko5" path="res://Scene/ai_zone.tscn" id="3_lrqlo"]
+[ext_resource type="PackedScene" uid="uid://d0x083w2ls7cg" path="res://Scene/proto_zone.tscn" id="3_2m03i"]
+[ext_resource type="PackedScene" uid="uid://cepogkbm7sko5" path="res://Scene/ai_zone.tscn" id="4_fpdt3"]
 [ext_resource type="PackedScene" uid="uid://doy7kcnrwdv1a" path="res://Scene/Entity/Player.tscn" id="8_jsk3o"]
 
 [node name="Node3D" type="Node3D" unique_id=1228453814]
 script = ExtResource("1_cdqbm")
 
-[node name="AI_zone" parent="." unique_id=1278825258 instance=ExtResource("3_lrqlo")]
-
 [node name="Player" parent="." unique_id=1314013891 instance=ExtResource("8_jsk3o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.3136406, 14.253529)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -77.65552, 9.799421, 84.839935)
+_name = "Player"
+id = "player"
+max_health = 100.0
+base_damage = 50.0
+movement_speed = 10.0
+
+[node name="ProtoZone" parent="." unique_id=191941401 instance=ExtResource("3_2m03i")]
+transform = Transform3D(-0.7833761, 0.027172089, 0.62095374, -0.0098939445, 0.9983722, -0.05616929, -0.6214692, -0.050145358, -0.78183216, -187.24059, 30.582325, 282.5213)
+
+[node name="AI_zone" parent="." unique_id=940367805 instance=ExtResource("4_fpdt3")]

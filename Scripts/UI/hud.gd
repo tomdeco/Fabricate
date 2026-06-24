@@ -56,5 +56,7 @@ func update_debug_collision():
 		$HUD/Debug/Collision/VBoxContainer/wall.text = "Wall collision: True"
 	else:
 		$HUD/Debug/Collision/VBoxContainer/wall.text = "Wall collision: False"
+		
+	$HUD/Debug/Collision/VBoxContainer/angle.text = "Floor Angle (radians): %f \nFloor Angle (degrees): %f" % [player.currentFloorAngle, rad_to_deg(player.currentFloorAngle)]
 	
 	

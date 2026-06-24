@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://cijy06j7r6dv0" path="res://Resources/ui/inventory_box.png" id="19_i4ail"]
 [ext_resource type="FontFile" uid="uid://b7pbwk2a8dbfi" path="res://Resources/fonts/Ac437_Acer_VGA_8x8.ttf" id="22_a38lo"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2qgql"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n6bxc"]
 
 [sub_resource type="Theme" id="Theme_xjlt7"]
 default_font = ExtResource("16_fulsm")
@@ -69,13 +69,21 @@ font = ExtResource("22_a38lo")
 font_size = 11
 
 [node name="Player" unique_id=1314013891 instance=ExtResource("1_n6bxc")]
+velocity = Vector3(0, -3937.1016, 0)
+floor_constant_speed = true
+floor_snap_length = 1.0
 script = ExtResource("2_n6bxc")
 
-[node name="Collision" parent="." index="0" unique_id=1678800448]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0413818, 0)
-shape = SubResource("CapsuleShape3D_2qgql")
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="." index="0" unique_id=844560037]
+remote_path = NodePath("../Rays/Velocity")
+update_rotation = false
+update_scale = false
 
-[node name="Rays" type="Node3D" parent="." index="1" unique_id=1618382180]
+[node name="Collision" parent="." index="1" unique_id=1678800448]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0413818, 0)
+shape = SubResource("CapsuleShape3D_n6bxc")
+
+[node name="Rays" type="Node3D" parent="." index="2" unique_id=1618382180]
 
 [node name="Wall Grab" type="RayCast3D" parent="Rays" index="0" unique_id=1253082213]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03665, -0.0273162)
@@ -94,7 +102,12 @@ visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03845, 0)
 visible = false
 
-[node name="WorldViewContainer" type="SubViewportContainer" parent="." index="2" unique_id=443309119]
+[node name="Velocity" type="RayCast3D" parent="Rays" index="4" unique_id=1838488729]
+top_level = true
+collide_with_bodies = false
+debug_shape_thickness = 5
+
+[node name="WorldViewContainer" type="SubViewportContainer" parent="." index="3" unique_id=443309119]
 offset_right = 2560.0
 offset_bottom = 1389.0
 stretch = true
@@ -106,16 +119,15 @@ size = Vector2i(2560, 1389)
 render_target_update_mode = 4
 
 [node name="MainCam" type="Camera3D" parent="WorldViewContainer/WorldView" index="0" unique_id=1348542584]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.515936, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.515936, 0)
 current = true
 fov = 100.0
 script = ExtResource("17_fulsm")
 
 [node name="AimRay" type="RayCast3D" parent="WorldViewContainer/WorldView/MainCam" index="0" unique_id=717579637]
-visible = false
 target_position = Vector3(0, 0, -100)
 
-[node name="ItemViewContainer" type="SubViewportContainer" parent="." index="3" unique_id=706452860]
+[node name="ItemViewContainer" type="SubViewportContainer" parent="." index="4" unique_id=706452860]
 offset_right = 2560.0
 offset_bottom = 1389.0
 stretch = true
@@ -128,7 +140,7 @@ size = Vector2i(2560, 1389)
 render_target_update_mode = 4
 
 [node name="ItemCam" type="Camera3D" parent="ItemViewContainer/ItemView" index="0" unique_id=431223793]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.515936, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.515936, 0)
 environment = ExtResource("5_f1ej7")
 current = true
 fov = 100.0
@@ -139,7 +151,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.30701753, -0.36337197, -0.2
 
 [node name="revolver_rigged" parent="ItemViewContainer/ItemView/ItemCam/EquippedItem" index="0" unique_id=154566764 instance=ExtResource("7_a8ls1")]
 
-[node name="HUD" type="CanvasLayer" parent="." index="4" unique_id=1188979671]
+[node name="HUD" type="CanvasLayer" parent="." index="5" unique_id=1188979671]
 script = ExtResource("15_qfm1y")
 
 [node name="HUD" type="Control" parent="HUD" index="0" unique_id=220914221]
@@ -328,7 +340,7 @@ theme = SubResource("Theme_5vcmg")
 [node name="ColorRect" type="ColorRect" parent="HUD/HUD/Debug" index="0" unique_id=939823265]
 layout_mode = 0
 offset_right = 198.0
-offset_bottom = 81.0
+offset_bottom = 113.0
 color = Color(0, 0, 0, 0.6666667)
 
 [node name="Velocity" type="Control" parent="HUD/HUD/Debug" index="1" unique_id=1192302622]
@@ -367,10 +379,15 @@ offset_bottom = 40.0
 
 [node name="wall" type="Label" parent="HUD/HUD/Debug/Collision/VBoxContainer" index="0" unique_id=502831994]
 layout_mode = 2
+text = "Wall Collision"
 
 [node name="floor" type="Label" parent="HUD/HUD/Debug/Collision/VBoxContainer" index="1" unique_id=794782983]
 layout_mode = 2
 text = "Floor Collision"
+
+[node name="angle" type="Label" parent="HUD/HUD/Debug/Collision/VBoxContainer" index="2" unique_id=1622294434]
+layout_mode = 2
+text = "Floor Angle"
 
 [node name="PlayerMenu" type="Control" parent="HUD" index="1" unique_id=1935627296]
 layout_mode = 3

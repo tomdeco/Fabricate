@@ -8,6 +8,7 @@
 script = ExtResource("1_lo5ax")
 type = 1
 hitbox = 2
+damage = 50.0
 name = "Sword"
 icon = ExtResource("1_pf1v0")
 mesh = ExtResource("2_pf1v0")

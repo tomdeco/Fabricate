@@ -34,6 +34,7 @@ AbilityFunctions="*res://Scripts/Game/ability_functions.gd"
 
 [display]
 
+window/size/mode=3
 window/size/borderless=true
 
 [editor_plugins]
