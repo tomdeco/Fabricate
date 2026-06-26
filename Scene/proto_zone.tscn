@@ -1035,11 +1035,7 @@ _surfaces = [{
 }]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sbrfy"]
-sky_top_color = Color(0.190234, 0.233818, 0.294432, 1)
-sky_horizon_color = Color(0.959843, 0.527762, 3.85046e-07, 1)
 sky_curve = 0.172305
-ground_bottom_color = Color(0.117304, 0.096207, 0.0716997, 1)
-ground_horizon_color = Color(0.822273, 0.580059, 0.342533, 1)
 sun_angle_max = 25.58
 sun_curve = 0.160766
 use_debanding = false
@@ -2064,12 +2060,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.2888, -25.1474, 29.3339)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=448894896]
 environment = SubResource("Environment_3j10e")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=234815336]
-transform = Transform3D(-1, -1.3223643e-08, 8.641688e-08, 0, 0.988494, 0.15126084, -8.742278e-08, 0.15126084, -0.988494, 0, 0, 0)
-light_color = Color(1, 0.392698, 0.0978016, 1)
-light_energy = 5.3
-light_bake_mode = 1
-shadow_enabled = true
-directional_shadow_mode = 0
-directional_shadow_fade_start = 1.0

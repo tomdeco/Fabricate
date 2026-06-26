@@ -23,17 +23,17 @@ var CONSUMABLES = [
 
 func _init():
 	
-	var melee_path = "res://Resources/weapons/melee/%s.tres"
+	var melee_path = "res://Resources/Items/Weapons/Melee/%s.tres"
 	for wep in MELEE_WEAPONS:
 		var formatted_path = melee_path % wep
 		weapon_list.push_back(load(formatted_path))
 	
-	var ranged_path = "res://Resources/weapons/ranged/%s.tres"
+	var ranged_path = "res://Resources/Items/Weapons/Ranged/%s.tres"
 	for wep in RANGED_WEAPONS:
 		var formatted_path = ranged_path % wep
 		weapon_list.push_back(load(formatted_path))
 		
-	var consumable_path = "res://Resources/items/%s.tres"
+	var consumable_path = "res://Resources/Items/Consumables/%s.tres"
 	for item in CONSUMABLES:
 		var formatted_path = consumable_path % item
 		consumable_list.push_back(load(formatted_path))

@@ -5,9 +5,10 @@ class_name Player
 
 ## Camera object
 @onready var cam: Camera3D = $WorldViewContainer/WorldView/MainCam
+@onready var hud: CanvasLayer = $HUD
 
 ## Root of the inventory UI hirearchy
-@onready var inventory_ui = $HUD/Inventory/ItemFrame
+@onready var inventory_ui = $HUD/Control/Inventory
 
 ## Movement code specific to the player
 var movement: Movement;
@@ -46,10 +47,10 @@ func _process(delta):
 	$HUD.update_hud()
 	if Input.is_action_pressed("inventory"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		$HUD/Inventory.visible = true
+		inventory_ui.visible = true
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		$HUD/Inventory.visible = false
+		inventory_ui.visible = false
 		
 		applyEntityEffects(delta)
 	

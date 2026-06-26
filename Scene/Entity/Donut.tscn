@@ -11,10 +11,13 @@ top_level = true
 ai_mode = 1
 _name = "The Donut"
 id = "donut"
-max_health = 100.0
-base_damage = 25.0
-movement_speed = 10.0
-clonites = 100
+parameters = {
+0: 100,
+1: 100,
+2: 0,
+3: 10,
+4: 100
+}
 
 [node name="Collision" parent="." index="0" unique_id=1678800448]
 shape = SubResource("BoxShape3D_6gpbv")

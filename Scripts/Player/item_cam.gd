@@ -15,8 +15,6 @@ func _process(delta: float) -> void:
 	set_global_transform(main_cam.get_global_transform())
 	if Engine.is_editor_hint():
 		set_global_transform(main_cam.get_global_transform())
-		var editorItem = preload("res://Resources/weapons/melee/sword/sword.tscn")
-		add_child(editorItem)
 	
 	
 		

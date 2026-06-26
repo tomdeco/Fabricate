@@ -11,8 +11,8 @@ var icon: Sprite3D
 ## NPCs will spawn so long as this is true
 @export var enabled = true
 
-## Which NPC to spawn
-@export var entity: PackedScene
+## Information about specific NPC instance
+@export var resource: NPCResource
 
 ## How far the spawner can detect the player. Used in Proximity Mode
 @export var detect_range: float
@@ -28,8 +28,16 @@ var connection: Signal
 
 signal player_within_vicinity
 
+var sceneTypeChecked: bool = false
+
 func _ready() -> void:
 	top_level = true
+	
+func checkSceneIsNPC():
+	var scene = resource.npc.instantiate()
+	var result: bool = scene is NPC
+	scene.queue_free()
+	return result
 
 func _process(delta: float) -> void:
 	
@@ -70,12 +78,19 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if !patrolnode_child_exists:
 		warnings.append("SpawnMarkers must have a PatrolRoute child!")
 		
+	if !sceneTypeChecked:
+		if not checkSceneIsNPC():
+			warnings.append("The resource's scene must be an NPC!")
+			sceneTypeChecked = true
+	if resource.npc.changed:
+		sceneTypeChecked = false	
+	
 	return warnings
 
 
 func spawn():
 	enabled = false
-	var npc = entity.instantiate()
+	var npc = resource.npc.instantiate()
 	self.add_child(npc)
 	
 	

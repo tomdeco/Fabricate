@@ -3,20 +3,39 @@
 [ext_resource type="Script" uid="uid://cibpie6yjcnbn" path="res://Scripts/root.gd" id="1_cdqbm"]
 [ext_resource type="PackedScene" uid="uid://d0x083w2ls7cg" path="res://Scene/proto_zone.tscn" id="3_2m03i"]
 [ext_resource type="PackedScene" uid="uid://cepogkbm7sko5" path="res://Scene/ai_zone.tscn" id="4_fpdt3"]
+[ext_resource type="PackedScene" uid="uid://ba01bcrurc5f3" path="res://Resources/zone1/terrain/cliff.tscn" id="5_07nhf"]
 [ext_resource type="PackedScene" uid="uid://doy7kcnrwdv1a" path="res://Scene/Entity/Player.tscn" id="8_jsk3o"]
 
 [node name="Node3D" type="Node3D" unique_id=1228453814]
 script = ExtResource("1_cdqbm")
 
 [node name="Player" parent="." unique_id=1314013891 instance=ExtResource("8_jsk3o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -77.65552, 9.799421, 84.839935)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -56.2647, 3.1824322, 72.8513)
 _name = "Player"
 id = "player"
-max_health = 100.0
-base_damage = 50.0
-movement_speed = 10.0
 
 [node name="ProtoZone" parent="." unique_id=191941401 instance=ExtResource("3_2m03i")]
-transform = Transform3D(-0.7833761, 0.027172089, 0.62095374, -0.0098939445, 0.9983722, -0.05616929, -0.6214692, -0.050145358, -0.78183216, -187.24059, 30.582325, 282.5213)
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, -131.61447, 21.679665, 187.9304)
 
 [node name="AI_zone" parent="." unique_id=940367805 instance=ExtResource("4_fpdt3")]
+
+[node name="cliff10" parent="." unique_id=88726212 instance=ExtResource("5_07nhf")]
+transform = Transform3D(0.6175719, 0, 0.78651434, 0, 1, 0, -0.78651434, 0, 0.6175737, -185.21555, -48.047123, 175.33104)
+
+[node name="cliff11" parent="." unique_id=1358029958 instance=ExtResource("5_07nhf")]
+transform = Transform3D(-0.8349774, 0, 3.1572402, 0, 0.93, 0, -3.419534, 0, -0.7709308, -129.95998, -51.695145, 407.83176)
+
+[node name="cliff12" parent="." unique_id=495034208 instance=ExtResource("5_07nhf")]
+transform = Transform3D(0.89714324, 0, -3.1426697, 0, 6.250001, 0, 3.4037528, 0, 0.8283284, 229.5003, -112.24658, 366.27573)
+
+[node name="cliff13" parent="." unique_id=394225040 instance=ExtResource("5_07nhf")]
+transform = Transform3D(-0.8209702, 0, -0.5709704, 0, 1, 0, 0.57097095, 0, -0.82097185, -116.682495, -101.47718, 561.45264)
+
+[node name="cliff14" parent="." unique_id=1928166577 instance=ExtResource("5_07nhf")]
+transform = Transform3D(3.5130699, 0, -0.20384854, 0.13393638, 4.9686017, 1.9677005, 0.17551775, -3.791505, 2.5785856, 309.88837, -250.97807, 226.47719)
+
+[node name="cliff15" parent="." unique_id=663216307 instance=ExtResource("5_07nhf")]
+transform = Transform3D(0.36064863, 0, 0.9327022, 0, 1, 0, -0.9327017, 0, 0.36065036, 112.04089, -42.094032, 200.03741)
+
+[node name="cliff16" parent="." unique_id=708764727 instance=ExtResource("5_07nhf")]
+transform = Transform3D(0.7808759, 0, 3.1690202, 0, 6.250001, 0, -3.432293, 0, 0.720979, 184.05734, -143.55432, 200.26169)

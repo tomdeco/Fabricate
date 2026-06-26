@@ -9,18 +9,6 @@ class_name Entity
 ## The name used by the engine. Not shown during gameplay
 @export var id: String = "default"
 
-## Maximum acheviable health
-@export var max_health: float
- 
-## Applicable to melee only
-@export var base_damage: float 
-
-## How fast the NPC moves in m/s
-@export var movement_speed: float 
-
-## How many clonites are dropped upon death
-@export var clonites: int 
-
 ## Entity parameters including health, base damage, speed
 @export var parameters = {
 	Enums.EntityParameterID.MAX_HEALTH: 100, 
@@ -62,7 +50,7 @@ var rangedRayCast: RayCast3D
 var scene: Node3D
 
 func _init() -> void:
-	name = _name
+	name = _name	
 
 func _physics_process(delta: float) -> void:
 	if physics_call_queue.size() == 0:
@@ -114,10 +102,6 @@ func addToInventory(_item: Item):
 func removeFromInventory(_item: Item):
 	inventory.remove(_item)
 	
-## Give the enitity clonites
-func addClonites(amount: int):
-	parameters[Enums.EntityParameterID.CLONITES] += amount	
-
 func addEntityEffect(_consumable: Consumable):
 	effects.push_back(_consumable.entity_effect)
 	
@@ -157,5 +141,14 @@ func set_parameter(id: int, value):
 func get_parameter(id: int):
 	return parameters[id]
 	
-func receiveDamage(dmg: float):
+func receiveDamage(dmg: float, attacker: Entity):
 	parameters[Enums.EntityParameterID.HEALTH] -= dmg
+	if parameters[Enums.EntityParameterID.HEALTH] <= 0:
+		giveClonites(attacker)
+	
+func giveClonites(entity: Entity):
+	entity.getClonites(parameters[Enums.EntityParameterID.CLONITES])
+	
+func getClonites(clonites: int):
+	parameters[Enums.EntityParameterID.CLONITES] += clonites
+	

@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://300hprs4ab38"]
-
-[ext_resource type="PackedScene" uid="uid://bn6gvvnvx3f4y" path="res://Resources/items/s_health/pills.glb" id="1_knu2g"]
-
-[node name="s_health" instance=ExtResource("1_knu2g")]
-
-[node name="Cylinder" parent="." index="0"]
-transform = Transform3D(4.04986e-09, 0.09265, 7.45058e-09, 3.05998e-16, 7.45058e-09, -0.09265, -0.09265, 4.04986e-09, 2.1152e-16, 0, 0.302602, 0)

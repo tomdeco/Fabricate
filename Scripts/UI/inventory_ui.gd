@@ -1,7 +1,12 @@
 extends Control
+class_name InventoryUI
 
-@onready var item_container = $ItemContainer
+@onready var itemFrame = $Background/ItemFrame
+@onready var item_container = $Background/ItemFrame/ItemContainer
 @onready var player = $"../../.."
+
+func update_clonite_count(count: int):
+	$Background/LabelPanel/HBoxContainer/CloniteCount.text = str(count)
 
 func add_to_container(item: Item):
 	

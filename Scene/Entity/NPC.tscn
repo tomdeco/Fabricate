@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://wwus6m4r8utg" path="res://Scene/Entity/Entity.tscn" id="1_im54e"]
 [ext_resource type="Script" uid="uid://b6acvdo05f2yi" path="res://Scripts/AI/patrol_route.gd" id="2_87bl2"]
 [ext_resource type="Script" uid="uid://nmd8svp8m5a3" path="res://Scripts/Entity/npc.gd" id="2_bikga"]
-[ext_resource type="Shape3D" uid="uid://dq42mpy34ngbn" path="res://Resources/npcs/vision_shape.tres" id="2_g3bq5"]
+[ext_resource type="Shape3D" uid="uid://dq42mpy34ngbn" path="res://Resources/NPC/vision_shape.tres" id="2_g3bq5"]
 
 [node name="NPC" unique_id=1314013891 instance=ExtResource("1_im54e")]
 script = ExtResource("2_bikga")

@@ -51,6 +51,11 @@ enum RangedWeaponTypes {
 	EMITTER 
 }
 
+enum InstantUseItemType {
+	CLONITE, ## Give the user a specified amount of Clonites
+	RECIPIE ## Unlock a recipe for the user
+}
+
 enum FireMode {
 	SEMI_AUTO, ## Semi-Automatic, single fire with auto loading
 	AUTO ## Fully automatic, spray and pray baby
