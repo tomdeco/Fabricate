@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://doc5bcodrmbhg"]
+
+[ext_resource type="Script" uid="uid://7kcdjdcy3can" path="res://Scripts/UI/InteractPrompt.gd" id="1_byl5w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gaxm3"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="InteractPrompt" type="PanelContainer" unique_id=1882606400]
+theme_override_styles/panel = SubResource("StyleBoxFlat_gaxm3")
+script = ExtResource("1_byl5w")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1690575181]
+layout_mode = 2
+
+[node name="InteractionText" type="Label" parent="HBoxContainer" unique_id=321894489]
+layout_mode = 2
+text = "Interact: "
+
+[node name="InteractKey" type="Label" parent="HBoxContainer" unique_id=1288699485]
+layout_mode = 2
+text = "F"

@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://cgn1v2eqetsou"]
+
+[ext_resource type="Texture2D" uid="uid://di21dsfr08hti" path="res://Resources/ui/param_frame_new.png" id="1_coo0l"]
+[ext_resource type="Texture2D" uid="uid://buylehv3l5o2r" path="res://Resources/ui/melee.png" id="2_xrwgu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_utr26"]
+font_size = 61
+font_color = Color(1, 0.223529, 0.231373, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u0a8y"]
+bg_color = Color(1.44392e-06, 0.745634, 0.54847, 1)
+corner_radius_top_left = 240
+corner_radius_top_right = 240
+corner_radius_bottom_right = 240
+corner_radius_bottom_left = 240
+corner_detail = 20
+
+[node name="Params" type="Control" unique_id=1002098405]
+z_index = 6
+layout_mode = 3
+anchor_top = -0.025037
+anchor_right = 0.5
+anchor_bottom = 0.555963
+offset_top = 16.223976
+offset_right = 550.005
+offset_bottom = 211.736
+scale = Vector2(0.33895, 0.33895)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="HP" type="HBoxContainer" parent="." unique_id=268279257]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 96.0
+offset_right = 972.0
+offset_bottom = 193.0
+
+[node name="Header" type="Label" parent="HP" unique_id=2005221742]
+layout_mode = 2
+text = "HP:"
+label_settings = SubResource("LabelSettings_utr26")
+
+[node name="Value" type="Label" parent="HP" unique_id=145684337]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_utr26")
+
+[node name="Speed" type="HBoxContainer" parent="." unique_id=1349521852]
+layout_mode = 0
+offset_left = 194.0
+offset_top = 347.0
+offset_right = 782.0
+offset_bottom = 436.0
+
+[node name="Header" type="Label" parent="Speed" unique_id=1618819007]
+layout_mode = 2
+text = "SPEED:"
+label_settings = SubResource("LabelSettings_utr26")
+
+[node name="Value" type="Label" parent="Speed" unique_id=1335776311]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_utr26")
+
+[node name="EntityEffects" type="Control" parent="." unique_id=886489816]
+anchors_preset = 0
+offset_left = 378.0
+offset_top = 64.0
+offset_right = 378.0
+offset_bottom = 64.0
+
+[node name="HFlowContainer" type="HFlowContainer" parent="EntityEffects" unique_id=919462546]
+layout_mode = 0
+offset_left = -0.363204
+offset_top = -69.9007
+offset_right = 660.637
+offset_bottom = 1.09935
+
+[node name="Tex" type="Control" parent="." unique_id=443321131]
+modulate = Color(0.220142, 0.486166, 0.963586, 1)
+anchors_preset = 0
+offset_left = 11.0
+offset_top = -73.0
+offset_right = 3085.33
+offset_bottom = 1424.0
+scale = Vector2(0.35839, 0.35839)
+
+[node name="TextureRect" type="TextureRect" parent="Tex" unique_id=1323523912]
+layout_mode = 0
+anchor_left = -0.181
+anchor_top = -0.216
+anchor_right = -0.181
+anchor_bottom = -0.216
+offset_left = 556.454
+offset_top = 323.352
+offset_right = 3630.78
+offset_bottom = 1820.35
+texture = ExtResource("1_coo0l")
+expand_mode = 1
+
+[node name="EquipIcon" type="PanelContainer" parent="." unique_id=665141587]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 71.0
+offset_top = 47.0
+offset_right = 259.0
+offset_bottom = 236.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="EquipIcon" unique_id=1590885841]
+z_index = -1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_u0a8y")
+
+[node name="Tex" type="TextureRect" parent="EquipIcon" unique_id=2037449808]
+modulate = Color(0, 0, 0, 1)
+z_index = 1
+layout_mode = 2
+texture = ExtResource("2_xrwgu")
+expand_mode = 1
+stretch_mode = 5

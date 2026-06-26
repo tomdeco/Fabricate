@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bm8yhvjyu7xuq"]
+
+[ext_resource type="Script" uid="uid://dfq16wd1sbj0b" path="res://Scripts/UI/StorageItem.gd" id="1_27hk8"]
+
+[node name="StorageItem" type="HBoxContainer" unique_id=824958157]
+offset_right = 106.0
+offset_bottom = 28.0
+size_flags_horizontal = 4
+script = ExtResource("1_27hk8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1967115798]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="MarginContainer" unique_id=555136974]
+layout_mode = 2
+text = "Default"

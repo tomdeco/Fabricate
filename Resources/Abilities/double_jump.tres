@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Ability" format=3 uid="uid://mk2hwdk4737p"]
+
+[ext_resource type="Script" uid="uid://bjwvxr5lrp1yb" path="res://Scripts/Game/ability.gd" id="1_2oy0x"]
+
+[resource]
+script = ExtResource("1_2oy0x")
+name = "Double Jump"
+type = 0
+method = "m_double_jump"
+metadata/_custom_type_script = "uid://bjwvxr5lrp1yb"

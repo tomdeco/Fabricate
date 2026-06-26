@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://c4x6kj8rab0ah"]
+
+[ext_resource type="PackedScene" uid="uid://dpdo6ekcca67i" path="res://Resources/chest1.glb" id="1_j54kf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j54kf"]
+size = Vector3(0.5917969, 1.065918, 0.6789551)
+
+[node name="Cabinet" unique_id=1198266799 instance=ExtResource("1_j54kf")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="4" unique_id=1260287847]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.20410156, -0.032958984, 0.33190918)
+shape = SubResource("BoxShape3D_j54kf")

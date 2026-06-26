@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhl4iuv54pfb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kugb7"]
+size = Vector3(0.353523, 0.385254, 0.179626)
+
+[node name="Unarmed" type="BoneAttachment3D"]
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="HITBOX" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HITBOX"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.167616, 0.688816, -0.00765991)
+shape = SubResource("BoxShape3D_kugb7")
+debug_color = Color(0, 0.809186, 0.94537, 1)

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Consumable" format=3 uid="uid://bjb62efk4w3kh"]
+
+[ext_resource type="Resource" uid="uid://bsbrutx64ufsk" path="res://Resources/EntityEffects/Double Jump.tres" id="1_e62jq"]
+[ext_resource type="Script" uid="uid://b2dcwpb25bskv" path="res://Scripts/Game/Items/Consumable.gd" id="1_ihx2u"]
+[ext_resource type="Texture2D" uid="uid://cjj6wxrm4ygsb" path="res://Resources/Items/Consumables/s_health/icon.png" id="2_oi1tc"]
+[ext_resource type="PackedScene" uid="uid://300hprs4ab38" path="res://Resources/Items/Consumables/s_health/s_health.tscn" id="3_oi1tc"]
+
+[resource]
+script = ExtResource("1_ihx2u")
+entity_effect = ExtResource("1_e62jq")
+name = "Propellant"
+icon = ExtResource("2_oi1tc")
+mesh = ExtResource("3_oi1tc")
+size = 1
+id = "propellant"
+metadata/_custom_type_script = "uid://b2dcwpb25bskv"

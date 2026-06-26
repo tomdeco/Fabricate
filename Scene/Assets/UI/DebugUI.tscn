@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://g75tjfm6jtnr"]
+
+[ext_resource type="Script" uid="uid://cpodve8c3pw0c" path="res://Scripts/UI/DebugUI.gd" id="1_k2n0c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2djd1"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Debug" type="PanelContainer" unique_id=319313063]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -288.0
+offset_bottom = 136.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2djd1")
+script = ExtResource("1_k2n0c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=653493030]
+layout_mode = 2
+
+[node name="Velocity" type="VBoxContainer" parent="VBoxContainer" unique_id=1367452598]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="VBoxContainer/Velocity" unique_id=611528364]
+layout_mode = 2
+text = "Velocity"
+
+[node name="x" type="Label" parent="VBoxContainer/Velocity" unique_id=1672133099]
+layout_mode = 2
+text = "X"
+
+[node name="y" type="Label" parent="VBoxContainer/Velocity" unique_id=1914461442]
+layout_mode = 2
+text = "Y"
+
+[node name="z" type="Label" parent="VBoxContainer/Velocity" unique_id=181718307]
+layout_mode = 2
+text = "Z"
+
+[node name="Collision" type="VBoxContainer" parent="VBoxContainer" unique_id=984547703]
+layout_mode = 2
+
+[node name="wall" type="Label" parent="VBoxContainer/Collision" unique_id=862532873]
+layout_mode = 2
+text = "Wall Collision: default"
+
+[node name="floor" type="Label" parent="VBoxContainer/Collision" unique_id=1452459719]
+layout_mode = 2
+text = "Floor Collision: default"
+
+[node name="angle" type="Label" parent="VBoxContainer/Collision" unique_id=1905079819]
+layout_mode = 2
+text = "Floor Angle: default"

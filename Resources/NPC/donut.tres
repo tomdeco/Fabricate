@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="NPCResource" format=3 uid="uid://d14uwrq783lu0"]
+
+[ext_resource type="Script" uid="uid://bggrx2qavrqog" path="res://Scripts/NPCResource.gd" id="1_6brvb"]
+[ext_resource type="PackedScene" uid="uid://dlr101gfcg5nw" path="res://Scene/Entity/Donut.tscn" id="1_v3kpr"]
+
+[resource]
+script = ExtResource("1_6brvb")
+npc = ExtResource("1_v3kpr")
+metadata/_custom_type_script = "uid://bggrx2qavrqog"

@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://bv6skrcasnjgn"]
+
+[ext_resource type="Script" uid="uid://b0u3efg33r7ar" path="res://Scripts/UI/HoveringStorageInterface.gd" id="1_0exii"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_brkft"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0exii"]
+
+[node name="HoveringStorageInterface" type="PanelContainer" unique_id=1664226476]
+custom_minimum_size = Vector2(0, 100)
+offset_right = 252.0
+offset_bottom = 60.0
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_brkft")
+script = ExtResource("1_0exii")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1128162796]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Header" type="Label" parent="VBoxContainer" unique_id=800050698]
+layout_mode = 2
+text = "****** Storage ******"
+
+[node name="Contents" type="ItemList" parent="VBoxContainer" unique_id=422703191]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_selected_color = Color(0.74978, 0.74978, 0.74977994, 1)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_0exii")
+allow_search = false
+auto_height = true
+
+[node name="HBoxContainer" type="HFlowContainer" parent="VBoxContainer" unique_id=1307816894]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=584007937]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Take: F"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=204367281]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Take All: G"
+
+[node name="Footer" type="Label" parent="VBoxContainer" unique_id=699663438]
+layout_mode = 2
+size_flags_vertical = 10
+text = "*********************"

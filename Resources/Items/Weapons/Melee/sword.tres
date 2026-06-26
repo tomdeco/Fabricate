@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MeleeWeapon" format=3 uid="uid://c85x8b3jbcpk5"]
+
+[ext_resource type="Script" uid="uid://chdjk24bw6u7x" path="res://Scripts/Game/Items/MeleeWeapon.gd" id="1_lo5ax"]
+[ext_resource type="Texture2D" uid="uid://buylehv3l5o2r" path="res://Resources/ui/melee.png" id="1_pf1v0"]
+[ext_resource type="PackedScene" uid="uid://cjjvd87saagxd" path="res://Resources/Items/Weapons/Melee/sword/sword.tscn" id="2_pf1v0"]
+
+[resource]
+script = ExtResource("1_lo5ax")
+type = 1
+hitbox = 2
+damage = 50.0
+name = "Sword"
+icon = ExtResource("1_pf1v0")
+mesh = ExtResource("2_pf1v0")
+id = "sword"
+metadata/_custom_type_script = "uid://chdjk24bw6u7x"

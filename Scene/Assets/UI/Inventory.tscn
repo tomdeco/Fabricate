@@ -1,0 +1,132 @@
+[gd_scene format=3 uid="uid://ddkfs4mhs2qk6"]
+
+[ext_resource type="FontFile" uid="uid://cxu2prbxwl8et" path="res://Resources/Fonts/Ac437_SperryPC_8x16.ttf" id="1_6deno"]
+[ext_resource type="Texture2D" uid="uid://cijy06j7r6dv0" path="res://Resources/ui/inventory_box.png" id="2_lrfm2"]
+[ext_resource type="Script" uid="uid://bnjcgf8f4wnxv" path="res://Scripts/UI/inventory_ui.gd" id="3_lbnx0"]
+[ext_resource type="Script" uid="uid://be6nwybek7cuh" path="res://Scripts/UI/item_container.gd" id="4_op2w6"]
+[ext_resource type="FontFile" uid="uid://b7pbwk2a8dbfi" path="res://Resources/Fonts/Ac437_Acer_VGA_8x8.ttf" id="5_slt77"]
+
+[sub_resource type="Theme" id="Theme_7mevl"]
+default_font = ExtResource("1_6deno")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ld6d"]
+bg_color = Color(0, 0.278431, 0.431373, 1)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f6eio"]
+texture = ExtResource("2_lrfm2")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7sw0a"]
+bg_color = Color(0, 0.462353, 0.699656, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_o4wa6"]
+font_size = 19
+
+[sub_resource type="LabelSettings" id="LabelSettings_l0oha"]
+font = ExtResource("5_slt77")
+font_size = 11
+
+[node name="Inventory" type="Control" unique_id=1874001376]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme = SubResource("Theme_7mevl")
+script = ExtResource("3_lbnx0")
+
+[node name="Background" type="Panel" parent="." unique_id=772875189]
+z_index = -2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 275.0
+offset_bottom = 233.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6ld6d")
+
+[node name="ItemFrame" type="PanelContainer" parent="Background" unique_id=238124624]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -96.0
+offset_right = 128.0
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_f6eio")
+
+[node name="ItemContainer" type="Container" parent="Background/ItemFrame" unique_id=339307235]
+layout_direction = 2
+layout_mode = 2
+script = ExtResource("4_op2w6")
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelPanel" type="Panel" parent="Background" unique_id=977835184]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -132.0
+offset_right = 132.0
+offset_bottom = 22.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7sw0a")
+
+[node name="HBoxContainer" type="HFlowContainer" parent="Background/LabelPanel" unique_id=1371417288]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/LabelPanel/HBoxContainer" unique_id=468143047]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Inventory"
+label_settings = SubResource("LabelSettings_o4wa6")
+
+[node name="ReferenceRect" type="ReferenceRect" parent="Background/LabelPanel/HBoxContainer" unique_id=1173598502]
+custom_minimum_size = Vector2(46, 0)
+layout_mode = 2
+border_width = 1.5
+editor_only = false
+
+[node name="Label" type="Label" parent="Background/LabelPanel/HBoxContainer/ReferenceRect" unique_id=1383510696]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -18.5
+offset_top = -6.0
+offset_right = 18.5
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "ICON"
+label_settings = SubResource("LabelSettings_l0oha")
+
+[node name="CloniteCount" type="Label" parent="Background/LabelPanel/HBoxContainer" unique_id=49969991]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "999"
+horizontal_alignment = 1
